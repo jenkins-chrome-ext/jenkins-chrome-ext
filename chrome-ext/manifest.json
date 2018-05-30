@@ -1,0 +1,32 @@
+{
+  "manifest_version": 2,
+  "name": "Jenkins Chrome Extension",
+  "description": "Jenkins Chrome Extension",
+  "version": "1.0.0",
+  "browser_action": {
+    "default_title": "Jenkins Chrome Extension",
+    "default_icon": "img/jenkins-icon.png",
+    "default_popup": "popup/jenkins-ext-popup.html"    
+  },
+  "permissions": [
+    "activeTab"
+  ],
+  "background": {
+    "scripts": [
+      "background/jenkins-ext-background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://mydtbld0101.hpeswlab.net:8888/jenkins/job/*"        
+      ],
+      "css" :[
+        "content/jenkins-ext-content.css"
+	  ],
+	  "js" :[
+        "content/jenkins-ext-content.js"
+	  ]
+    } 
+  ]
+}

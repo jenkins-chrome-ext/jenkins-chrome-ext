@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <title>Jenkins Chrome Extension</title>
+        <link rel="stylesheet" type="text/css" href="jenkins-ext-popup.css">
+        <script src="jenkins-ext-popup.js"></script>
+    </head>
+    <body class="jenkins-ext-popup-body">
+        <div class="jenkins-ext-popup">
+            <div class="jenkins-ext-popup__header">
+                <span>Jenkins Chrome Extension</span>                
+            </div>
+            <div class="jenkins-ext-popup__content">
+                <label for="highlight-commiters-input" class="jenkins-ext-popup__content__highlight-commiters-label">Highlight commiter(s):</label>
+                <input id="highlight-commiters-input" class="jenkins-ext-popup__content__highlight-commiters-input"/>
+                <div class="jenkins-ext-popup__content__highlight-commiters-hint">Hint: for multiple commiters, use a comma-delimited name list.</div>
+                <div class="jenkins-ext-popup__content__image-container">
+                    <img src="../img/jenkins-icon.png" class="jenkins-ext-popup__content__image"/>
+                </div>
+            </div>
+            <div class="jenkins-ext-popup__footer">
+                <button id="jenkins-ext-popup-cancel-button" class="jenkins-ext-popup__footer__button">Cancel</button>
+                <button id="jenkins-ext-popup-save-button" class="jenkins-ext-popup__footer__button">Save</button>
+            </div>
+        </div>
+    </body>
+</html>
+

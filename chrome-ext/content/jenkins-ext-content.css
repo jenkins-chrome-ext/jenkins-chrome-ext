@@ -1,0 +1,30 @@
+
+#header {
+	background-color: #987 !important;
+}
+
+.build-row .build-name-controls .pane.build-name {
+	height: auto !important;
+}
+
+.jenkins-ext-build-commiters {
+	font-size: 10px;
+	line-height: 12px;
+}
+
+.jenkins-ext-build-commiter {
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 320px;
+	padding-left: 30px;
+	color: #aaa !important;
+}
+
+.jenkins-ext-build-commiter--highlight {
+	color: #f63 !important;
+}
+
+.jenkins-ext-build-commiter:hover {
+	color: #36f !important;
+}
