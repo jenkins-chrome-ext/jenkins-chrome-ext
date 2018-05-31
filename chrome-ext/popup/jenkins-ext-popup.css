@@ -47,7 +47,8 @@
 
 .jenkins-ext-popup__content__image {
 	margin-top: 10px;
-	height: 100px;
+	width: 96px;
+	height: 96px;
 }
 
 .jenkins-ext-popup__footer {

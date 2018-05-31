@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "browser_action": {
     "default_title": "Jenkins Chrome Extension",
-    "default_icon": "img/jenkins-icon.png",
+    "default_icon": "img/jenkins-icon-128px.png",
     "default_popup": "popup/jenkins-ext-popup.html"    
   },
   "permissions": [
