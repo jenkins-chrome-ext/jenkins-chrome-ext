@@ -8,6 +8,11 @@
     "default_icon": "img/jenkins-icon-128px.png",
     "default_popup": "popup/jenkins-ext-popup.html"    
   },
+  "icons": {
+    "48": "img/jenkins-icon-48px.png",
+    "96": "img/jenkins-icon-96px.png",
+    "128": "img/jenkins-icon-128px.png"
+  },
   "permissions": [
     "activeTab"
   ],
