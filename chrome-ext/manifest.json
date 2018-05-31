@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Jenkins Chrome Extension",
   "description": "Jenkins Chrome Extension",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "browser_action": {
     "default_title": "Jenkins Chrome Extension",
     "default_icon": "img/jenkins-icon-128px.png",
@@ -19,7 +19,8 @@
   "content_scripts": [
     {
       "matches": [
-        "http://mydtbld0101.hpeswlab.net:8888/jenkins/job/*"        
+        "http://mydtbld0101.hpeswlab.net:8888/jenkins/job/*",
+        "http://mydtbld0101.hpeswlab.net:8888/jenkins/view/Monitor/job/*"
       ],
       "css" :[
         "content/jenkins-ext-content.css"
