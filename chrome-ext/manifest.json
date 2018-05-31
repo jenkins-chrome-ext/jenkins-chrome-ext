@@ -1,6 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Jenkins Chrome Extension",
+  "short_name": "JenkinsExt",
   "description": "Jenkins Chrome Extension",
   "version": "1.0.1",
   "browser_action": {
