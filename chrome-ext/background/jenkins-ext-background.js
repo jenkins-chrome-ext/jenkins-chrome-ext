@@ -1,5 +1,8 @@
 (function() {
 
+	let storageUrlsPatternKey = 'jenkins-ext-urls-pattern';
+	let storageHighlightCommitersKey = 'jenkins-ext-highlight-commiters';
+
 	function injectCss(tabId) {
 		chrome.tabs.insertCSS(
 			tabId,
@@ -27,13 +30,13 @@
 			tabId,
 			{
 				'type': 'jenkins-chrome-ext-go',
-				'highlightCommiters': localStorage['highlightCommiters'] || ''
+				'highlightCommiters': localStorage[storageHighlightCommitersKey] || ''
 			}
 		);
 	}
 
 	chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-		if (changeInfo.status === 'complete' && localStorage['urlsPattern'] && (new RegExp(localStorage['urlsPattern'])).test(tab.url)) {
+		if (changeInfo.status === 'complete' && localStorage[storageUrlsPatternKey] && (new RegExp(localStorage[storageUrlsPatternKey])).test(tab.url)) {
 			injectCss(tabId);
 			injectJs(tabId, function() {
 				go(tabId);

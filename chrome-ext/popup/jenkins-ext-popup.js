@@ -1,5 +1,8 @@
 (function() {
 
+	let storageUrlsPatternKey = 'jenkins-ext-urls-pattern';
+	let storageHighlightCommitersKey = 'jenkins-ext-highlight-commiters';
+
 	function onPopupLoad() {
 		document.getElementById('jenkins-ext-popup-cancel-button').addEventListener('click', onPopupCancel);
 		document.getElementById('jenkins-ext-popup-save-button').addEventListener('click', onPopupSave);
@@ -23,8 +26,6 @@
 		window.close();
 	}
 
-	let storageUrlsPatternKey = 'urlsPattern';
-	let storageHighlightCommitersKey = 'highlightCommiters';
 	document.addEventListener('DOMContentLoaded', onPopupLoad, false);
 
 })();
