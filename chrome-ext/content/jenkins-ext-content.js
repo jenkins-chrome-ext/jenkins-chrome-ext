@@ -1,24 +1,22 @@
 (function() {
 
-	let localStorageHighlightCommitersKey = 'jenkins-ext-highlight-commiters';
-	let highlightedCommiters = (localStorage.getItem(localStorageHighlightCommitersKey) || '').split(',').map(Function.prototype.call, String.prototype.trim);
+	let highlightedCommiters = [];
 	let buildInfos = {};
 	let buildNumberDomElms = document.querySelectorAll('.build-row-cell .pane.build-name .display-name');
-
-	chrome.runtime.onMessage.addListener(function (request /*, sender, sendResponse*/) {
-		if (request.type === 'jenkins-chrome-ext-highlight-commiters') {
-			localStorage.setItem(localStorageHighlightCommitersKey, request.msg || '');
-			highlightedCommiters = (request.msg || '').split(',').map(Function.prototype.call, String.prototype.trim);
-		}
-	});
 
 	function getInfo(url, cb, prm) {
 		let xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState === 4) {
-				let json = JSON.parse(xhr.response);
-				cb(json, prm);
+				try {
+					let json = JSON.parse(xhr.response);
+					cb(json, prm);
+				} catch(err) {
+				}
 			}
+		};
+		xhr.onerror = function() {
+			alert('err');
 		};
 		xhr.open('GET', url, true);
 	    xhr.send('');
@@ -93,8 +91,11 @@
 		}
 	}
 
-	setTimeout(function() {
-		getInfo(document.location.href + 'api/json', onGetRootJobInfoDone, null);
-	}, 0);
+	chrome.runtime.onMessage.addListener(function (request /*, sender, sendResponse*/) {
+		if (request.type === 'jenkins-chrome-ext-go') {
+			highlightedCommiters = (request.highlightCommiters || '').split(',').map(Function.prototype.call, String.prototype.trim);
+			getInfo(document.location.href + 'api/json', onGetRootJobInfoDone, null);
+		}
+	});
 
 })();

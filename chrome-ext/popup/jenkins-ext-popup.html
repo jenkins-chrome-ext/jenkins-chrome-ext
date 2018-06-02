@@ -10,9 +10,12 @@
                 <span>Jenkins Chrome Extension</span>                
             </div>
             <div class="jenkins-ext-popup__content">
-                <label for="highlight-commiters-input" class="jenkins-ext-popup__content__highlight-commiters-label">Highlight commiter(s):</label>
-                <input id="highlight-commiters-input" class="jenkins-ext-popup__content__highlight-commiters-input"/>
-                <div class="jenkins-ext-popup__content__highlight-commiters-hint">Hint: for multiple commiters, use a comma-delimited name list.</div>
+                <label for="urls-pattern-input" class="jenkins-ext-popup-label">Relevant URLs Pattern:</label>
+                <input id="urls-pattern-input" class="jenkins-ext-popup-input"/>
+                <div class="jenkins-ext-popup-hint">Hint: use Javascript regex conventions e.g. https?:\\/\\/myserver:8888\\/jenkins\\S*\\/job\\/'</div>
+                <label for="highlight-commiters-input" class="jenkins-ext-popup-label">Highlight Commiter(s):</label>
+                <input id="highlight-commiters-input" class="jenkins-ext-popup-input"/>
+                <div class="jenkins-ext-popup-hint">Hint: for multiple commiters, use a comma-delimited name list e.g. John Doe, Jane Doe</div>
                 <div class="jenkins-ext-popup__content__image-container">
                     <img src="../img/jenkins-icon-96px.png" class="jenkins-ext-popup__content__image"/>
                 </div>
@@ -24,4 +27,3 @@
         </div>
     </body>
 </html>
-

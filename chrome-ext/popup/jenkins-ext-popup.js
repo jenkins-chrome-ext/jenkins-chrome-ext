@@ -1,38 +1,30 @@
 (function() {
 
-	let localStorageHighlightCommitersKey = 'jenkins-ext-highlight-commiters';
-	let highlightCommiters = '';
-
-	function onDomLoaded() {
+	function onPopupLoad() {
 		document.getElementById('jenkins-ext-popup-cancel-button').addEventListener('click', onPopupCancel);
 		document.getElementById('jenkins-ext-popup-save-button').addEventListener('click', onPopupSave);
-		highlightCommiters = localStorage.getItem(localStorageHighlightCommitersKey) || '';
+		let defaultUrlsPattern = 'https?:\\/\\/mydtbld0101\\.hpeswlab\\.net:8888\\/jenkins\\S*\\/job\\/';
+		let defaultHighlightCommiters = '';
+		let urlsPattern = localStorage.getItem(storageUrlsPatternKey) || defaultUrlsPattern;
+		let highlightCommiters = localStorage.getItem(storageHighlightCommitersKey) || defaultHighlightCommiters;
+		document.getElementById('urls-pattern-input').value = urlsPattern;
 		document.getElementById('highlight-commiters-input').value = highlightCommiters;
+	}
+
+	function onPopupSave() {
+		let urlsPattern = document.getElementById('urls-pattern-input').value || '';
+		let highlightCommiters = document.getElementById('highlight-commiters-input').value || '';
+		localStorage.setItem(storageUrlsPatternKey, urlsPattern);
+		localStorage.setItem(storageHighlightCommitersKey, highlightCommiters);
+		window.close();
 	}
 
 	function onPopupCancel() {
 		window.close();
 	}
 
-	function sendHighlightCommitersToContentScript(tabs) {
-		tabs.forEach(tab => {
-			chrome.tabs.sendMessage(
-				tab.id,
-				{
-					'type': 'jenkins-chrome-ext-highlight-commiters',
-					'msg': highlightCommiters
-				}
-			);
-			window.close();
-		});
-	}
-
-	function onPopupSave() {
-		highlightCommiters = document.getElementById('highlight-commiters-input').value || '';
-		localStorage.setItem(localStorageHighlightCommitersKey, highlightCommiters);
-		chrome.tabs.query({currentWindow: true,	active: true}, sendHighlightCommitersToContentScript);
-	}
-
-	document.addEventListener('DOMContentLoaded', onDomLoaded, false);
+	let storageUrlsPatternKey = 'urlsPattern';
+	let storageHighlightCommitersKey = 'highlightCommiters';
+	document.addEventListener('DOMContentLoaded', onPopupLoad, false);
 
 })();
