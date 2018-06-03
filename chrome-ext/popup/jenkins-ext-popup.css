@@ -1,5 +1,5 @@
 .jenkins-ext-popup-body {
-	margin: 10px;
+	margin: 15px;
 	font-size: 16px;
 }
 
@@ -13,7 +13,7 @@
 
 .jenkins-ext-popup__header {
 	display: flex;
-	background-color: #d24939;
+	background-color: #333;
 	height: 30px;
 	line-height: 30px;
     padding: 10px;
@@ -23,6 +23,7 @@
 	width: 30px;
 	height: 30px;
 	margin-top: -2px;
+    border-radius: 50%;
 }
 
 .jenkins-ext-popup__header__title {
@@ -43,8 +44,14 @@
 	padding: 10px 0;	
 }
 
+.jenkins-ext-popup-required-indicator {
+    position: relative;
+    top: 6px;
+    color: #d24939;
+}
+
 .jenkins-ext-popup-label {
-	display: block;
+	display: inline-block;
 	font-size: 12px;
 }
 
