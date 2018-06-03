@@ -55,7 +55,7 @@
 				let elm = document.createElement('a');
 				elm.style['display'] = 'block';
 				elm['href'] = 'mailto:' + commmiterInfo.email;
-				elm.className = 'jenkins-ext-build-commiter' + (highlightedCommiters.indexOf(commmiterInfo.name) === -1 ? '' : ' jenkins-ext-build-commiter--highlight');
+				elm.className = 'jenkins-ext-build-commiter' + (highlightedCommiters.indexOf(commmiterInfo.name.toLowerCase()) === -1 ? '' : ' jenkins-ext-build-commiter--highlight');
 				elm.innerHTML = commmiterInfo.name;
 				commitersElm.appendChild(elm);
 			});
@@ -93,7 +93,7 @@
 
 	chrome.runtime.onMessage.addListener(function (request /*, sender, sendResponse*/) {
 		if (request.type === 'jenkins-chrome-ext-go') {
-			highlightedCommiters = (request.highlightCommiters || '').split(',').map(Function.prototype.call, String.prototype.trim);
+			highlightedCommiters = (request.highlightCommiters || '').toLowerCase().split(',').map(Function.prototype.call, String.prototype.trim);
 			getInfo(document.location.href + 'api/json', onGetRootJobInfoDone, null);
 		}
 	});
