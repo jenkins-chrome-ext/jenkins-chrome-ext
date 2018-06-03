@@ -29,13 +29,13 @@
 
 .jenkins-ext-popup__header__title {
 	margin-left: 5px;
-	font-size: 30px;
+	font-size: 24px;
 	color: #fff;
 }
 
 .jenkins-ext-popup__header__version {
 	margin-left: 5px;
-	margin-top: 7px;
+	margin-top: 5px;
 	font-size: 10px;
 	color: #fff;
 }
