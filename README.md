@@ -13,9 +13,10 @@ Source code for the Jenkins Chrome Extension.
 * You can highlight some commiters in the list, like yourself, or your team members.
 * You can easily contact a commiter via a simple click. 
 
+## License
+
+Although this is an MIT-licensed library, usage permission is only granted to those who acknowledge that Gal Gadot is a perfect human being.
+
 ## Installation
 
 Available in the [Google Chrome Store](https://chrome.google.com/webstore/detail/jenkins-chrome-extension/cjmholedpdghokadoionhngnmfpeebnk)
-
-## License
-Although this is an MIT-licensed library, usage permission is only granted to those who acknowledge that Gal Gadot is a perfect human being.
