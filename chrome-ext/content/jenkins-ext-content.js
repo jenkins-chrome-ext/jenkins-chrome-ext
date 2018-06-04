@@ -48,8 +48,9 @@
 	function displayBuildCommiters(buildNumber, commiterInfos) {
 		let buildLinkElm = getBuildLinkElement(buildNumber);
 		if (commiterInfos.length !== 0 && buildLinkElm) {
-			parentElm = buildLinkElm.parentElement.parentElement.parentElement;
+			let parentElm = buildLinkElm.parentElement.parentElement.parentElement;
 			let commitersElm = document.createElement('div');
+			commitersElm.setAttribute('id', 'jenkins-ext-build-commiters-' + buildNumber);
 			commitersElm.className = 'jenkins-ext-build-commiters';
 			commiterInfos.forEach(commmiterInfo => {
 				let elm = document.createElement('a');
@@ -64,19 +65,22 @@
 	}
 
 	function onGetBuildInfoDone(info, buildNumber) {
-		let commiters = [];
-		let commiterInfos = [];
-		info.changeSet.items.forEach(commit => {
-			let commiterName = formatCommiterName(commit.author.fullName);
-			if (commiters.indexOf(commiterName) === -1) {
-				commiters.push(commiterName);
-				commiterInfos.push({
-					name: commiterName,
-					email: commit.authorEmail
-				});
-			}
-		});
-		displayBuildCommiters(buildNumber, commiterInfos);
+		let commitersElm = document.getElementById('jenkins-ext-build-commiters-' + buildNumber);
+		if (!commitersElm) {
+			let commiters = [];
+			let commiterInfos = [];
+			info.changeSet.items.forEach(commit => {
+				let commiterName = formatCommiterName(commit.author.fullName);
+				if (commiters.indexOf(commiterName) === -1) {
+					commiters.push(commiterName);
+					commiterInfos.push({
+						name: commiterName,
+						email: commit.authorEmail
+					});
+				}
+			});
+			displayBuildCommiters(buildNumber, commiterInfos);
+		}
 	}
 
 	function onGetRootJobInfoDone(info) {
