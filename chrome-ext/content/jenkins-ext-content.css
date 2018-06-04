@@ -17,7 +17,7 @@
     overflow: hidden;
     max-width: 320px;
 	padding-left: 30px;
-	color: #aaa !important;
+	color: #999 !important;
 }
 
 .jenkins-ext-build-commiter--highlight {

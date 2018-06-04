@@ -57,6 +57,16 @@
 				elm['href'] = 'mailto:' + commmiterInfo.email;
 				elm.className = 'jenkins-ext-build-commiter' + (highlightedCommiters.indexOf(commmiterInfo.name.toLowerCase()) === -1 ? '' : ' jenkins-ext-build-commiter--highlight');
 				elm.innerHTML = commmiterInfo.name;
+				let tooltip = '';
+				let count = 0;
+				commmiterInfo.commits.forEach(c => {
+					count++;
+					if (count > 1) {
+						tooltip += `---\n`;
+					}
+					tooltip += c.comment;
+				});
+				elm.setAttribute('title', tooltip);
 				commitersElm.appendChild(elm);
 			});
 			parentElm.appendChild(commitersElm);
@@ -64,17 +74,26 @@
 	}
 
 	function onGetBuildInfoDone(info, buildNumber) {
-		let commiters = [];
+		let commiterNames = [];
 		let commiterInfos = [];
 		info.changeSet.items.forEach(commit => {
 			let commiterName = formatCommiterName(commit.author.fullName);
-			if (commiters.indexOf(commiterName) === -1) {
-				commiters.push(commiterName);
+			if (commiterNames.indexOf(commiterName) === -1) {
+				commiterNames.push(commiterName);
 				commiterInfos.push({
 					name: commiterName,
-					email: commit.authorEmail
+					email: commit.authorEmail,
+					commits: []
 				});
 			}
+			commiterInfos[commiterNames.indexOf(commiterName)].commits.push({
+				id: commit.id,
+				fileCount: commit.paths.length,
+				comment: commit.comment
+			});
+	});
+		commiterInfos.sort((a, b) => {
+			return a.name.localeCompare(b.name);
 		});
 		displayBuildCommiters(buildNumber, commiterInfos);
 	}
