@@ -3,7 +3,7 @@
   "name": "Jenkins Chrome Extension",
   "short_name": "JenkinsExt",
   "description": "Jenkins Chrome Extension",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "browser_action": {
     "default_title": "Jenkins Chrome Extension",
     "default_icon": "img/jenkins-icon-96px.png",
@@ -25,18 +25,5 @@
     ],
     "persistent": false
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "http://mydtbld0101.hpeswlab.net:8888/jenkins/job/*",
-        "http://mydtbld0101.hpeswlab.net:8888/jenkins/view/*/job/*"
-      ],
-      "css" :[
-        "content/jenkins-ext-content.css"
-	  ],
-	  "js" :[
-        "content/jenkins-ext-content.js"
-	  ]
-    } 
-  ]
+  "content_scripts": []
 }

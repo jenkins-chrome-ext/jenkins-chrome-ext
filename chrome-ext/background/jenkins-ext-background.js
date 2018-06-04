@@ -25,21 +25,17 @@
 		);
 	}
 
-	function go(tabId) {
-		chrome.tabs.sendMessage(
-			tabId,
-			{
-				'type': 'jenkins-chrome-ext-go',
-				'highlightCommiters': localStorage[storageHighlightCommitersKey] || ''
-			}
-		);
-	}
-
 	chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 		if (changeInfo.status === 'complete' && localStorage[storageUrlsPatternKey] && (new RegExp(localStorage[storageUrlsPatternKey])).test(tab.url)) {
 			injectCss(tabId);
 			injectJs(tabId, function() {
-				go(tabId);
+				chrome.tabs.sendMessage(
+					tabId,
+					{
+						'type': 'jenkins-chrome-ext-go',
+						'highlightCommiters': localStorage[storageHighlightCommitersKey] || ''
+					}
+				);
 			});
 		}
 	});
