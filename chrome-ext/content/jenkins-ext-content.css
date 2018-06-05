@@ -1,9 +1,19 @@
-#header {
-	background-color: #987 !important;
-}
-
 .build-row .build-name-controls .pane.build-name {
 	height: auto !important;
+}
+
+.build-row-cell .pane.build-name .display-name {
+	margin-top: 3px !important;
+	margin-left: 22px !important;
+}
+
+.build-row-cell .pane.build-details {
+	margin-top: 0 !important;
+	padding-left: 30px !important;
+}
+
+.build-row-cell .pane.build-details > a {
+	color: #999 !important;
 }
 
 .jenkins-ext-build-commiters {
@@ -17,7 +27,7 @@
     overflow: hidden;
     max-width: 320px;
 	padding-left: 30px;
-	color: #999 !important;
+	color: #666 !important;
 }
 
 .jenkins-ext-build-commiter--highlight {
