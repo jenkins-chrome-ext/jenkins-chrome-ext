@@ -43,13 +43,18 @@
 	padding-left: 30px;
 }
 
+.jenkins-ext-build-commiter-email-link {
+	vertical-align: middle;
+}
+
 .jenkins-ext-build-commiter-email-img {
 }
 
 .jenkins-ext-build-commiter-name {
 	display: inline-block;
 	position: relative;
-	top: 5px;
+	top: 1px;
+	vertical-align: middle;
 	margin-left: 4px;
     max-width: 260px;
 	text-overflow: ellipsis;
