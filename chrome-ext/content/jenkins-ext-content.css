@@ -16,6 +16,24 @@
 	color: #999 !important;
 }
 
+.jenkins-ext-build-status--ok {
+}
+
+.jenkins-ext-build-status--warn {
+}
+
+.jenkins-ext-build-status--error {
+}
+
+.jenkins-ext-build-status--abort {
+}
+
+.jenkins-ext-build-status--run {
+}
+
+.jenkins-ext-build-status--na {
+}
+
 .jenkins-ext-build-commiters {
 	font-size: 10px;
 	line-height: 12px;
