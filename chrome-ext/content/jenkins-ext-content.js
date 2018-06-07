@@ -8,8 +8,8 @@
 		ABORT: 'ABORT',
 		RUN: 'RUN'
 	};
-	let highlightedCommiters = [];
 	let buildInfos = {};
+	let highlightedCommiters = [];
 	let buildNumberDomElms = document.querySelectorAll('.build-row-cell .pane.build-name .display-name');
 
 	function getInfo(url, cb, prm) {
@@ -131,18 +131,18 @@
 		bi.status = getBuildStatus(buildNumber);
 		bi.commiterInfos = [];
 		addBuildPanelClass(buildNumber);
-		let commiterNames = [];
+		let names = [];
 		json.changeSet.items.forEach(commit => {
 			let commiterName = formatCommiterName(commit.author.fullName);
-			if (commiterNames.indexOf(commiterName) === -1) {
-				commiterNames.push(commiterName);
+			if (names.indexOf(commiterName) === -1) {
+				names.push(commiterName);
 				bi.commiterInfos.push({
 					name: commiterName,
 					email: commit.authorEmail,
 					commits: []
 				});
 			}
-			bi.commiterInfos[commiterNames.indexOf(commiterName)].commits.push({
+			bi.commiterInfos[names.indexOf(commiterName)].commits.push({
 				id: commit.id,
 				fileCount: commit.paths.length,
 				comment: commit.comment
