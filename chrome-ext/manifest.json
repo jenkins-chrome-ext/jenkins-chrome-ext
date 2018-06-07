@@ -25,5 +25,8 @@
     ],
     "persistent": false
   },
-  "content_scripts": []
+  "content_scripts": [],
+  "web_accessible_resources": [
+    "img/email.png"
+  ]
 }

@@ -61,11 +61,23 @@
 			let commitersElm = document.createElement('div');
 			commitersElm.className = 'jenkins-ext-build-commiters';
 			bi.commiterInfos.forEach(ci => {
-				let elm = document.createElement('a');
-				elm.style['display'] = 'block';
-				elm['href'] = 'mailto:' + ci.email;
-				elm.className = 'jenkins-ext-build-commiter' + (highlightedCommiters.indexOf(ci.name.toLowerCase()) === -1 ? '' : ' jenkins-ext-build-commiter--highlight');
-				elm.innerHTML = ci.name;
+
+				let commiterLineElm = document.createElement('div');
+				commiterLineElm.className = 'jenkins-ext-build-commiter-line';
+
+				let mailLinkElm = document.createElement('a');
+				mailLinkElm['href'] = 'mailto:' + ci.email;
+
+				let mailImgElm = document.createElement('img');
+				mailImgElm.setAttribute('src', chrome.extension.getURL('img/email.png'));
+				mailImgElm.className = 'jenkins-ext-build-commiter-email-img';
+				mailLinkElm.appendChild(mailImgElm);
+
+				commiterLineElm.appendChild(mailLinkElm);
+
+				let nameElm = document.createElement('span');
+				nameElm.className = 'jenkins-ext-build-commiter-name' + (highlightedCommiters.indexOf(ci.name.toLowerCase()) === -1 ? '' : ' jenkins-ext-build-commiter-name--highlight');
+				nameElm.innerHTML = ci.name;
 				let tooltip = '';
 				let count = 0;
 				ci.commits.forEach(c => {
@@ -75,8 +87,10 @@
 					}
 					tooltip += c.comment;
 				});
-				elm.setAttribute('title', tooltip);
-				commitersElm.appendChild(elm);
+				nameElm.setAttribute('title', tooltip);
+				commiterLineElm.appendChild(nameElm);
+
+				commitersElm.appendChild(commiterLineElm);
 			});
 			parentElm.appendChild(commitersElm);
 		}

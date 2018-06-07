@@ -39,19 +39,30 @@
 	line-height: 16px;
 }
 
-.jenkins-ext-build-commiter {
+.jenkins-ext-build-commiter-line {
+	padding-left: 30px;
+}
+
+.jenkins-ext-build-commiter-email-img {
+}
+
+.jenkins-ext-build-commiter-name {
+	display: inline-block;
+	position: relative;
+	top: 5px;
+	margin-left: 4px;
+    max-width: 260px;
 	text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    max-width: 320px;
-	padding-left: 30px;
 	color: #666 !important;
+	cursor: default;
 }
 
-.jenkins-ext-build-commiter--highlight {
+.jenkins-ext-build-commiter-name--highlight {
 	color: #f63 !important;
 }
 
-.jenkins-ext-build-commiter:hover {
+.jenkins-ext-build-commiter-name:hover {
 	color: #36f !important;
 }
