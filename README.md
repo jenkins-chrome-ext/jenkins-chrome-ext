@@ -22,3 +22,13 @@ Although this is an MIT-licensed library, usage permission is only granted to th
 ## Installation
 
 Available in the [Google Chrome Store](https://chrome.google.com/webstore/detail/jenkins-chrome-extension/cjmholedpdghokadoionhngnmfpeebnk)
+
+## Configure
+
+Click the toolbar icon.
+
+## Feedback
+
+Chat room on [Gitter](https://gitter.im/jenkinschromeext/Lobby)
+
+ 
