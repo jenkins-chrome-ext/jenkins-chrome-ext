@@ -1,5 +1,6 @@
 (function() {
 
+	//let extId = 'cjmholedpdghokadoionhngnmfpeebnk';
 	let buildStatusEnum = {
 		NA: 'NA',
 		OK: 'OK',
@@ -143,7 +144,6 @@
 
 	function onGetBuildInfoDone(json, buildNumber) {
 		let bi = buildInfos[buildNumber];
-		bi.status = getBuildStatus(buildNumber);
 		bi.commiterInfos = [];
 		addBuildPanelClass(buildNumber);
 		let names = [];
@@ -177,6 +177,9 @@
 					url: build.url
 				};
 				getInfo(build.url + 'api/json', onGetBuildInfoDone, build.number);
+			});
+			info.builds.forEach(build => {
+				buildInfos[build.number].status = getBuildStatus(build.number);
 			});
 		}
 	}

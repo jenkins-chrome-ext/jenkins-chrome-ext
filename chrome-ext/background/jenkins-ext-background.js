@@ -1,6 +1,6 @@
 (function() {
 
-	let extId = 'cjmholedpdghokadoionhngnmfpeebnk';
+	//let extId = 'cjmholedpdghokadoionhngnmfpeebnk';
 	let storageUrlsPatternKey = 'jenkins-ext-urls-pattern';
 	let storageHighlightCommitersKey = 'jenkins-ext-highlight-commiters';
 
