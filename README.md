@@ -23,7 +23,7 @@ Although this is an MIT-licensed library, usage permission is only granted to th
 
 Available in the [Google Chrome Store](https://chrome.google.com/webstore/detail/jenkins-chrome-extension/cjmholedpdghokadoionhngnmfpeebnk)
 
-## Configure
+## Configuration
 
 Click the toolbar icon.
 
