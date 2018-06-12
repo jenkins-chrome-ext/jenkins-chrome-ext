@@ -40,17 +40,22 @@
 }
 
 .jenkins-ext-build-commiter-line {
+	display: flex;
 	padding-left: 30px;
+	overflow: hidden;
+	max-width: 320px;
 }
 
 .jenkins-ext-build-commiter-email-link {
 	vertical-align: middle;
+	flex: 0 0 16px;
 }
 
 .jenkins-ext-build-commiter-email-img {
 }
 
 .jenkins-ext-build-commiter-name {
+	flex: 1 1 auto;
 	display: inline-block;
 	position: relative;
 	top: 1px;
@@ -70,4 +75,21 @@
 
 .jenkins-ext-build-commiter-name:hover {
 	color: #36f !important;
+}
+
+.jenkins-ext-build-commiter-commits {
+	text-align: right;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.jenkins-ext-build-commiter-commit-link {
+	margin-left: 4px;
+	display: inline-block;
+	position: relative;
+	top: 2px;
+	height: 10px;
+	width: 10px;
+	background-color: #999;
+	border-radius: 2px;
 }

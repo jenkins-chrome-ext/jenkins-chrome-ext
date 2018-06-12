@@ -69,6 +69,7 @@
 				let mailLinkElm = document.createElement('a');
 				mailLinkElm.className = 'jenkins-ext-build-commiter-email-link';
 				mailLinkElm['href'] = 'mailto:' + ci.email;
+				mailLinkElm.setAttribute('title', 'Send an email to ' + ci.name);
 
 				let mailImgElm = document.createElement('img');
 				mailImgElm.setAttribute('src', chrome.extension.getURL('img/email.png'));
@@ -91,6 +92,17 @@
 				});
 				nameElm.setAttribute('title', tooltip);
 				commiterLineElm.appendChild(nameElm);
+
+				let commitsElm = document.createElement('div');
+				mailImgElm.className = 'jenkins-ext-build-commiter-commits';
+				ci.commits.forEach(c => {
+					let commitImgElm = document.createElement('a');
+					mailLinkElm['href'] = '#';
+					commitImgElm.className = 'jenkins-ext-build-commiter-commit-link';
+					commitsElm.setAttribute('title', c.comment);
+					commitsElm.appendChild(commitImgElm);
+				});
+				commiterLineElm.appendChild(commitsElm);
 
 				commitersElm.appendChild(commiterLineElm);
 			});
