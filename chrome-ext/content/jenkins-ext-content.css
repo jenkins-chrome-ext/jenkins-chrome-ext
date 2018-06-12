@@ -88,13 +88,13 @@ table.stripped.stripped tr:hover {
 .jenkins-ext-build-commiter-commit-link {
 	margin-left: 2px;
 	display: inline-block;
-	height: 16px;
+	height: 12px;
 	width: 16px;
-    background-color: #ddd;
-	padding-top: 3px;
+    background-color: #ccc;
+	padding-top: 1px;
     color: #000 !important;
     line-height: 12px;
     text-align: center;
     font-size: 8px;
-    border-radius: 2px;
+    border-radius: 3px;
 }

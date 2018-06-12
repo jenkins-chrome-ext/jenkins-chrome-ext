@@ -55,6 +55,24 @@
 		return result;
 	}
 
+	//todo: should be generalized
+	function getCommitColor(commitComment) {
+		let cmt = commitComment.toLowerCase();
+		let color = '#bbb';
+		if (cmt.indexOf('defect') === 0 || cmt.indexOf('bug') === 0 ) {
+			color = '#ff6666';
+		} else if (cmt.indexOf('user story') === 0 || cmt.indexOf('story') === 0 || cmt.indexOf('us') === 0) {
+			color = '#ffcc66';
+		} else if (cmt.indexOf('quality story') === 0 || cmt.indexOf('quality') === 0 || cmt.indexOf('qs') === 0) {
+			color = '#ff99ff';
+		} else if (cmt.indexOf('tech') === 0) {
+			color = '#66ccff';
+		} else if (cmt.indexOf('oops!') === 0) {
+			color = '#66ff66';
+		}
+		return color;
+	}
+
 	function displayBuildCommiters(buildNumber) {
 		let bi = buildInfos[buildNumber];
 		let buildLinkElm = getBuildLinkElement(buildNumber);
@@ -109,6 +127,7 @@
 					commitLinkElm.setAttribute('title', c.comment);
 					commitLinkElm.className = 'jenkins-ext-build-commiter-commit-link';
 					commitLinkElm.innerHTML = c.fileCount;
+					commitLinkElm.style['background-color'] = getCommitColor(c.comment);
 					commitsElm.appendChild(commitLinkElm);
 				});
 				commiterLineElm.appendChild(commitsElm);
