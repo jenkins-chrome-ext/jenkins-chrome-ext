@@ -70,11 +70,8 @@
 }
 
 .jenkins-ext-build-commiter-name--highlight {
-	color: #f63 !important;
-}
-
-.jenkins-ext-build-commiter-name:hover {
 	color: #36f !important;
+	font-weight: bold;
 }
 
 .jenkins-ext-build-commiter-commits {
