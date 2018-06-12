@@ -68,8 +68,12 @@
 				commiterLineElm.className = 'jenkins-ext-build-commiter-line';
 
 				let mailLinkElm = document.createElement('a');
-				mailLinkElm.setAttribute('href', 'mailto:' + ci.email);
-				mailLinkElm.setAttribute('title', 'Send an email to ' + ci.name);
+				if (ci.email) {
+					mailLinkElm.setAttribute('href', 'mailto:' + ci.email);
+					mailLinkElm.setAttribute('title', 'Send an email to ' + ci.name);
+				} else {
+					mailLinkElm.setAttribute('title', 'No email defined for ' + ci.name);
+				}
 				mailLinkElm.className = 'jenkins-ext-build-commiter-email-link';
 
 				let mailImgElm = document.createElement('img');
