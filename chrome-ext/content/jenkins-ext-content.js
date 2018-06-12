@@ -108,6 +108,7 @@
 					commitLinkElm.setAttribute('target', '_blank');
 					commitLinkElm.setAttribute('title', c.comment);
 					commitLinkElm.className = 'jenkins-ext-build-commiter-commit-link';
+					commitLinkElm.innerHTML = c.fileCount;
 					commitsElm.appendChild(commitLinkElm);
 				});
 				commiterLineElm.appendChild(commitsElm);
