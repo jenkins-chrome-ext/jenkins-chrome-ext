@@ -11,6 +11,7 @@
 	};
 	let buildInfos = {};
 	let highlightedCommiters = [];
+	let commitLinkPrefix = '';
 	let buildNumberDomElms = document.querySelectorAll('.build-row-cell .pane.build-name .display-name');
 
 	function getInfo(url, cb, prm) {
@@ -97,7 +98,9 @@
 				mailImgElm.className = 'jenkins-ext-build-commiter-commits';
 				ci.commits.forEach(c => {
 					let commitLinkElm = document.createElement('a');
-					commitLinkElm.setAttribute('href', 'http://mydtbld0005.hpeswlab.net:7990/projects/MQM/repos/mqm/commits/' + c.id);
+					if (commitLinkPrefix) {
+						commitLinkElm.setAttribute('href', commitLinkPrefix + c.id);
+					}
 					commitLinkElm.setAttribute('target', '_blank');
 					commitLinkElm.setAttribute('title', c.comment);
 					commitLinkElm.className = 'jenkins-ext-build-commiter-commit-link';
@@ -209,6 +212,7 @@
 	chrome.runtime.onMessage.addListener(function (request /*, sender, sendResponse*/) {
 		if (request.type === 'jenkins-chrome-ext-go') {
 			highlightedCommiters = (request.highlightCommiters || '').toLowerCase().split(',').map(Function.prototype.call, String.prototype.trim);
+			commitLinkPrefix = request.commitLinkPrefix || '';
 			getInfo(document.location.href + 'api/json', onGetRootJobInfoDone, null);
 			// setTimeout(() => {
 			// 		observeDOM(document.getElementById('buildHistory'), () => {

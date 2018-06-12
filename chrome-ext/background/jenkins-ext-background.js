@@ -3,6 +3,7 @@
 	//let extId = 'cjmholedpdghokadoionhngnmfpeebnk';
 	let storageUrlsPatternKey = 'jenkins-ext-urls-pattern';
 	let storageHighlightCommitersKey = 'jenkins-ext-highlight-commiters';
+	let storageCommitLinkPrefixKey = 'jenkins-ext-commit-link-prefix';
 
 	function injectCss(tabId) {
 		chrome.tabs.insertCSS(
@@ -34,7 +35,8 @@
 					tabId,
 					{
 						'type': 'jenkins-chrome-ext-go',
-						'highlightCommiters': localStorage[storageHighlightCommitersKey] || ''
+						'highlightCommiters': localStorage[storageHighlightCommitersKey] || '',
+						'commitLinkPrefix': localStorage[storageCommitLinkPrefixKey] || ''
 					}
 				);
 			});
