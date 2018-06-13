@@ -12,7 +12,8 @@ Source code for the Jenkins Chrome Extension.
 
 * See the commiter name(s) below each build on a Jenkins job page.
 * Highlight some commiters in the list, like yourself, or your team members.
-* See the comments added by each commiter via a tooltip. 
+* See the comments added by each commiter via a tooltip.
+* Navigate to the commit content via a click.
 * Contact a commiter via a click.
 
 ## License
