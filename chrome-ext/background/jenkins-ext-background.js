@@ -4,6 +4,12 @@
 	let storageUrlsPatternKey = 'jenkins-ext-urls-pattern';
 	let storageHighlightCommitersKey = 'jenkins-ext-highlight-commiters';
 	let storageCommitLinkPrefixKey = 'jenkins-ext-commit-link-prefix';
+	let defaultUrlsPattern = 'https?:\\/\\/mydtbld0101\\.hpeswlab\\.net:8888\\/jenkins\\S*\\/job\\/';
+	let defaultHighlightCommiters = '';
+	let defaultCommitLinkPrefix = 'http://mydtbld0005.hpeswlab.net:7990/projects/MQM/repos/mqm/commits/';
+	let urlsPattern = localStorage.getItem(storageUrlsPatternKey) !== null ? localStorage.getItem(storageUrlsPatternKey) : defaultUrlsPattern;
+	let highlightCommiters = localStorage.getItem(storageHighlightCommitersKey) !== null ? localStorage.getItem(storageHighlightCommitersKey) : defaultHighlightCommiters;
+	let commitLinkPrefix = localStorage.getItem(storageCommitLinkPrefixKey) !== null ? localStorage.getItem(storageCommitLinkPrefixKey) : defaultCommitLinkPrefix;
 
 	function injectCss(tabId) {
 		chrome.tabs.insertCSS(
@@ -28,15 +34,15 @@
 	}
 
 	chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-		if (changeInfo.status === 'complete' && localStorage[storageUrlsPatternKey] && (new RegExp(localStorage[storageUrlsPatternKey])).test(tab.url)) {
+		if (changeInfo.status === 'complete' && urlsPattern && (new RegExp(urlsPattern)).test(tab.url)) {
 			injectCss(tabId);
 			injectJs(tabId, function() {
 				chrome.tabs.sendMessage(
 					tabId,
 					{
 						'type': 'jenkins-chrome-ext-go',
-						'highlightCommiters': localStorage[storageHighlightCommitersKey] || '',
-						'commitLinkPrefix': localStorage[storageCommitLinkPrefixKey] || ''
+						'highlightCommiters': highlightCommiters || '',
+						'commitLinkPrefix': commitLinkPrefix || ''
 					}
 				);
 			});
