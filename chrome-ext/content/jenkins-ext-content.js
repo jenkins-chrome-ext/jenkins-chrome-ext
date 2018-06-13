@@ -59,16 +59,16 @@
 	function getCommitColor(commitComment) {
 		let cmt = commitComment.toLowerCase();
 		let color = '#bbb';
-		if (cmt.indexOf('defect') === 0 || cmt.indexOf('bug') === 0 ) {
+		if (cmt.indexOf('defect ') === 0 || cmt.indexOf('bug ') === 0 ) {
 			color = '#ff6666';
-		} else if (cmt.indexOf('user story') === 0 || cmt.indexOf('story') === 0 || cmt.indexOf('us') === 0) {
+		} else if (cmt.indexOf('user story ') === 0 || cmt.indexOf('story ') === 0 || cmt.indexOf('us ') === 0 || cmt.indexOf('feature ') === 0) {
 			color = '#ffcc66';
-		} else if (cmt.indexOf('quality story') === 0 || cmt.indexOf('quality') === 0 || cmt.indexOf('qs') === 0) {
-			color = '#ff99ff';
-		} else if (cmt.indexOf('tech') === 0) {
-			color = '#66ccff';
-		} else if (cmt.indexOf('oops!') === 0) {
-			color = '#66ff66';
+		// } else if (cmt.indexOf('quality story') === 0 || cmt.indexOf('quality') === 0 || cmt.indexOf('qs') === 0) {
+		// 	color = '#ff99ff';
+		// } else if (cmt.indexOf('tech') === 0) {
+		// 	color = '#66ccff';
+		} else if (cmt.indexOf('oops! ') === 0) {
+			color = '#66ff99';
 		}
 		return color;
 	}

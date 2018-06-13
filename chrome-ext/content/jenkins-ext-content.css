@@ -91,9 +91,8 @@ table.stripped.stripped tr:hover {
 	height: 12px;
 	width: 16px;
     background-color: #ccc;
-	padding-top: 1px;
     color: #000 !important;
-    line-height: 12px;
+    line-height: 13px;
     text-align: center;
     font-size: 8px;
     border-radius: 3px;
