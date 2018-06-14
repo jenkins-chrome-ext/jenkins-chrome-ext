@@ -60,16 +60,14 @@
 	function getCommitColor(commitComment) {
 		let cmt = commitComment.toLowerCase();
 		let color = '#bbb';
-		if (cmt.indexOf('defect ') === 0 || cmt.indexOf('bug ') === 0 ) {
-			color = '#f66';
+		if (cmt.indexOf('defect ') === 0 || cmt.indexOf('defect:') === 0 || cmt.indexOf('bug ') === 0 || cmt.indexOf('bug:') === 0) {
+			color = '#f77';
 		} else if (cmt.indexOf('user story ') === 0 || cmt.indexOf('story ') === 0 || cmt.indexOf('us ') === 0 || cmt.indexOf('u.s ') === 0 || cmt.indexOf('u.s. ') === 0 || cmt.indexOf('feature ') === 0) {
 			color = '#fc6';
-		// } else if (cmt.indexOf('quality story ') === 0 || cmt.indexOf('quality ') === 0 || cmt.indexOf('qs ') === 0 || cmt.indexOf('q.s ') === 0 || cmt.indexOf('q.s. ') === 0) {
-		// 	color = '#f9c';
-		// } else if (cmt.indexOf('tech ') === 0 || cmt.indexOf('[tech] ') === 0) {
-		// 	color = '#6af';
-		} else if (cmt.indexOf('oops! ') === 0) {
-			color = '#6c6';
+		// } else if (cmt.indexOf('tech ') === 0 || cmt.indexOf('tech: ') === 0 || cmt.indexOf('[tech] ') === 0) {
+		// 	color = '#9ad';
+		} else if (cmt.indexOf('oops!') === 0) {
+			color = '#9c9';
 		}
 		return color;
 	}
