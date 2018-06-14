@@ -101,7 +101,7 @@
 				let mailLinkElm = document.createElement('a');
 				if (ci.email) {
 					mailLinkElm.setAttribute('href', 'mailto:' + ci.email);
-					mailLinkElm.setAttribute('title', 'Send an email to ' + ci.name);
+					mailLinkElm.setAttribute('title', 'Email ' + ci.name);
 				} else {
 					mailLinkElm.setAttribute('title', 'No email defined for ' + ci.name);
 				}
