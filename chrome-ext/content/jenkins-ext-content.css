@@ -51,6 +51,7 @@ table.stripped.stripped tr:hover {
 .jenkins-ext-build-commiter-email-link {
 	vertical-align: middle;
 	flex: 0 0 16px;
+	text-decoration: none !important;
 }
 
 .jenkins-ext-build-commiter-email-img {
@@ -93,4 +94,5 @@ table.stripped.stripped tr:hover {
     text-align: center;
     font-size: 8px;
     border-radius: 3px;
+	text-decoration: none !important;
 }
