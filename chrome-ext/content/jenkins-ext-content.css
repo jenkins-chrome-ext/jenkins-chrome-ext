@@ -48,10 +48,20 @@ table.stripped.stripped tr:hover {
     margin-bottom: 1px;
 }
 
+.jenkins-ext-build-commiter-skype-link {
+	vertical-align: middle;
+	flex: 0 0 16px;
+	text-decoration: none !important;
+}
+
+.jenkins-ext-build-commiter-skype-img {
+}
+
 .jenkins-ext-build-commiter-email-link {
 	vertical-align: middle;
 	flex: 0 0 16px;
 	text-decoration: none !important;
+	padding-left: 4px;
 }
 
 .jenkins-ext-build-commiter-email-img {
@@ -64,7 +74,7 @@ table.stripped.stripped tr:hover {
 	top: 1px;
 	vertical-align: middle;
 	margin-left: 4px;
-    max-width: 260px;
+    max-width: 230px;
 	text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -78,6 +88,7 @@ table.stripped.stripped tr:hover {
 }
 
 .jenkins-ext-build-commiter-commits {
+	flex: 0 0 auto;
 	text-align: right;
 	overflow: hidden;
 	white-space: nowrap;

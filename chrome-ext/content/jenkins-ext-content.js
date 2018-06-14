@@ -84,6 +84,20 @@
 				let commiterLineElm = document.createElement('div');
 				commiterLineElm.className = 'jenkins-ext-build-commiter-line';
 
+				let skypeLinkElm = document.createElement('a');
+				if (ci.email) {
+					skypeLinkElm.setAttribute('href', 'sip:' + ci.email);
+					skypeLinkElm.setAttribute('title', 'Skype ' + ci.name);
+				} else {
+					skypeLinkElm.setAttribute('title', 'No email defined for ' + ci.name);
+				}
+				skypeLinkElm.className = 'jenkins-ext-build-commiter-skype-link';
+				let skypeImgElm = document.createElement('img');
+				skypeImgElm.setAttribute('src', chrome.extension.getURL('img/skype.png'));
+				skypeImgElm.className = 'jenkins-ext-build-commiter-skype-img';
+				skypeLinkElm.appendChild(skypeImgElm);
+				commiterLineElm.appendChild(skypeLinkElm);
+
 				let mailLinkElm = document.createElement('a');
 				if (ci.email) {
 					mailLinkElm.setAttribute('href', 'mailto:' + ci.email);
@@ -92,12 +106,10 @@
 					mailLinkElm.setAttribute('title', 'No email defined for ' + ci.name);
 				}
 				mailLinkElm.className = 'jenkins-ext-build-commiter-email-link';
-
 				let mailImgElm = document.createElement('img');
 				mailImgElm.setAttribute('src', chrome.extension.getURL('img/email.png'));
 				mailImgElm.className = 'jenkins-ext-build-commiter-email-img';
 				mailLinkElm.appendChild(mailImgElm);
-
 				commiterLineElm.appendChild(mailLinkElm);
 
 				let nameElm = document.createElement('span');
@@ -116,7 +128,7 @@
 				commiterLineElm.appendChild(nameElm);
 
 				let commitsElm = document.createElement('div');
-				mailImgElm.className = 'jenkins-ext-build-commiter-commits';
+				commitsElm.className = 'jenkins-ext-build-commiter-commits';
 				ci.commits.forEach(c => {
 					let commitLinkElm = document.createElement('a');
 					if (commitLinkPrefix) {
