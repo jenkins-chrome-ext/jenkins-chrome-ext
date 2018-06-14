@@ -20,22 +20,19 @@ table.stripped.stripped tr:hover {
 	color: #999 !important;
 }
 
-.jenkins-ext-build-status--ok {
+.jenkins-ext-build-status--pending {
 }
-
-.jenkins-ext-build-status--warn {
+.jenkins-ext-build-status--running {
 }
-
-.jenkins-ext-build-status--error {
+.jenkins-ext-build-status--success {
 }
-
-.jenkins-ext-build-status--abort {
+.jenkins-ext-build-status--warning {
 }
-
-.jenkins-ext-build-status--run {
+.jenkins-ext-build-status--failure {
 }
-
-.jenkins-ext-build-status--na {
+.jenkins-ext-build-status--aborted {
+}
+.jenkins-ext-build-status--unknown {
 }
 
 .jenkins-ext-build-commiters {

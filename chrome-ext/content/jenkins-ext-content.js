@@ -2,12 +2,13 @@
 
 	//let extId = 'cjmholedpdghokadoionhngnmfpeebnk';
 	let buildStatusEnum = {
-		NA: 'NA',
-		OK: 'OK',
-		WARN: 'WARN',
-		ERROR: 'ERROR',
-		ABORT: 'ABORT',
-		RUN: 'RUN'
+		PENDING: 'PENDING',
+		RUNNING: 'RUNNING',
+		SUCCESS: 'SUCCESS',
+		WARNING: 'WARNING',
+		FAILURE: 'FAILURE',
+		ABORTED: 'ABORTED',
+		UNKNOWN: 'UNKNOWN'
 	};
 	let buildInfos = {};
 	let highlightedCommiters = [];
@@ -139,22 +140,24 @@
 	}
 
 	function getBuildStatus(buildNumber) {
-		let buildStatus = buildStatusEnum.NA;
+		let buildStatus = buildStatusEnum.UNKNOWN;
 		let buildLinkElm = getBuildLinkElement(buildNumber);
 		if (buildLinkElm) {
 			let parentElm = buildLinkElm.parentElement.parentElement.parentElement;
 			let statusImg = parentElm.querySelector('.build-status-link > img.icon-sm');
 			if (statusImg) {
 				if (statusImg.classList.contains('icon-blue')) {
-					buildStatus = buildStatusEnum.OK;
+					buildStatus = buildStatusEnum.SUCCESS;
 				} else if (statusImg.classList.contains('icon-yellow')) {
-					buildStatus = buildStatusEnum.WARN;
+					buildStatus = buildStatusEnum.WARNING;
 				} else if (statusImg.classList.contains('icon-red')) {
-					buildStatus = buildStatusEnum.ERROR;
+					buildStatus = buildStatusEnum.FAILURE;
 				} else if (statusImg.classList.contains('icon-aborted')) {
-					buildStatus = buildStatusEnum.ABORT;
+					buildStatus = buildStatusEnum.ABORTED;
+				} else if (statusImg.classList.contains('icon-grey')) {
+					buildStatus = buildStatusEnum.PENDING;
 				} else if (statusImg.className.indexOf('-anim') !== -1) {
-					buildStatus = buildStatusEnum.RUN;
+					buildStatus = buildStatusEnum.RUNNING;
 				}
 			}
 		}
@@ -166,19 +169,7 @@
 		if (buildLinkElm) {
 			let parentElm = buildLinkElm.parentElement.parentElement.parentElement;
 			let buildStatus = buildInfos[buildNumber].status;
-			if (buildStatus === buildStatusEnum.OK) {
-				parentElm.classList.add('jenkins-ext-build-status--ok');
-			} else if (buildStatus === buildStatusEnum.WARN) {
-				parentElm.classList.add('jenkins-ext-build-status--warn');
-			} else if (buildStatus === buildStatusEnum.ERROR) {
-				parentElm.classList.add('jenkins-ext-build-status--error');
-			} else if (buildStatus === buildStatusEnum.ABORT) {
-				parentElm.classList.add('jenkins-ext-build-status--abort');
-			} else if (buildStatus === buildStatusEnum.RUN) {
-				parentElm.classList.add('jenkins-ext-build-status--run');
-			} else if (buildStatus === buildStatusEnum.NA) {
-				parentElm.classList.add('jenkins-ext-build-status--na');
-			}
+			parentElm.classList.add(`jenkins-ext-build-status--${buildStatus.toLowerCase()}`);
 		}
 	}
 
