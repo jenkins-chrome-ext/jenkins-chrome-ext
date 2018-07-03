@@ -88,14 +88,18 @@ table.stripped.stripped tr:hover {
 }
 
 .jenkins-ext-build-commiter-commits {
-	flex: 0 0 auto;
+	flex: 1 1 auto;
 	text-align: right;
 	overflow: hidden;
 	white-space: nowrap;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	flex-wrap: wrap;
 }
 
 .jenkins-ext-build-commiter-commit-link {
-	margin-left: 2px;
+	margin: 1px;
 	display: inline-block;
 	height: 12px;
 	width: 16px;
