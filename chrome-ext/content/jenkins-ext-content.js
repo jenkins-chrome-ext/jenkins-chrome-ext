@@ -66,7 +66,7 @@
 			color = '#fc6';
 		// } else if (cmt.indexOf('tech ') === 0 || cmt.indexOf('tech: ') === 0 || cmt.indexOf('[tech] ') === 0) {
 		// 	color = '#9ad';
-		} else if (cmt.indexOf('oops!') === 0) {
+		} else if (cmt.indexOf('oops!') !== -1) {
 			color = '#9c9';
 		}
 		return color;
@@ -75,12 +75,14 @@
 	function displayBuildCommiters(buildNumber) {
 		let bi = buildInfos[buildNumber];
 		let buildLinkElm = getBuildLinkElement(buildNumber);
-		if (bi.commiterInfos.length !== 0 && buildLinkElm) {
-			let parentElm = buildLinkElm.parentElement.parentElement.parentElement;
-			let commitersElm = document.createElement('div');
-			commitersElm.className = 'jenkins-ext-build-commiters';
+		if (!buildLinkElm) {
+			return;
+		}
+		let parentElm = buildLinkElm.parentElement.parentElement.parentElement;
+		let commitersElm = document.createElement('div');
+		commitersElm.className = 'jenkins-ext-build-commiters';
+		if (bi.commiterInfos.length > 0) {
 			bi.commiterInfos.forEach(ci => {
-
 				let commiterLineElm = document.createElement('div');
 				commiterLineElm.className = 'jenkins-ext-build-commiter-line';
 
@@ -145,6 +147,18 @@
 
 				commitersElm.appendChild(commiterLineElm);
 			});
+			parentElm.appendChild(commitersElm);
+		} else {
+			let commiterLineElm = document.createElement('div');
+			commiterLineElm.className = 'jenkins-ext-build-commiter-line';
+
+			let noCommitsElm = document.createElement('span');
+			noCommitsElm.className = 'jenkins-ext-build-commiter-no-commits';
+			noCommitsElm.innerHTML = 'No commits';
+ 			commiterLineElm.appendChild(noCommitsElm);
+
+			commitersElm.appendChild(commiterLineElm);
+
 			parentElm.appendChild(commitersElm);
 		}
 	}
