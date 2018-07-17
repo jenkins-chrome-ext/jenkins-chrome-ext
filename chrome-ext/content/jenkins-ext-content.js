@@ -42,12 +42,20 @@
 		return commiterName.trim();
 	}
 
+	// function fixBuildNames() {
+	// 	buildNumberDomElms.forEach(buildLinkElm => {
+	// 		console.log(buildLinkElm.innerHTML);
+	// 		buildLinkElm.innerHTML = buildLinkElm.innerHTML.replace(/[\u200B]/g, '').trim();
+	// 	});
+	// }
+
 	function getBuildLinkElement(buildNumber) {
 		let result = null;
 		if (buildNumberDomElms && buildNumberDomElms.length > 0) {
 			let found = false;
 			buildNumberDomElms.forEach(buildLinkElm => {
-				if (!found && buildLinkElm.innerHTML === '#' + buildNumber) {
+				//if (!found && buildLinkElm.innerText.replace(/[\u200B]/g, '').trim() === '#' + buildNumber) {
+				if (!found && buildLinkElm.innerText.trim() === '#' + buildNumber) {
 					found = true;
 					result = buildLinkElm;
 				}
@@ -225,6 +233,7 @@
 	}
 
 	function onGetRootJobInfoDone(info) {
+		//fixBuildNames();
 		if (info.builds) {
 			info.builds.forEach(build => {
 				buildInfos[build.number] = {
