@@ -233,7 +233,6 @@
 	}
 
 	function onGetRootJobInfoDone(info) {
-		//fixBuildNames();
 		if (info.builds) {
 			info.builds.forEach(build => {
 				buildInfos[build.number] = {
@@ -259,6 +258,7 @@
 
 	chrome.runtime.onMessage.addListener(function (request /*, sender, sendResponse*/) {
 		if (request.type === 'jenkins-chrome-ext-go') {
+			//fixBuildNames();
 			highlightedCommiters = (request.highlightCommiters || '').toLowerCase().split(',').map(Function.prototype.call, String.prototype.trim);
 			commitLinkPrefix = request.commitLinkPrefix || '';
 			getInfo(document.location.href + 'api/json', onGetRootJobInfoDone, null);
