@@ -245,7 +245,7 @@
 				names.push(commiterName);
 				bi.commiterInfos.push({
 					name: commiterName,
-					email: commit.authorEmail,
+					email: commit.authorEmail.replace('microfocus.com', 'hpe.com'),
 					commits: []
 				});
 			}
