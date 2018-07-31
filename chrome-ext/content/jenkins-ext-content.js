@@ -245,6 +245,7 @@
 				names.push(commiterName);
 				bi.commiterInfos.push({
 					name: commiterName,
+					//todo: should be generalized
 					email: commit.authorEmail.replace('microfocus.com', 'hpe.com'),
 					commits: []
 				});
