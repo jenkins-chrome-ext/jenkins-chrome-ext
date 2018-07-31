@@ -155,6 +155,35 @@
 
 				commitersElm.appendChild(commiterLineElm);
 			});
+
+			if (bi.commiterInfos.length > 1) {
+				let skypeAllLine = document.createElement('div');
+			 	skypeAllLine.className = 'jenkins-ext-build-skype-all-commiters-line';
+
+			 	let skypeLinkElm = document.createElement('a');
+			 	let hrefStr = 'im:';
+				bi.commiterInfos.forEach(ci => {
+					if (ci.email) {
+						hrefStr += '<sip:' + ci.email + '>';
+					}
+				});
+			 	skypeLinkElm.setAttribute('href', hrefStr);
+			 	skypeLinkElm.className = 'jenkins-ext-build-commiter-skype-link';
+
+			 	let skypeImgElm = document.createElement('img');
+			 	skypeImgElm.setAttribute('src', chrome.extension.getURL('img/skype.png'));
+			 	skypeImgElm.className = 'jenkins-ext-build-commiter-skype-img';
+			 	skypeLinkElm.appendChild(skypeImgElm);
+			 	skypeAllLine.appendChild(skypeLinkElm);
+
+				let skypeAllTextElm = document.createElement('span');
+				skypeAllTextElm.className = 'jenkins-ext-build-skype-all-commiters-text';
+				skypeAllTextElm.innerHTML = 'Group';
+				skypeAllTextElm.setAttribute('title', 'Skype all commiters');
+				skypeAllLine.appendChild(skypeAllTextElm);
+
+				commitersElm.appendChild(skypeAllLine);
+			}
 			parentElm.appendChild(commitersElm);
 		} else {
 			let commiterLineElm = document.createElement('div');
