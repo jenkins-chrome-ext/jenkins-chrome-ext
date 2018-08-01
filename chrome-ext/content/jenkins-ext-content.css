@@ -129,6 +129,11 @@ table.stripped.stripped tr:hover {
 }
 
 .jenkins-ext-build-commiter-name--highlight {
+	color: #93c !important;
+	font-weight: bold;
+}
+
+.jenkins-ext-build-commiter-name--me {
 	color: #36f !important;
 	font-weight: bold;
 }

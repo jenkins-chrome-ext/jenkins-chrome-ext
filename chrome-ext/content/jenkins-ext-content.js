@@ -11,7 +11,8 @@
 		UNKNOWN: 'UNKNOWN'
 	};
 	let buildInfos = {};
-	let highlightedCommiters = [];
+	let myName = '';
+	let highlightedNames = [];
 	let commitLinkPrefix = '';
 	let buildNumberDomElms = document.querySelectorAll('.build-row-cell .pane.build-name .display-name');
 
@@ -80,6 +81,134 @@
 		return color;
 	}
 
+	function getNewCommiterLineElm(ci) {
+		let commiterLineElm = document.createElement('div');
+		commiterLineElm.className = 'jenkins-ext-build-commiter-line';
+
+		let skypeLinkElm = document.createElement('a');
+		if (ci.email) {
+			skypeLinkElm.setAttribute('href', 'sip:' + ci.email);
+			skypeLinkElm.setAttribute('title', 'Skype ' + ci.name);
+		} else {
+			skypeLinkElm.setAttribute('title', 'No email defined for ' + ci.name);
+		}
+		skypeLinkElm.className = 'jenkins-ext-build-commiter-skype-link';
+		let skypeImgElm = document.createElement('img');
+		skypeImgElm.setAttribute('src', chrome.extension.getURL('img/skype.png'));
+		skypeImgElm.className = 'jenkins-ext-build-commiter-skype-img';
+		skypeLinkElm.appendChild(skypeImgElm);
+		commiterLineElm.appendChild(skypeLinkElm);
+
+		let mailLinkElm = document.createElement('a');
+		if (ci.email) {
+			mailLinkElm.setAttribute('href', 'mailto:' + ci.email);
+			mailLinkElm.setAttribute('title', 'Email ' + ci.name);
+		} else {
+			mailLinkElm.setAttribute('title', 'No email defined for ' + ci.name);
+		}
+		mailLinkElm.className = 'jenkins-ext-build-commiter-email-link';
+		let mailImgElm = document.createElement('img');
+		mailImgElm.setAttribute('src', chrome.extension.getURL('img/email.png'));
+		mailImgElm.className = 'jenkins-ext-build-commiter-email-img';
+		mailLinkElm.appendChild(mailImgElm);
+		commiterLineElm.appendChild(mailLinkElm);
+
+		let nameElm = document.createElement('span');
+		nameElm.className = 'jenkins-ext-build-commiter-name';
+		if (ci.name.toLowerCase().trim() === myName) {
+			nameElm.className += ' jenkins-ext-build-commiter-name--me';
+		} else if (highlightedNames.indexOf(ci.name.toLowerCase()) !== -1) {
+			nameElm.className += ' jenkins-ext-build-commiter-name--highlight';
+		}
+		nameElm.innerHTML = ci.name;
+		let tooltip = '';
+		let count = 0;
+		ci.commits.forEach(c => {
+			count++;
+			if (count > 1) {
+				tooltip += `---\n`;
+			}
+			tooltip += c.comment;
+		});
+		nameElm.setAttribute('title', tooltip);
+		commiterLineElm.appendChild(nameElm);
+
+		let commitsElm = document.createElement('div');
+		commitsElm.className = 'jenkins-ext-build-commiter-commits';
+		ci.commits.forEach(c => {
+			let commitLinkElm = document.createElement('a');
+			if (commitLinkPrefix) {
+				commitLinkElm.setAttribute('href', commitLinkPrefix + c.id);
+			}
+			commitLinkElm.setAttribute('target', '_blank');
+			commitLinkElm.setAttribute('title', c.comment);
+			commitLinkElm.className = 'jenkins-ext-build-commiter-commit-link';
+			commitLinkElm.innerHTML = c.fileCount;
+			commitLinkElm.style['background-color'] = getCommitColor(c.comment);
+			commitsElm.appendChild(commitLinkElm);
+		});
+		commiterLineElm.appendChild(commitsElm);
+		return commiterLineElm;
+	}
+
+	function getAllCommitersLineElm(commiterInfos) {
+		let hrefStr;
+		let commiterLineElm = document.createElement('div');
+		commiterLineElm.className = 'jenkins-ext-build-commiter-line';
+
+		let skypeLinkElm = document.createElement('a');
+		hrefStr = 'im:';
+		commiterInfos.forEach(ci => {
+			if (ci.email && ci.name.toLowerCase().trim() !== myName) {
+				hrefStr += '<sip:' + ci.email + '>';
+			}
+		});
+		skypeLinkElm.setAttribute('href', hrefStr);
+		skypeLinkElm.setAttribute('title', 'Skype all commiters');
+		skypeLinkElm.className = 'jenkins-ext-build-commiter-skype-link';
+		let skypeImgElm = document.createElement('img');
+		skypeImgElm.setAttribute('src', chrome.extension.getURL('img/skype.png'));
+		skypeImgElm.className = 'jenkins-ext-build-commiter-skype-img';
+		skypeLinkElm.appendChild(skypeImgElm);
+		commiterLineElm.appendChild(skypeLinkElm);
+
+		let mailLinkElm = document.createElement('a');
+		hrefStr = 'mailto:';
+		commiterInfos.forEach(ci => {
+			if (ci.email && ci.name.toLowerCase().trim() !== myName) {
+				hrefStr += ci.email + ';';
+			}
+		});
+		mailLinkElm.setAttribute('href', hrefStr);
+		mailLinkElm.setAttribute('title', 'Email all commiters');
+		mailLinkElm.className = 'jenkins-ext-build-commiter-email-link';
+		let mailImgElm = document.createElement('img');
+		mailImgElm.setAttribute('src', chrome.extension.getURL('img/email.png'));
+		mailImgElm.className = 'jenkins-ext-build-commiter-email-img';
+		mailLinkElm.appendChild(mailImgElm);
+		commiterLineElm.appendChild(mailLinkElm);
+
+		let nameElm = document.createElement('span');
+		nameElm.className = 'jenkins-ext-build-commiter-name';
+		nameElm.innerHTML = '*';
+		nameElm.setAttribute('title', 'All commiters');
+		commiterLineElm.appendChild(nameElm);
+
+		return commiterLineElm;
+	}
+
+	function getNoCommitsLineElm() {
+		let commiterLineElm = document.createElement('div');
+		commiterLineElm.className = 'jenkins-ext-build-commiter-line';
+
+		let noCommitsElm = document.createElement('span');
+		noCommitsElm.className = 'jenkins-ext-build-commiter-no-commits';
+		noCommitsElm.innerHTML = 'No commits';
+		commiterLineElm.appendChild(noCommitsElm);
+
+		return commiterLineElm;
+	}
+
 	function displayBuildCommiters(buildNumber) {
 		let bi = buildInfos[buildNumber];
 		let buildLinkElm = getBuildLinkElement(buildNumber);
@@ -91,111 +220,18 @@
 		commitersElm.className = 'jenkins-ext-build-commiters';
 		if (bi.commiterInfos.length > 0) {
 			bi.commiterInfos.forEach(ci => {
-				let commiterLineElm = document.createElement('div');
-				commiterLineElm.className = 'jenkins-ext-build-commiter-line';
-
-				let skypeLinkElm = document.createElement('a');
-				if (ci.email) {
-					skypeLinkElm.setAttribute('href', 'sip:' + ci.email);
-					skypeLinkElm.setAttribute('title', 'Skype ' + ci.name);
-				} else {
-					skypeLinkElm.setAttribute('title', 'No email defined for ' + ci.name);
-				}
-				skypeLinkElm.className = 'jenkins-ext-build-commiter-skype-link';
-				let skypeImgElm = document.createElement('img');
-				skypeImgElm.setAttribute('src', chrome.extension.getURL('img/skype.png'));
-				skypeImgElm.className = 'jenkins-ext-build-commiter-skype-img';
-				skypeLinkElm.appendChild(skypeImgElm);
-				commiterLineElm.appendChild(skypeLinkElm);
-
-				let mailLinkElm = document.createElement('a');
-				if (ci.email) {
-					mailLinkElm.setAttribute('href', 'mailto:' + ci.email);
-					mailLinkElm.setAttribute('title', 'Email ' + ci.name);
-				} else {
-					mailLinkElm.setAttribute('title', 'No email defined for ' + ci.name);
-				}
-				mailLinkElm.className = 'jenkins-ext-build-commiter-email-link';
-				let mailImgElm = document.createElement('img');
-				mailImgElm.setAttribute('src', chrome.extension.getURL('img/email.png'));
-				mailImgElm.className = 'jenkins-ext-build-commiter-email-img';
-				mailLinkElm.appendChild(mailImgElm);
-				commiterLineElm.appendChild(mailLinkElm);
-
-				let nameElm = document.createElement('span');
-				nameElm.className = 'jenkins-ext-build-commiter-name' + (highlightedCommiters.indexOf(ci.name.toLowerCase()) === -1 ? '' : ' jenkins-ext-build-commiter-name--highlight');
-				nameElm.innerHTML = ci.name;
-				let tooltip = '';
-				let count = 0;
-				ci.commits.forEach(c => {
-					count++;
-					if (count > 1) {
-						tooltip += `---\n`;
-					}
-					tooltip += c.comment;
-				});
-				nameElm.setAttribute('title', tooltip);
-				commiterLineElm.appendChild(nameElm);
-
-				let commitsElm = document.createElement('div');
-				commitsElm.className = 'jenkins-ext-build-commiter-commits';
-				ci.commits.forEach(c => {
-					let commitLinkElm = document.createElement('a');
-					if (commitLinkPrefix) {
-						commitLinkElm.setAttribute('href', commitLinkPrefix + c.id);
-					}
-					commitLinkElm.setAttribute('target', '_blank');
-					commitLinkElm.setAttribute('title', c.comment);
-					commitLinkElm.className = 'jenkins-ext-build-commiter-commit-link';
-					commitLinkElm.innerHTML = c.fileCount;
-					commitLinkElm.style['background-color'] = getCommitColor(c.comment);
-					commitsElm.appendChild(commitLinkElm);
-				});
-				commiterLineElm.appendChild(commitsElm);
-
+				let commiterLineElm = getNewCommiterLineElm(ci);
 				commitersElm.appendChild(commiterLineElm);
 			});
 
 			if (bi.commiterInfos.length > 1) {
-				let skypeAllLine = document.createElement('div');
-			 	skypeAllLine.className = 'jenkins-ext-build-skype-all-commiters-line';
-
-			 	let skypeLinkElm = document.createElement('a');
-			 	let hrefStr = 'im:';
-				bi.commiterInfos.forEach(ci => {
-					if (ci.email) {
-						hrefStr += '<sip:' + ci.email + '>';
-					}
-				});
-			 	skypeLinkElm.setAttribute('href', hrefStr);
-			 	skypeLinkElm.className = 'jenkins-ext-build-commiter-skype-link';
-
-			 	let skypeImgElm = document.createElement('img');
-			 	skypeImgElm.setAttribute('src', chrome.extension.getURL('img/skype.png'));
-			 	skypeImgElm.className = 'jenkins-ext-build-commiter-skype-img';
-			 	skypeLinkElm.appendChild(skypeImgElm);
-			 	skypeAllLine.appendChild(skypeLinkElm);
-
-				let skypeAllTextElm = document.createElement('span');
-				skypeAllTextElm.className = 'jenkins-ext-build-skype-all-commiters-text';
-				skypeAllTextElm.innerHTML = 'Group';
-				skypeAllTextElm.setAttribute('title', 'Skype all commiters');
-				skypeAllLine.appendChild(skypeAllTextElm);
-
-				commitersElm.appendChild(skypeAllLine);
+			 	let allCommitersLineElm = getAllCommitersLineElm(bi.commiterInfos);
+			 	commitersElm.appendChild(allCommitersLineElm);
 			}
 			parentElm.appendChild(commitersElm);
 		} else {
-			let commiterLineElm = document.createElement('div');
-			commiterLineElm.className = 'jenkins-ext-build-commiter-line';
-
-			let noCommitsElm = document.createElement('span');
-			noCommitsElm.className = 'jenkins-ext-build-commiter-no-commits';
-			noCommitsElm.innerHTML = 'No commits';
- 			commiterLineElm.appendChild(noCommitsElm);
-
+			let commiterLineElm = getNoCommitsLineElm();
 			commitersElm.appendChild(commiterLineElm);
-
 			parentElm.appendChild(commitersElm);
 		}
 	}
@@ -243,10 +279,17 @@
 			let commiterName = formatCommiterName(commit.author.fullName);
 			if (names.indexOf(commiterName) === -1) {
 				names.push(commiterName);
+				let email = commit.authorEmail;
+
+				//todo: should be generalized
+				if (email.indexOf('@') === -1) {
+					email += '@hpe.com';
+				}
+				email = email.replace('@microfocus.com', '@hpe.com');
+
 				bi.commiterInfos.push({
 					name: commiterName,
-					//todo: should be generalized
-					email: commit.authorEmail.replace('microfocus.com', 'hpe.com'),
+					email: email,
 					commits: []
 				});
 			}
@@ -289,8 +332,9 @@
 	chrome.runtime.onMessage.addListener(function (request /*, sender, sendResponse*/) {
 		if (request.type === 'jenkins-chrome-ext-go') {
 			//fixBuildNames();
-			highlightedCommiters = (request.highlightCommiters || '').toLowerCase().split(',').map(Function.prototype.call, String.prototype.trim);
-			commitLinkPrefix = request.commitLinkPrefix || '';
+			myName = (request.myName || '').toLowerCase().trim();
+			highlightedNames = (request.highlightNames || '').toLowerCase().split(',').map(Function.prototype.call, String.prototype.trim);
+			commitLinkPrefix = (request.commitLinkPrefix || '').toLowerCase().trim();
 			getInfo(document.location.href + 'api/json', onGetRootJobInfoDone, null);
 			// setTimeout(() => {
 			// 		observeDOM(document.getElementById('buildHistory'), () => {
