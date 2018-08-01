@@ -285,7 +285,7 @@
 				if (email.indexOf('@') === -1) {
 					email += '@hpe.com';
 				}
-				email = email.replace('@microfocus.com', '@hpe.com');
+				email = email.replace('@hp.com', '@hpe.com').replace('@microfocus.com', '@hpe.com');
 
 				bi.commiterInfos.push({
 					name: commiterName,
