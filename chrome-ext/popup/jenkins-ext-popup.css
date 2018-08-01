@@ -7,7 +7,7 @@
 .jenkins-ext-popup {
 	display: flex;
     flex-direction: column;
-	height: 430px;
+	height: 440px;
 	width: 550px;
 	font-family: MetricWeb-Regular, arial, sans-serif;
 }
