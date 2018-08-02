@@ -164,7 +164,7 @@
 			}
 		});
 		skypeLinkElm.setAttribute('href', hrefStr);
-		skypeLinkElm.setAttribute('title', 'Skype all commiters');
+		skypeLinkElm.setAttribute('title', 'Group Skype');
 		skypeLinkElm.className = 'jenkins-ext-build-commiter-skype-link';
 		let skypeImgElm = document.createElement('img');
 		skypeImgElm.setAttribute('src', chrome.extension.getURL('img/skype.png'));
@@ -180,7 +180,7 @@
 			}
 		});
 		mailLinkElm.setAttribute('href', hrefStr);
-		mailLinkElm.setAttribute('title', 'Email all commiters');
+		mailLinkElm.setAttribute('title', 'Group Email');
 		mailLinkElm.className = 'jenkins-ext-build-commiter-email-link';
 		let mailImgElm = document.createElement('img');
 		mailImgElm.setAttribute('src', chrome.extension.getURL('img/email.png'));
