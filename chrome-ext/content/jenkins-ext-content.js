@@ -55,8 +55,7 @@
 		if (buildNumberDomElms && buildNumberDomElms.length > 0) {
 			let found = false;
 			buildNumberDomElms.forEach(buildLinkElm => {
-				//if (!found && buildLinkElm.innerText.replace(/[\u200B]/g, '').trim() === '#' + buildNumber) {
-				if (!found && buildLinkElm.innerText.trim() === '#' + buildNumber) {
+				if (!found && buildLinkElm.innerText.replace(/[^\x00-\x7F]/g, '').trim() === '#' + buildNumber) {
 					found = true;
 					result = buildLinkElm;
 				}
@@ -69,12 +68,34 @@
 	function getCommitColor(commitComment) {
 		let cmt = commitComment.toLowerCase();
 		let color = '#bbb';
-		if (cmt.indexOf('defect ') === 0 || cmt.indexOf('defect:') === 0 || cmt.indexOf('bug ') === 0 || cmt.indexOf('bug:') === 0) {
+		if (cmt.indexOf('defect ') === 0 ||
+			cmt.indexOf('defect:') === 0 ||
+			cmt.indexOf('defect#') === 0 ||
+			cmt.indexOf('bug ') === 0 ||
+			cmt.indexOf('bug:') === 0 ||
+			cmt.indexOf('bug#') === 0) {
 			color = '#f88';
-		} else if (cmt.indexOf('user story ') === 0 || cmt.indexOf('story ') === 0 || cmt.indexOf('us ') === 0 || cmt.indexOf('u.s ') === 0 || cmt.indexOf('u.s. ') === 0 || cmt.indexOf('feature ') === 0) {
+		} else if (cmt.indexOf('user story ') === 0 ||
+			cmt.indexOf('story ') === 0 ||
+			cmt.indexOf('story:') === 0 ||
+			cmt.indexOf('story#') === 0 ||
+			cmt.indexOf('us ') === 0 ||
+			cmt.indexOf('us:') === 0 ||
+			cmt.indexOf('us#') === 0 ||
+			cmt.indexOf('u.s ') === 0 ||
+			cmt.indexOf('u.s:') === 0 ||
+			cmt.indexOf('u.s#') === 0 ||
+			cmt.indexOf('u.s. ') === 0 ||
+			cmt.indexOf('u.s.:') === 0 ||
+			cmt.indexOf('u.s.#') === 0 ||
+			cmt.indexOf('feature ') === 0 ||
+			cmt.indexOf('feature:') === 0 ||
+			cmt.indexOf('feature#') === 0) {
 			color = '#fc6';
-		// } else if (cmt.indexOf('tech ') === 0 || cmt.indexOf('tech: ') === 0 || cmt.indexOf('[tech] ') === 0) {
-		// 	color = '#9ad';
+		// } else if (cmt.indexOf('tech ') === 0 ||
+		// 	cmt.indexOf('tech:') === 0 ||
+		// 	cmt.indexOf('[tech] ') === 0) {
+		//  	color = '#9ad';
 		} else if (cmt.indexOf('oops!') !== -1) {
 			color = '#9c9';
 		}
