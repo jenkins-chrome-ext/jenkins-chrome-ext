@@ -1,5 +1,11 @@
-table.stripped.stripped tr:hover {
-    background-color: #fbfbfb !important;
+table.stripped tr:nth-child(odd),
+table.stripped tr:nth-child(odd) > .build-row-cell {
+	background-color: #fafafa;
+}
+
+table.stripped tr:nth-child(even),
+table.stripped tr:nth-child(even) > .build-row-cell {
+	background-color: #f3f3f3;
 }
 
 .build-row .build-name-controls .pane.build-name {
@@ -13,6 +19,14 @@ table.stripped.stripped tr:hover {
 .build-row .build-name-controls .pane.build-controls > .build-badge > img.icon-lock {
 	position: relative !important;
 	left: 2px !important;
+}
+
+.build-row-cell:first-child {
+	border-top: 1px solid #eee;
+}
+
+.build-row-cell {
+	border-bottom: 1px solid #eee;
 }
 
 .build-row-cell .pane.build-name .display-name {
