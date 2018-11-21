@@ -1,11 +1,11 @@
 table.stripped tr:nth-child(odd),
 table.stripped tr:nth-child(odd) > .build-row-cell {
-	background-color: #fafafa;
+	background-color: #fff;
 }
 
 table.stripped tr:nth-child(even),
 table.stripped tr:nth-child(even) > .build-row-cell {
-	background-color: #f3f3f3;
+	background-color: #f6f6f6;
 }
 
 .build-row .build-name-controls .pane.build-name {
