@@ -161,6 +161,7 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 	justify-content: flex-end;
 	align-items: center;
 	flex-wrap: wrap;
+	max-width: 200px;
 }
 
 .jenkins-ext-build-commiter-commit-link {
