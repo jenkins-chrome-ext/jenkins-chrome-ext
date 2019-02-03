@@ -4,15 +4,15 @@
 	let storageUrlsPatternKey = 'jenkins-ext-urls-pattern';
 	let storageMyNameKey = 'jenkins-ext-my-name';
 	let storageHighlightNamesKey = 'jenkins-ext-highlight-names';
-	let storageCommitLinkPrefixKey = 'jenkins-ext-commit-link-prefix';
+	let storageCommitUrlPrefixKey = 'jenkins-ext-commit-url-prefix';
 	let defaultUrlsPattern = 'https?:\\/\\/mydtbld0101\\.hpeswlab\\.net:8888\\/jenkins\\S*\\/job\\/';
 	let defaultMyName = '';
 	let defaultHighlightNames = '';
-	let defaultCommitLinkPrefix = 'http://mydtbld0005.hpeswlab.net:7990/projects/MQM/repos/mqm/commits/';
+	let defaultCommitUrlPrefix = 'https://github.houston.softwaregrp.net/MQM/mqm/commit/';
 	let urlsPattern = localStorage.getItem(storageUrlsPatternKey) !== null ? localStorage.getItem(storageUrlsPatternKey) : defaultUrlsPattern;
 	let myName = localStorage.getItem(storageMyNameKey) !== null ? localStorage.getItem(storageMyNameKey) : defaultMyName;
 	let highlightNames = localStorage.getItem(storageHighlightNamesKey) !== null ? localStorage.getItem(storageHighlightNamesKey) : defaultHighlightNames;
-	let commitLinkPrefix = localStorage.getItem(storageCommitLinkPrefixKey) !== null ? localStorage.getItem(storageCommitLinkPrefixKey) : defaultCommitLinkPrefix;
+	let commitUrlPrefix = localStorage.getItem(storageCommitUrlPrefixKey) !== null ? localStorage.getItem(storageCommitUrlPrefixKey) : defaultCommitUrlPrefix;
 
 	function injectCss(tabId) {
 		chrome.tabs.insertCSS(
@@ -46,7 +46,7 @@
 						'type': 'jenkins-chrome-ext-go',
 						'myName': myName || '',
 						'highlightNames': highlightNames || '',
-						'commitLinkPrefix': commitLinkPrefix || ''
+						'commitUrlPrefix': commitUrlPrefix || ''
 					}
 				);
 			});

@@ -13,7 +13,7 @@
 	let buildInfos = {};
 	let myName = '';
 	let highlightedNames = [];
-	let commitLinkPrefix = '';
+	let commitUrlPrefix = '';
 	let buildNumberDomElms = document.querySelectorAll('.build-row-cell .pane.build-name .display-name');
 
 	function getInfo(url, cb, prm) {
@@ -42,13 +42,6 @@
 		});
 		return commiterName.trim();
 	}
-
-	// function fixBuildNames() {
-	// 	buildNumberDomElms.forEach(buildLinkElm => {
-	// 		console.log(buildLinkElm.innerHTML);
-	// 		buildLinkElm.innerHTML = buildLinkElm.innerHTML.replace(/[\u200B]/g, '').trim();
-	// 	});
-	// }
 
 	function getBuildLinkElement(buildNumber) {
 		let result = null;
@@ -158,8 +151,8 @@
 		commitsElm.className = 'jenkins-ext-build-commiter-commits';
 		ci.commits.forEach(c => {
 			let commitLinkElm = document.createElement('a');
-			if (commitLinkPrefix) {
-				commitLinkElm.setAttribute('href', commitLinkPrefix + c.id);
+			if (commitUrlPrefix) {
+				commitLinkElm.setAttribute('href', commitUrlPrefix + c.id);
 			}
 			commitLinkElm.setAttribute('target', '_blank');
 			commitLinkElm.setAttribute('title', c.comment);
@@ -341,27 +334,34 @@
 		}
 	}
 
+	// function updateRunningBuilds() {
+	// 	for (let n in buildInfos) {
+	// 		if (buildInfos[n].status === buildStatusEnum.RUNNING) {
+	// 			displayBuildCommiters(buildInfos[n].number);
+	// 		}
+	// 	}
+	// }
+
 	// function observeDOM(obj, callback){
-	// 	let MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-	// 	let obs = new MutationObserver(function(mutations, observer){
+	// 	let obs = new MutationObserver((mutations) => {
 	// 		if( mutations[0].addedNodes.length || mutations[0].removedNodes.length )
-	// 			callback();
-	// 	});
+	//  	        callback();
+	//  	    });
 	// 	obs.observe( obj, { childList:true, subtree:true });
 	// }
 
 	chrome.runtime.onMessage.addListener(function (request /*, sender, sendResponse*/) {
 		if (request.type === 'jenkins-chrome-ext-go') {
-			//fixBuildNames();
 			myName = (request.myName || '').toLowerCase().trim();
 			highlightedNames = (request.highlightNames || '').toLowerCase().split(',').map(Function.prototype.call, String.prototype.trim);
-			commitLinkPrefix = (request.commitLinkPrefix || '').toLowerCase().trim();
+			commitUrlPrefix = (request.commitUrlPrefix || '').toLowerCase().trim();
 			getInfo(document.location.href + 'api/json', onGetRootJobInfoDone, null);
 			// setTimeout(() => {
-			// 		observeDOM(document.getElementById('buildHistory'), () => {
-			// 			console.log('build history was changed');
-			// 		});
-			// }, 3000);
+			// 	observeDOM(document.getElementById('buildHistory'), () => {
+			// 		// console.log('build history was changed');
+			// 		updateRunningBuilds();
+			// 	});
+			// }, 5000);
 		}
 	});
 
