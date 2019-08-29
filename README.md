@@ -26,9 +26,3 @@ Available in the [Google Chrome Store](https://chrome.google.com/webstore/detail
 ## Configuration
 
 Click the toolbar icon.
-
-## Feedback
-
-Chat room on [Gitter](https://gitter.im/jenkinschromeext/Lobby)
-
- 
