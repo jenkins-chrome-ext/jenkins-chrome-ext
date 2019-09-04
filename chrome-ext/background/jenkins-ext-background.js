@@ -1,15 +1,15 @@
 (function() {
 
 	//let extId = 'cjmholedpdghokadoionhngnmfpeebnk';
-	let storageUrlsPatternKey = 'jenkins-ext-urls-pattern';
+	let storageUrlPatternKey = 'jenkins-ext-url-pattern';
 	let storageMyNameKey = 'jenkins-ext-my-name';
 	let storageHighlightNamesKey = 'jenkins-ext-highlight-names';
 	let storageCommitUrlPrefixKey = 'jenkins-ext-commit-url-prefix';
-	let defaultUrlsPattern = 'https?:\\/\\/mydtbld0101\\.hpeswlab\\.net:8888\\/jenkins\\S*\\/job\\/';
+	let defaultUrlPattern = `https?:\\/\\/jenkins\\.almoctane\\.com\\/\\S*job\\/`;
 	let defaultMyName = '';
 	let defaultHighlightNames = '';
 	let defaultCommitUrlPrefix = 'https://github.houston.softwaregrp.net/MQM/mqm/commit/';
-	let urlsPattern = localStorage.getItem(storageUrlsPatternKey) !== null ? localStorage.getItem(storageUrlsPatternKey) : defaultUrlsPattern;
+	let urlPattern = localStorage.getItem(storageUrlPatternKey) !== null ? localStorage.getItem(storageUrlPatternKey) : defaultUrlPattern;
 	let myName = localStorage.getItem(storageMyNameKey) !== null ? localStorage.getItem(storageMyNameKey) : defaultMyName;
 	let highlightNames = localStorage.getItem(storageHighlightNamesKey) !== null ? localStorage.getItem(storageHighlightNamesKey) : defaultHighlightNames;
 	let commitUrlPrefix = localStorage.getItem(storageCommitUrlPrefixKey) !== null ? localStorage.getItem(storageCommitUrlPrefixKey) : defaultCommitUrlPrefix;
@@ -37,7 +37,7 @@
 	}
 
 	chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-		if (changeInfo.status === 'complete' && urlsPattern && (new RegExp(urlsPattern)).test(tab.url)) {
+		if (changeInfo.status === 'complete' && urlPattern && (new RegExp(urlPattern)).test(tab.url)) {
 			injectCss(tabId);
 			injectJs(tabId, function() {
 				chrome.tabs.sendMessage(
