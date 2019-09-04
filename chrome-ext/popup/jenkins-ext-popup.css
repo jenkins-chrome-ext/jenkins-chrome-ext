@@ -33,13 +33,6 @@
 	color: #fff;
 }
 
-.jenkins-ext-popup__header__version {
-	margin-left: 4px;
-	margin-top: 4px;
-	font-size: 12px;
-	color: #fff;
-}
-
 .jenkins-ext-popup__content {
 	position: relative;
 	flex: 1 1 auto;
