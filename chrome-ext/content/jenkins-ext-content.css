@@ -71,7 +71,7 @@ table.stripped tr:nth-child(even) > .build-row-cell {
     margin-bottom: 1px;
 }
 
-.jenkins-ext-build-skype-all-commiters-line {
+.jenkins-ext-build-chat-all-commiters-line {
 	display: flex;
 	padding-left: 30px;
 	overflow: hidden;
@@ -79,7 +79,7 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 	margin-bottom: 1px;
 }
 
-.jenkins-ext-build-skype-all-commiters-text {
+.jenkins-ext-build-chat-all-commiters-text {
 	flex: 1 1 auto;
 	display: inline-block;
 	position: relative;
@@ -94,13 +94,13 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 	cursor: default;
 }
 
-.jenkins-ext-build-commiter-skype-link {
+.jenkins-ext-build-commiter-chat-link {
 	vertical-align: middle;
 	flex: 0 0 16px;
 	text-decoration: none !important;
 }
 
-.jenkins-ext-build-commiter-skype-img {
+.jenkins-ext-build-commiter-chat-img {
 }
 
 .jenkins-ext-build-commiter-email-link {

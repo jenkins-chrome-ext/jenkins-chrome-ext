@@ -99,19 +99,19 @@
 		let commiterLineElm = document.createElement('div');
 		commiterLineElm.className = 'jenkins-ext-build-commiter-line';
 
-		let skypeLinkElm = document.createElement('a');
+		let chatLinkElm = document.createElement('a');
 		if (ci.email) {
-			skypeLinkElm.setAttribute('href', 'sip:' + ci.email);
-			skypeLinkElm.setAttribute('title', 'Skype ' + ci.name);
+			chatLinkElm.setAttribute('href', 'sip:' + ci.email);
+			chatLinkElm.setAttribute('title', 'Chat with ' + ci.name);
 		} else {
-			skypeLinkElm.setAttribute('title', 'No email defined for ' + ci.name);
+			chatLinkElm.setAttribute('title', 'No email defined for ' + ci.name);
 		}
-		skypeLinkElm.className = 'jenkins-ext-build-commiter-skype-link';
-		let skypeImgElm = document.createElement('img');
-		skypeImgElm.setAttribute('src', chrome.extension.getURL('img/skype.png'));
-		skypeImgElm.className = 'jenkins-ext-build-commiter-skype-img';
-		skypeLinkElm.appendChild(skypeImgElm);
-		commiterLineElm.appendChild(skypeLinkElm);
+		chatLinkElm.className = 'jenkins-ext-build-commiter-chat-link';
+		let chatImgElm = document.createElement('img');
+		chatImgElm.setAttribute('src', chrome.extension.getURL('img/chat.png'));
+		chatImgElm.className = 'jenkins-ext-build-commiter-chat-img';
+		chatLinkElm.appendChild(chatImgElm);
+		commiterLineElm.appendChild(chatLinkElm);
 
 		let mailLinkElm = document.createElement('a');
 		if (ci.email) {
@@ -170,21 +170,21 @@
 		let commiterLineElm = document.createElement('div');
 		commiterLineElm.className = 'jenkins-ext-build-commiter-line';
 
-		let skypeLinkElm = document.createElement('a');
+		let chatLinkElm = document.createElement('a');
 		hrefStr = 'im:';
 		commiterInfos.forEach(ci => {
 			if (ci.email && ci.name.toLowerCase().trim() !== myName) {
 				hrefStr += '<sip:' + ci.email + '>';
 			}
 		});
-		skypeLinkElm.setAttribute('href', hrefStr);
-		skypeLinkElm.setAttribute('title', 'Group Skype');
-		skypeLinkElm.className = 'jenkins-ext-build-commiter-skype-link';
-		let skypeImgElm = document.createElement('img');
-		skypeImgElm.setAttribute('src', chrome.extension.getURL('img/skype.png'));
-		skypeImgElm.className = 'jenkins-ext-build-commiter-skype-img';
-		skypeLinkElm.appendChild(skypeImgElm);
-		commiterLineElm.appendChild(skypeLinkElm);
+		chatLinkElm.setAttribute('href', hrefStr);
+		chatLinkElm.setAttribute('title', 'Group Chat');
+		chatLinkElm.className = 'jenkins-ext-build-commiter-chat-link';
+		let chatImgElm = document.createElement('img');
+		chatImgElm.setAttribute('src', chrome.extension.getURL('img/chat.png'));
+		chatImgElm.className = 'jenkins-ext-build-commiter-chat-img';
+		chatLinkElm.appendChild(chatImgElm);
+		commiterLineElm.appendChild(chatLinkElm);
 
 		let mailLinkElm = document.createElement('a');
 		hrefStr = 'mailto:';
