@@ -27,6 +27,6 @@ Available in the [Google Chrome Store](https://chrome.google.com/webstore/detail
 
 Click the toolbar icon.
 
-## Report a Bug
+## Feedback and Bugs
 
-[Report a Bug](https://github.com/jenkins-chrome-ext/jenkins-chrome-ext/issues)
+[Leave feedback or report a bug](https://github.com/jenkins-chrome-ext/jenkins-chrome-ext/issues)
