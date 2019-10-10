@@ -29,4 +29,4 @@ Click the toolbar icon.
 
 ## Report a Bug
 
-[Report a Bugs](https://github.com/jenkins-chrome-ext/jenkins-chrome-ext/issues)
+[Report a Bug](https://github.com/jenkins-chrome-ext/jenkins-chrome-ext/issues)
