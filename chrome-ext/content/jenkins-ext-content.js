@@ -61,7 +61,9 @@
 	function getCommitColor(commitComment) {
 		let cmt = commitComment.toLowerCase();
 		let color = '#bbb';
-		if (cmt.indexOf('defect ') === 0 ||
+		if (cmt.indexOf('oops!') !== -1) {
+			color = '#9c9';
+		} else if (cmt.indexOf('defect ') === 0 ||
 			cmt.indexOf('defect:') === 0 ||
 			cmt.indexOf('defect#') === 0 ||
 			cmt.indexOf('bug ') === 0 ||
@@ -89,8 +91,6 @@
 		// 	cmt.indexOf('tech:') === 0 ||
 		// 	cmt.indexOf('[tech] ') === 0) {
 		//  	color = '#9ad';
-		} else if (cmt.indexOf('oops!') !== -1) {
-			color = '#9c9';
 		}
 		return color;
 	}
