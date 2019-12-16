@@ -7,14 +7,14 @@
 .jenkins-ext-popup {
 	display: flex;
     flex-direction: column;
-	height: 440px;
-	width: 550px;
+	height: 570px;
+	width: 650px;
 	font-family: MetricWeb-Regular, arial, sans-serif;
 }
 
 .jenkins-ext-popup__header {
 	display: flex;
-	background-color: #333;
+	background-color: #444;
 	height: 30px;
 	line-height: 30px;
     padding: 10px;
@@ -50,25 +50,44 @@
 	display: inline-block;
 }
 
-.jenkins-ext-popup-input {
-	margin-top: 2px;
-	width: 100%;	
-	padding: 5px;    
+.jenkins-ext-popup-color-mark {
+	position: relative;
+	top: 1px;
+	display: inline-block;
+	width: 16px;
+	height: 12px;
+	border-radius: 3px;
+}
+
+.jenkins-ext-popup-color-mark--green {
+	background-color: #9c9;
+}
+
+.jenkins-ext-popup-color-mark--yellow {
+	background-color: #fc6;
+}
+
+.jenkins-ext-popup-color-mark--red {
+	background-color: #f88;
+}
+
+.jenkins-ext-popup-color-mark--blue {
+	background-color: #aaf;
+}
+
+.jenkins-ext-popup-color-mark--purple {
+	background-color: #daf;
 }
 
 .jenkins-ext-popup-hint {
-	margin-top: 2px;
-	margin-bottom: 15px;
 	color: #aaa;
 }
 
-.jenkins-ext-popup-required-legend {
-	position: absolute;
-	bottom: 10px;
-}
-
-.jenkins-ext-popup-required-text {
-	color: #d24939;
+.jenkins-ext-popup-input {
+	margin: 2px 0 10px 0;
+	width: 100%;
+	height: 23px;
+	padding: 5px;
 }
 
 .jenkins-ext-popup__footer {

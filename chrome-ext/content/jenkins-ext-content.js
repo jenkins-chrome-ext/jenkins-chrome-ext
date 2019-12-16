@@ -14,6 +14,11 @@
 	let myName = '';
 	let highlightedNames = [];
 	let commitUrlPrefix = '';
+	let greenCommitMessagePattern = '';
+	let yellowCommitMessagePattern = '';
+	let redCommitMessagePattern = '';
+	let blueCommitMessagePattern = '';
+	let purpleCommitMessagePattern = '';
 	let buildNumberDomElms = document.querySelectorAll('.build-row-cell .pane.build-name .display-name');
 
 	function getInfo(url, cb, prm) {
@@ -61,36 +66,16 @@
 	function getCommitColor(commitComment) {
 		let cmt = commitComment.toLowerCase();
 		let color = '#bbb';
-		if (cmt.indexOf('oops!') !== -1) {
+		if (greenCommitMessagePattern && new RegExp(greenCommitMessagePattern, 'img').test(cmt)) {
 			color = '#9c9';
-		} else if (cmt.indexOf('defect ') === 0 ||
-			cmt.indexOf('defect:') === 0 ||
-			cmt.indexOf('defect#') === 0 ||
-			cmt.indexOf('bug ') === 0 ||
-			cmt.indexOf('bug:') === 0 ||
-			cmt.indexOf('bug#') === 0) {
-			color = '#f88';
-		} else if (cmt.indexOf('user story ') === 0 ||
-			cmt.indexOf('story ') === 0 ||
-			cmt.indexOf('story:') === 0 ||
-			cmt.indexOf('story#') === 0 ||
-			cmt.indexOf('us ') === 0 ||
-			cmt.indexOf('us:') === 0 ||
-			cmt.indexOf('us#') === 0 ||
-			cmt.indexOf('u.s ') === 0 ||
-			cmt.indexOf('u.s:') === 0 ||
-			cmt.indexOf('u.s#') === 0 ||
-			cmt.indexOf('u.s. ') === 0 ||
-			cmt.indexOf('u.s.:') === 0 ||
-			cmt.indexOf('u.s.#') === 0 ||
-			cmt.indexOf('feature ') === 0 ||
-			cmt.indexOf('feature:') === 0 ||
-			cmt.indexOf('feature#') === 0) {
+		} else if (yellowCommitMessagePattern && new RegExp(yellowCommitMessagePattern, 'img').test(cmt)) {
 			color = '#fc6';
-		// } else if (cmt.indexOf('tech ') === 0 ||
-		// 	cmt.indexOf('tech:') === 0 ||
-		// 	cmt.indexOf('[tech] ') === 0) {
-		//  	color = '#9ad';
+		} else if (redCommitMessagePattern && new RegExp(redCommitMessagePattern, 'img').test(cmt)) {
+			color = '#f88';
+		} else if (blueCommitMessagePattern && new RegExp(blueCommitMessagePattern, 'img').test(cmt)) {
+			color = '#aaf';
+		} else if (purpleCommitMessagePattern && new RegExp(purpleCommitMessagePattern, 'img').test(cmt)) {
+			color = '#daf';
 		}
 		return color;
 	}
@@ -355,6 +340,11 @@
 			myName = (request.myName || '').toLowerCase().trim();
 			highlightedNames = (request.highlightNames || '').toLowerCase().split(',').map(Function.prototype.call, String.prototype.trim);
 			commitUrlPrefix = (request.commitUrlPrefix || '').toLowerCase().trim();
+			greenCommitMessagePattern = (request.greenCommitMessagePattern || '').trim();
+			yellowCommitMessagePattern = (request.yellowCommitMessagePattern || '').trim();
+			redCommitMessagePattern = (request.redCommitMessagePattern || '').trim();
+			blueCommitMessagePattern = (request.blueCommitMessagePattern || '').trim();
+			purpleCommitMessagePattern = (request.purpleCommitMessagePattern || '').trim();
 			getInfo(document.location.href + 'api/json', onGetRootJobInfoDone, null);
 			// setTimeout(() => {
 			// 	observeDOM(document.getElementById('buildHistory'), () => {
