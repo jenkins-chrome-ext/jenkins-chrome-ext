@@ -14,9 +14,9 @@ let defaultMyName = '';
 let defaultHighlightNames = '';
 let defaultCommitUrlPrefix = `https://github.houston.softwaregrp.net/MQM/mqm/commit/`;
 let defaultGreenCommitMessagePattern = `^revert|oops!`;
-let defaultYellowCommitMessagePattern = `^feature[ #]|^story[ #]|^user story[ #]|^us[ #]`;
-let defaultRedCommitMessagePattern = `^defect[ #]|^bug[ #]`;
-let defaultBlueCommitMessagePattern = `^quality story[ #]|^qs[ #]`;
+let defaultYellowCommitMessagePattern = `^feature|^story|^user story|^us[ #]`;
+let defaultRedCommitMessagePattern = `^defect|^bug`;
+let defaultBlueCommitMessagePattern = `^quality story|^qs[ #]`;
 let defaultPurpleCommitMessagePattern = ``;
 
 function loadValue(storageKey, defaultValue) {
