@@ -345,7 +345,8 @@
 			redCommitMessagePattern = (request.redCommitMessagePattern || '').trim();
 			blueCommitMessagePattern = (request.blueCommitMessagePattern || '').trim();
 			purpleCommitMessagePattern = (request.purpleCommitMessagePattern || '').trim();
-			getInfo(document.location.href + 'api/json', onGetRootJobInfoDone, null);
+			const baseLocation = document.location.href.replace(/\?\S*/, '');
+			getInfo(baseLocation + 'api/json', onGetRootJobInfoDone, null);
 			// setTimeout(() => {
 			// 	observeDOM(document.getElementById('buildHistory'), () => {
 			// 		// console.log('build history was changed');
