@@ -112,7 +112,7 @@
 		mailLinkElm.appendChild(mailImgElm);
 		commiterLineElm.appendChild(mailLinkElm);
 
-		let nameElm = document.createElement('span');
+		let nameElm = document.createElement('div');
 		nameElm.className = 'jenkins-ext-build-commiter-name';
 		if (ci.name.toLowerCase().trim() === myName) {
 			nameElm.className += ' jenkins-ext-build-commiter-name--me';
