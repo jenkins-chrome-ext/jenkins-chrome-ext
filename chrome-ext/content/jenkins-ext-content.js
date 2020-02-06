@@ -269,6 +269,58 @@
 		}
 	}
 
+	function displayBuildProblem(buildNumber, rec) {
+		let buildLinkElm = getBuildLinkElement(buildNumber);
+		if (!buildLinkElm) {
+			return;
+		}
+		let parentElm = buildLinkElm.parentElement.parentElement.parentElement;
+		let problemLineElm = document.createElement('div');
+		problemLineElm.className = 'jenkins-ext-build-problem-line';
+
+		let problemLinkElm = document.createElement('a');
+		problemLinkElm.setAttribute('target', '_blank');
+		problemLinkElm.setAttribute('title', 'View console log');
+
+		let consoleImgElm = document.createElement('img');
+		consoleImgElm.setAttribute('src', chrome.extension.getURL('img/terminal.png'));
+		consoleImgElm.className = 'jenkins-ext-build-problem-console-img';
+		problemLinkElm.appendChild(consoleImgElm);
+
+		problemLineElm.appendChild(problemLinkElm);
+
+		let problemTextElm = document.createElement('div');
+		problemTextElm.className = 'jenkins-ext-build-problem-text';
+		problemLineElm.appendChild(problemTextElm);
+
+		parentElm.appendChild(problemLineElm);
+		const problem = getFirstProblem(buildNumber, rec);
+		if (!problem) {
+			return;
+		}
+		problemLinkElm.setAttribute('href', `/${problem.url}console`);
+		problemTextElm.innerText = problem.jobName;
+	}
+
+	function getFirstProblem(buildNumber, rec) {
+		if (rec.result && rec.result !== 'FAILURE' && rec.result !== 'UNSTABLE') {
+			return null;
+		} else if (rec.build && rec.build.subBuilds && rec.build.subBuilds.length > 0) {
+			return getFirstProblem(buildNumber, rec.build);
+		} else if (rec.subBuilds && rec.subBuilds.length > 0) {
+			let problem = null;
+			rec.subBuilds.forEach(sb => {
+				if (!problem) {
+					problem = getFirstProblem(buildNumber, sb);
+				}
+			});
+			return problem;
+		} else {
+			console.log(buildNumber + ' ' + rec.result + ' ' + rec.jobName);
+			return rec;
+		}
+	}
+
 	function onGetBuildInfoDone(json, buildNumber) {
 		let bi = buildInfos[buildNumber];
 		bi.commiterInfos = [];
@@ -301,6 +353,9 @@
 		bi.commiterInfos.sort((a, b) => {
 			return a.name.localeCompare(b.name);
 		});
+		if (json.result === 'UNSTABLE' || json.result === 'FAILURE') {
+			displayBuildProblem(buildNumber, json);
+		}
 		displayBuildCommiters(buildNumber);
 	}
 

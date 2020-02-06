@@ -177,3 +177,27 @@ table.stripped tr:nth-child(even) > .build-row-cell {
     border-radius: 3px;
 	text-decoration: none !important;
 }
+
+.jenkins-ext-build-problem-line {
+	display: flex;
+	padding-left: 30px;
+	max-width: 320px;
+	margin-bottom: 1px;
+	overflow: hidden;
+}
+
+.jenkins-ext-build-problem-console-img {
+}
+
+.jenkins-ext-build-problem-text {
+	position: relative;
+	top: 2px;
+	left: 0;
+	margin-left: 3px;
+	width: 270px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #c66;
+	font-style: italic;
+}
