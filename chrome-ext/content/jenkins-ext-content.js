@@ -269,11 +269,7 @@
 		}
 	}
 
-	function displayBuildProblem(buildNumber, rec) {
-		const problem = getFirstProblem(buildNumber, rec);
-		if (!problem) {
-			return;
-		}
+	function displayBuildProblem(buildNumber, problem) {
 		let buildLinkElm = getBuildLinkElement(buildNumber);
 		if (!buildLinkElm) {
 			return;
@@ -354,7 +350,11 @@
 			return a.name.localeCompare(b.name);
 		});
 		if (json.result === 'UNSTABLE' || json.result === 'FAILURE') {
-			displayBuildProblem(buildNumber, json);
+			const firstProblem = getFirstProblem(buildNumber, json);
+			if (firstProblem) {
+				bi.firstProblem = firstProblem;
+				displayBuildProblem(buildNumber, firstProblem);
+			}
 		}
 		displayBuildCommiters(buildNumber);
 	}
