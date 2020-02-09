@@ -351,7 +351,7 @@
 		});
 		if (json.result === 'UNSTABLE' || json.result === 'FAILURE') {
 			const firstProblem = getFirstProblem(buildNumber, json);
-			if (firstProblem) {
+			if (firstProblem && firstProblem.url && firstProblem.jobName) {
 				bi.firstProblem = firstProblem;
 				displayBuildProblem(buildNumber, firstProblem);
 			}
