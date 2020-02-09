@@ -270,6 +270,10 @@
 	}
 
 	function displayBuildProblem(buildNumber, rec) {
+		const problem = getFirstProblem(buildNumber, rec);
+		if (!problem) {
+			return;
+		}
 		let buildLinkElm = getBuildLinkElement(buildNumber);
 		if (!buildLinkElm) {
 			return;
@@ -279,6 +283,7 @@
 		problemLineElm.className = 'jenkins-ext-build-problem-line';
 
 		let problemLinkElm = document.createElement('a');
+		problemLinkElm.setAttribute('href', `/${problem.url}consoleFull`);
 		problemLinkElm.setAttribute('target', '_blank');
 		problemLinkElm.setAttribute('title', 'View console log');
 
@@ -290,16 +295,11 @@
 		problemLineElm.appendChild(problemLinkElm);
 
 		let problemTextElm = document.createElement('div');
+		problemTextElm.innerText = problem.jobName;
 		problemTextElm.className = 'jenkins-ext-build-problem-text';
 		problemLineElm.appendChild(problemTextElm);
 
 		parentElm.appendChild(problemLineElm);
-		const problem = getFirstProblem(buildNumber, rec);
-		if (!problem) {
-			return;
-		}
-		problemLinkElm.setAttribute('href', `/${problem.url}console`);
-		problemTextElm.innerText = problem.jobName;
 	}
 
 	function getFirstProblem(buildNumber, rec) {
