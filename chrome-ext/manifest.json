@@ -3,7 +3,7 @@
   "name": "Jenkins Chrome Extension",
   "short_name": "JenkinsExt",
   "description": "Jenkins Chrome Extension",
-  "version": "1.0.44",
+  "version": "1.0.45",
   "browser_action": {
     "default_title": "Jenkins Chrome Extension",
     "default_icon": "img/jenkins-icon-96px.png",
