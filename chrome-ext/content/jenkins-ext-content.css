@@ -194,6 +194,7 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 }
 
 .jenkins-ext-build-problem-line {
+	position: relative;
 	display: flex;
 	padding-left: 30px;
 	max-width: 320px;
@@ -209,11 +210,28 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 	position: relative;
 	top: 2px;
 	left: 0;
-	margin-left: 3px;
+	padding-left: 12px;
 	width: 270px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	font-family: Play, sans-serif;
 	color: #966;
+}
+
+.jenkins-ext-build-problem-line--failure > .jenkins-ext-build-problem-text::before,
+.jenkins-ext-build-problem-line--unstable > .jenkins-ext-build-problem-text::before {
+	content: "";
+	width: 5px;
+	height: 5px;
+	position: absolute;
+	left: 4px;
+	top: 5px;
+	background-color: #ccc;
+}
+.jenkins-ext-build-problem-line--failure > .jenkins-ext-build-problem-text::before {
+	background-color: #f66;
+}
+.jenkins-ext-build-problem-line--unstable > .jenkins-ext-build-problem-text::before {
+	background-color: #fc3;
 }
