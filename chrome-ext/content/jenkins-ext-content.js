@@ -25,12 +25,20 @@
 	let blueCommitMessagePattern = '';
 	let purpleCommitMessagePattern = '';
 	let buildNumberDomElms = document.querySelectorAll('.build-row-cell .pane.build-name .display-name');
+	let fetchCache = {};
 
 	async function goFetch(url, asJson = true) {
 		try {
-			const res = await fetch(url);
-			return asJson ? await res.json() : await res.text();
+			if (fetchCache[url]) {
+				return fetchCache[url];
+			} else {
+				const res = await fetch(url);
+				const retVal = asJson ? await res.json() : await res.text();
+				fetchCache[url] = retVal;
+				return retVal;
+			}
 		} catch {
+			fetchCache[url] = null;
 		}
 	}
 
@@ -289,7 +297,13 @@
 		}
 		let parentElm = buildLinkElm.parentElement.parentElement.parentElement;
 		let problemLineElm = document.createElement('div');
-		problemLineElm.className = 'jenkins-ext-build-problem-line';
+		let statusStyle = '';
+		if (problem.result === buildResult.FAILURE) {
+			statusStyle = 'jenkins-ext-build-problem-line--failure';
+		} else if (problem.result === buildResult.UNSTABLE) {
+			statusStyle = 'jenkins-ext-build-problem-line--unstable';
+		}
+		problemLineElm.className = `jenkins-ext-build-problem-line ${statusStyle}`;
 
 		let problemLinkElm = document.createElement('a');
 		problemLinkElm.setAttribute('href', `/${problem.url}consoleFull`);
@@ -311,53 +325,52 @@
 		parentElm.appendChild(problemLineElm);
 	}
 
-	function getFirstProblem(buildNumber, rec) {
+	function addProblems(problems, buildNumber, rec) {
 		if (rec.result && rec.result !== buildResult.FAILURE && rec.result !== buildResult.UNSTABLE) {
-			return null;
+			//do nothing
 		} else if (rec.build && rec.build.subBuilds && rec.build.subBuilds.length > 0) {
-			return getFirstProblem(buildNumber, rec.build);
+			addProblems(problems, buildNumber, rec.build);
 		} else if (rec.subBuilds && rec.subBuilds.length > 0) {
 			let problem = null;
 			rec.subBuilds.forEach(sb => {
 				if (!problem) {
-					problem = getFirstProblem(buildNumber, sb);
+					problem = addProblems(problems, buildNumber, sb);
 				}
 			});
 			return problem;
 		} else {
-			console.log(buildNumber + ' ' + rec.result + ' ' + rec.jobName);
-			return rec;
+			problems.push(rec);
 		}
 	}
 
-	async function getFirstProblemLastSuccess(firstProblem) {
-		const MAX_NUM_OF_BUILDS_TO_INSPECT = 20;
+	async function getProblemLastSuccess(problem) {
+		const MAX_NUM_OF_BUILDS_TO_INSPECT = 10;
 		let lastSuccess = null;
 		let i = 1;
 		do {
-			const n = firstProblem.buildNumber - i;
-			const bUrl = firstProblem.url.replace(`/${firstProblem.buildNumber}/`, `/${n}/`);
+			const n = problem.buildNumber - i;
+			const bUrl = problem.url.replace(`/${problem.buildNumber}/`, `/${n}/`);
 			const json = await goFetch(`/${bUrl}api/json`);
-			if (json && json.result === buildResult.SUCCESS) {
+			if (!json) {
+				i = MAX_NUM_OF_BUILDS_TO_INSPECT + 1;
+			} else if (json.result === buildResult.SUCCESS) {
 				lastSuccess = json;
+			} else {
+				i++;
 			}
-			i++;
 		} while (!lastSuccess && i <= MAX_NUM_OF_BUILDS_TO_INSPECT);
 		return lastSuccess;
 	}
 
-	function investigateProblem(bi) {
-		(async () => {
-			const firstProblem = bi.firstProblem;
-			bi.firstProblemLastSuccess = await getFirstProblemLastSuccess(firstProblem);
-			if (bi.firstProblemLastSuccess) {
-				const problemText = await goFetch(`/${firstProblem.url}consoleText`, false);
-				const successUrl = firstProblem.url.replace(`/${firstProblem.buildNumber}/`, `/${bi.firstProblemLastSuccess.number}/`);
-			 	const successText = await goFetch(`/${successUrl}consoleText`, false);
-				console.log(problemText);
-				console.log(successText);
-			}
-		})();
+	async function investigateProblem(problem) {
+		problem.lastSuccess = await getProblemLastSuccess(problem);
+		if (problem.lastSuccess) {
+			//const problemText = await goFetch(`/${problem.url}consoleText`, false);
+			//const successUrl = problem.url.replace(`/${problem.buildNumber}/`, `/${problem.lastSuccess.number}/`);
+		 	//const successText = await goFetch(`/${successUrl}consoleText`, false);
+			//console.log(problemText);
+			//console.log(successText);
+		}
 	}
 
 	function onGetBuildInfoDone(json, buildNumber) {
@@ -393,12 +406,14 @@
 			return a.name.localeCompare(b.name);
 		});
 		if (json.result === buildResult.FAILURE || json.result === buildResult.UNSTABLE) {
-			const firstProblem = getFirstProblem(buildNumber, json);
-			if (firstProblem && firstProblem.url && firstProblem.jobName) {
-				bi.firstProblem = firstProblem;
-				displayBuildProblem(buildNumber, firstProblem);
-				investigateProblem(bi);
-			}
+			bi.problems = [];
+			addProblems(bi.problems, buildNumber, json);
+			bi.problems.forEach(p => {
+				if (p.url && p.jobName) {
+					displayBuildProblem(buildNumber, p);
+					//investigateProblem(p).then();
+				}
+			});
 		}
 		displayBuildCommiters(buildNumber);
 	}
@@ -448,6 +463,7 @@
 			blueCommitMessagePattern = (request.blueCommitMessagePattern || '').trim();
 			purpleCommitMessagePattern = (request.purpleCommitMessagePattern || '').trim();
 			const baseLocation = document.location.href.replace(/\?\S*/, '');
+			fetchCache = {};
 			(async () => {
 				const json = await goFetch(baseLocation + 'api/json');
 				onGetRootJobInfoDone(json);
