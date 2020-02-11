@@ -1,3 +1,4 @@
+const ON_PROBLEM_MAX_NUM_OF_BUILDS_TO_INSPECT = 10;
 let linesCache = {};
 
 async function goFetchText(url) {
@@ -71,21 +72,22 @@ function displayBuildProblem(buildNumber, problem) {
 }
 
 async function getProblemLastSuccess(problem) {
-	const MAX_NUM_OF_BUILDS_TO_INSPECT = 10;
 	let lastSuccess = null;
+	let goOn = true;
 	let i = 1;
 	do {
 		const n = problem.buildNumber - i;
 		const bUrl = problem.url.replace(`/${problem.buildNumber}/`, `/${n}/`);
 		const json = await goFetchJson(`/${bUrl}api/json`);
 		if (!json) {
-			i = MAX_NUM_OF_BUILDS_TO_INSPECT + 1;
+			goOn = false;
 		} else if (json.result === buildResult.SUCCESS) {
 			lastSuccess = json;
+			goOn = false;
 		} else {
 			i++;
 		}
-	} while (!lastSuccess && i <= MAX_NUM_OF_BUILDS_TO_INSPECT);
+	} while (goOn && i <= ON_PROBLEM_MAX_NUM_OF_BUILDS_TO_INSPECT);
 	return lastSuccess;
 }
 
