@@ -306,7 +306,7 @@
 		problemLineElm.className = `jenkins-ext-build-problem-line ${statusStyle}`;
 
 		let problemLinkElm = document.createElement('a');
-		problemLinkElm.setAttribute('href', `/${problem.url}consoleFull`);
+		problemLinkElm.setAttribute('href', `/${problem.url}console`);
 		problemLinkElm.setAttribute('target', '_blank');
 		problemLinkElm.setAttribute('title', 'View console log');
 
