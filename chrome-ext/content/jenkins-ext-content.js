@@ -83,7 +83,7 @@ async function onGetRootJobInfoDone(info) {
 // 	obs.observe( obj, { childList:true, subtree:true });
 // }
 
-chrome.runtime.onMessage.addListener(function (request /*, sender, sendResponse*/) {
+chrome.runtime.onMessage.addListener(request => {
 	if (request.type === 'jenkins-chrome-ext-go') {
 		myName = (request.myName || '').toLowerCase().trim();
 		highlightedNames = (request.highlightNames || '').toLowerCase().split(',').map(Function.prototype.call, String.prototype.trim);
