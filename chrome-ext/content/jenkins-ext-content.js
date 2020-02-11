@@ -26,39 +26,32 @@
 	let purpleCommitMessagePattern = '';
 	let buildNumberDomElms = document.querySelectorAll('.build-row-cell .pane.build-name .display-name');
 	let fetchCache = {};
+	let linesCache = {};
 
-	async function goFetch(url, asJson = true) {
+	async function goFetchJson(url) {
 		try {
-			if (fetchCache[url]) {
-				return fetchCache[url];
-			} else {
+			if (!fetchCache[url]) {
 				const res = await fetch(url);
-				const retVal = asJson ? await res.json() : await res.text();
-				fetchCache[url] = retVal;
-				return retVal;
+				fetchCache[url] = await res.json();
 			}
 		} catch {
 			fetchCache[url] = null;
 		}
+		return fetchCache[url] || null;
 	}
 
-	// function getInfo(url, cb, prm) {
-	// 	let xhr = new XMLHttpRequest();
-	// 	xhr.onreadystatechange = function() {
-	// 		if (xhr.readyState === 4) {
-	// 			try {
-	// 				let json = JSON.parse(xhr.response);
-	// 				cb(json, prm);
-	// 			} catch(err) {
-	// 			}
-	// 		}
-	// 	};
-	// 	xhr.onerror = function() {
-	// 		alert('err');
-	// 	};
-	// 	xhr.open('GET', url, true);
-	//     xhr.send('');
-	// }
+	async function goFetchText(url) {
+		try {
+			if (!fetchCache[url]) {
+				const res = await fetch(url);
+				const textResult = await res.text();
+				fetchCache[url] = /^<html>/.test(textResult) ? '' : textResult;
+			}
+		} catch {
+			fetchCache[url] = '';
+		}
+		return fetchCache[url] || '';
+	}
 
 	function formatCommiterName(commitAuthor) {
 		let commiterName = commitAuthor.replace(/[,]/g, '');
@@ -83,7 +76,6 @@
 		return result;
 	}
 
-	//todo: should be generalized
 	function getCommitColor(commitComment) {
 		let cmt = commitComment.toLowerCase();
 		let color = '#bbb';
@@ -350,7 +342,7 @@
 		do {
 			const n = problem.buildNumber - i;
 			const bUrl = problem.url.replace(`/${problem.buildNumber}/`, `/${n}/`);
-			const json = await goFetch(`/${bUrl}api/json`);
+			const json = await goFetchJson(`/${bUrl}api/json`);
 			if (!json) {
 				i = MAX_NUM_OF_BUILDS_TO_INSPECT + 1;
 			} else if (json.result === buildResult.SUCCESS) {
@@ -362,14 +354,31 @@
 		return lastSuccess;
 	}
 
+	async function getMeaningfulLines(...textUrls) {
+		const result = [];
+		const fetchPromises = [];
+		textUrls.forEach(u => {
+			fetchPromises.push(goFetchText(u),);
+		});
+		const textResults = await Promise.all(fetchPromises);
+		textResults.forEach(u => {
+			if (!linesCache[u]) {
+				linesCache[u] = u.split('\n')
+				.map(l => l.replace(/^\[(?:ERROR|WARNING|INFO|DEBUG)]\s-*$/, '').trim())
+				.filter(l => l.length > 0);
+			}
+			result.push(linesCache[u]);
+		});
+		return result;
+	}
+
 	async function investigateProblem(problem) {
 		problem.lastSuccess = await getProblemLastSuccess(problem);
 		if (problem.lastSuccess) {
-			//const problemText = await goFetch(`/${problem.url}consoleText`, false);
-			//const successUrl = problem.url.replace(`/${problem.buildNumber}/`, `/${problem.lastSuccess.number}/`);
-		 	//const successText = await goFetch(`/${successUrl}consoleText`, false);
-			//console.log(problemText);
-			//console.log(successText);
+			const problemTextUrl = `/${problem.url}consoleText`;
+			const successTextUrl = `/${problem.url.replace(`/${problem.buildNumber}/`, `/${problem.lastSuccess.number}/`)}consoleText`;
+			const lines = await getMeaningfulLines(problemTextUrl, successTextUrl);
+			//console.log(problem.jobName + ' -' + problem.buildNumber + ':' + lines[0].length + ' +' + problem.lastSuccess.number + ':' + lines[1].length);
 		}
 	}
 
@@ -426,7 +435,7 @@
 					url: build.url
 				};
 				(async () => {
-					const json = await goFetch(build.url + 'api/json');
+					const json = await goFetchJson(build.url + 'api/json');
 					onGetBuildInfoDone(json, build.number);
 				})();
 			});
@@ -464,8 +473,9 @@
 			purpleCommitMessagePattern = (request.purpleCommitMessagePattern || '').trim();
 			const baseLocation = document.location.href.replace(/\?\S*/, '');
 			fetchCache = {};
+			linesCache = {};
 			(async () => {
-				const json = await goFetch(baseLocation + 'api/json');
+				const json = await goFetchJson(baseLocation + 'api/json');
 				onGetRootJobInfoDone(json);
 			})();
 
