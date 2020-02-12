@@ -16,6 +16,14 @@ let buildResult = {
 let buildInfos = {};
 let fetchCache = {};
 
+function hash(str) {
+	let hash = 0, i, l;
+	for (i = 0, l = str.length; i < l; i++) {
+		hash = ((hash<<5)-hash) + str.charCodeAt(i) | 0;
+	}
+	return hash;
+}
+
 async function goFetchJson(url) {
 	try {
 		if (!fetchCache[url]) {
