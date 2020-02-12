@@ -114,14 +114,22 @@ async function investigateProblem(problem) {
 		return;
 	}
 	problem.lastSuccess = await getProblemLastSuccess(problem);
-	const problemTextUrl = `/${problem.url}consoleText`;
 	if (problem.lastSuccess) {
+		const problemTextUrl = `/${problem.url}consoleText`;
 		const successTextUrl = `/${problem.url.replace(`/${problem.buildNumber}/`, `/${problem.lastSuccess.number}/`)}consoleText`;
-		const lines = await getMeaningfulLines(problemTextUrl, successTextUrl);
-		console.log(`${problem.jobName} P:${problem.buildNumber}.${lines[0].length} S:${problem.lastSuccess.number}.${lines[1].length}`);
+		const [problemLinesText, successLinesText] = await getMeaningfulLines(problemTextUrl, successTextUrl);
+		const problemLinesHash = [];
+		const successLinesHash = [];
+		problemLinesText.forEach(l => {
+			problemLinesHash.push(hash(l));
+		});
+		successLinesText.forEach(l => {
+			successLinesHash.push(hash(l));
+		});
+		console.log(`${problem.jobName} P:${problem.buildNumber}.${problemLinesHash.length} S:${problem.lastSuccess.number}.${successLinesHash.length}`);
 	} else {
-		const lines = await getMeaningfulLines(problemTextUrl);
-		console.log(`${problem.jobName} P:${problem.buildNumber}.${lines[0].length} S:NA`);
+		//const problemLines = await getMeaningfulLines(problemTextUrl);
+		//console.log(`${problem.jobName} P:${problem.buildNumber} S:NA`);
 	}
 }
 
