@@ -100,13 +100,17 @@ async function getMeaningfulLines(...textUrls) {
 	const textResults = await Promise.all(promises);
 	for (let i = 0; i < textUrls.length; i++) {
 		if (!linesCache[textUrls[i]]) {
-			linesCache[textUrls[i]] = textResults[i].split('\n')
-			.map(l => l.replace(/^\[(?:ERROR|WARNING|INFO|DEBUG)]\s-*$/, '').trim())
-			.filter(l => l.length > 0);
+			linesCache[textUrls[i]] = textResults[i].split('\n').filter(l => l.length>0 && !/^\[INFO]/.test(l));
 		}
 		result.push(linesCache[textUrls[i]]);
 	}
 	return result;
+}
+
+function getLinesHash(line) {
+	return hash(line
+		.replace(/[0-9a-f]{8,}/g,'G')
+		.replace(/[0-9]+?/g,'D'));
 }
 
 async function investigateProblem(problem) {
@@ -119,14 +123,19 @@ async function investigateProblem(problem) {
 		const successTextUrl = `/${problem.url.replace(`/${problem.buildNumber}/`, `/${problem.lastSuccess.number}/`)}consoleText`;
 		const [problemLinesText, successLinesText] = await getMeaningfulLines(problemTextUrl, successTextUrl);
 		const problemLinesHash = [];
-		const successLinesHash = [];
 		problemLinesText.forEach(l => {
-			problemLinesHash.push(hash(l));
+			problemLinesHash.push(getLinesHash(l));
 		});
+		const successLinesHashSet = new Set();
 		successLinesText.forEach(l => {
-			successLinesHash.push(hash(l));
+			successLinesHashSet.add(getLinesHash(l));
 		});
-		console.log(`${problem.jobName} P:${problem.buildNumber}.${problemLinesHash.length} S:${problem.lastSuccess.number}.${successLinesHash.length}`);
+		console.log(`########## ${problem.jobName} F:${problem.buildNumber} S:${problem.lastSuccess.number}`);
+		for (let i = 0; i < problemLinesText.length; i++) {
+			if (!successLinesHashSet.has(problemLinesHash[i])) {
+				console.log(problemLinesText[i]);
+			}
+		}
 	} else {
 		//const problemLines = await getMeaningfulLines(problemTextUrl);
 		//console.log(`${problem.jobName} P:${problem.buildNumber} S:NA`);
