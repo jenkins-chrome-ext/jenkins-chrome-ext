@@ -33,12 +33,11 @@ function onGetBuildInfoDone(json, buildNumber) {
 	if (json.result === buildResult.FAILURE || json.result === buildResult.UNSTABLE) {
 		bi.problems = [];
 		addProblems(bi.problems, buildNumber, json);
-		for (let i = 0; i < bi.problems.length; i++) {
-			const p = bi.problems[i];
+		bi.problems.forEach((p) => {
 			if (p.url && p.jobName) {
 				displayBuildProblem(buildNumber, p);
 			}
-		}
+		});
 	}
 	displayBuildCommiters(buildNumber);
 }

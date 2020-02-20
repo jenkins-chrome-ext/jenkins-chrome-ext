@@ -98,12 +98,12 @@ async function getMeaningfulLines(...textUrls) {
 		promises.push(goFetchText(u),);
 	});
 	const textResults = await Promise.all(promises);
-	for (let i = 0; i < textUrls.length; i++) {
-		if (!linesCache[textUrls[i]]) {
-			linesCache[textUrls[i]] = textResults[i].split('\n').filter(l => l.length>0 && !/^\[INFO]/.test(l));
+	textUrls.forEach((url, i) => {
+		if (!linesCache[url]) {
+			linesCache[url] = textResults[i].split('\n').filter(l => l.length>0 && !/^\[INFO]/.test(l));
 		}
-		result.push(linesCache[textUrls[i]]);
-	}
+		result.push(linesCache[url]);
+	});
 	return result;
 }
 
@@ -131,11 +131,11 @@ async function investigateProblem(problem) {
 			successLinesHashSet.add(getLinesHash(l));
 		});
 		console.log(`########## ${problem.jobName} F:${problem.buildNumber} S:${problem.lastSuccess.number}`);
-		for (let i = 0; i < problemLinesText.length; i++) {
-			if (!successLinesHashSet.has(problemLinesHash[i])) {
-				console.log(problemLinesText[i]);
+		problemLinesHash.forEach((l, i) => {
+			if (!successLinesHashSet.has(l)) {
+				console.log(`[${i}] ${problemLinesText[i]}`);
 			}
-		}
+		});
 	} else {
 		//const problemLines = await getMeaningfulLines(problemTextUrl);
 		//console.log(`${problem.jobName} P:${problem.buildNumber} S:NA`);
@@ -146,10 +146,10 @@ async function investigateAllProblems() {
 	const buildNumbers = Object.keys(buildInfos)
 	.filter(k => buildInfos[k].problems && buildInfos[k].problems.length > 0);
 	const promises = [];
-	for (let i = buildNumbers.length - 1; i >= 0; i--) {
-		for (let j = 0; j < buildInfos[buildNumbers[i]].problems.length; j++) {
-			promises.push(investigateProblem(buildInfos[buildNumbers[i]].problems[j]));
-		}
-	}
+	buildNumbers.forEach((bn, i) => {
+		buildInfos[bn].problems.forEach(p => {
+			promises.push(investigateProblem(p));
+		});
+	});
 	await Promise.all(promises);
 }
