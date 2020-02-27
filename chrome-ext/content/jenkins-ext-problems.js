@@ -1,4 +1,4 @@
-const ON_PROBLEM_MAX_NUM_OF_BUILDS_TO_INSPECT = 10;
+const ON_PROBLEM_MAX_NUM_OF_BUILDS_TO_INSPECT = 20;
 let linesCache = {};
 
 async function goFetchText(url) {
@@ -71,66 +71,59 @@ function displayBuildProblem(buildNumber, problem) {
 	parentElm.appendChild(problemLineElm);
 }
 
-async function getProblemLastSuccess(problem) {
-	let lastSuccess = null;
-	let goOn = true;
-	let i = 1;
-	do {
-		const n = problem.buildNumber - i;
-		const bUrl = problem.url.replace(`/${problem.buildNumber}/`, `/${n}/`);
-		const json = await goFetchJson(`/${bUrl}api/json`);
-		if (!json) {
-			goOn = false;
-		} else if (json.result === buildResult.SUCCESS) {
-			lastSuccess = json;
-			goOn = false;
-		} else {
-			i++;
+async function getProblemLastSuccesses(problem) {
+	let lastSuccesses = [];
+	const promises = [];
+	for (let i = 1; i <= ON_PROBLEM_MAX_NUM_OF_BUILDS_TO_INSPECT; i++) {
+		const bUrl = problem.url.replace(`/${problem.buildNumber}/`, `/${problem.buildNumber - i}/`);
+		promises.push(goFetchJson(`/${bUrl}api/json`));
+	}
+	const results = await Promise.all(promises);
+	results.forEach(json => {
+		if (json && json.result === buildResult.SUCCESS) {
+			lastSuccesses.push(json);
 		}
-	} while (goOn && i <= ON_PROBLEM_MAX_NUM_OF_BUILDS_TO_INSPECT);
-	return lastSuccess;
+	});
+	return lastSuccesses;
 }
 
-async function getMeaningfulLines(...textUrls) {
-	const result = [];
-	const promises = [];
-	textUrls.forEach(u => {
-		promises.push(goFetchText(u),);
-	});
-	const textResults = await Promise.all(promises);
-	textUrls.forEach((url, i) => {
-		if (!linesCache[url]) {
-			linesCache[url] = textResults[i].split('\n').filter(l => l.length>0 && !/^\[INFO]/.test(l));
-		}
-		result.push(linesCache[url]);
-	});
-	return result;
+async function getMeaningfulLines(textUrl) {
+	const textResult = await goFetchText(textUrl);
+	if (!linesCache[textUrl]) {
+		linesCache[textUrl] = textResult.split('\n').filter(l => l.length>0 && !/^\[?(INFO|WARN|WARNING)[\] ]/.test(l));
+	}
+	return linesCache[textUrl];
 }
 
 function getLinesHash(line) {
 	return hash(line
-		.replace(/[0-9a-f]{8,}/g,'G')
-		.replace(/[0-9]+?/g,'D'));
+		.replace(/[-_,;:.'"|~!@#$%^&*()=+?<>/\\[\]]{}/g,' ')
+		.replace(/\d\s|\d+\S+\d*\S*|\S+\d+\d*\S*/g,'D'));
 }
 
 async function investigateProblem(problem) {
 	if (!problem.url || !problem.jobName) {
 		return;
 	}
-	problem.lastSuccess = await getProblemLastSuccess(problem);
-	if (problem.lastSuccess) {
+	problem.lastSuccesses = await getProblemLastSuccesses(problem);
+	if (problem.lastSuccesses.length > 0) {
 		const problemTextUrl = `/${problem.url}consoleText`;
-		const successTextUrl = `/${problem.url.replace(`/${problem.buildNumber}/`, `/${problem.lastSuccess.number}/`)}consoleText`;
-		const [problemLinesText, successLinesText] = await getMeaningfulLines(problemTextUrl, successTextUrl);
+		const problemLinesText = await getMeaningfulLines(problemTextUrl);
 		const problemLinesHash = [];
 		problemLinesText.forEach(l => {
 			problemLinesHash.push(getLinesHash(l));
 		});
+
 		const successLinesHashSet = new Set();
-		successLinesText.forEach(l => {
-			successLinesHashSet.add(getLinesHash(l));
-		});
-		console.log(`########## ${problem.jobName} F:${problem.buildNumber} S:${problem.lastSuccess.number}`);
+		for (let i=0; i<problem.lastSuccesses.length; i++) {
+			const successTextUrl = `/${problem.url.replace(`/${problem.buildNumber}/`, `/${problem.lastSuccesses[i].number}/`)}consoleText`;
+			const successLinesText = await getMeaningfulLines(successTextUrl);
+			successLinesText.forEach(l => {
+				successLinesHashSet.add(getLinesHash(l));
+			});
+		}
+
+		console.log(`########## ${problem.jobName} F:${problem.buildNumber}`);
 		problemLinesHash.forEach((l, i) => {
 			if (!successLinesHashSet.has(l)) {
 				console.log(`[${i}] ${problemLinesText[i]}`);
@@ -146,9 +139,13 @@ async function investigateAllProblems() {
 	const buildNumbers = Object.keys(buildInfos)
 	.filter(k => buildInfos[k].problems && buildInfos[k].problems.length > 0);
 	const promises = [];
-	buildNumbers.forEach((bn, i) => {
+	buildNumbers.forEach((bn) => {
 		buildInfos[bn].problems.forEach(p => {
-			promises.push(investigateProblem(p));
+			if (    bn === '15962' && p.jobName === 'Ldap-CI-Trigger-full-master'
+				||  bn === '40034' && p.jobName === 'OMG-UI-Tests-quick-master'
+				||  bn === '15960' && p.jobName === 'Upgrade-Compare-System-Test-full-master') {
+				promises.push(investigateProblem(p));
+			}
 		});
 	});
 	await Promise.all(promises);
