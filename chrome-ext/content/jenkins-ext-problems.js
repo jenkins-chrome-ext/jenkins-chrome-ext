@@ -141,11 +141,7 @@ async function investigateAllProblems() {
 	const promises = [];
 	buildNumbers.forEach((bn) => {
 		buildInfos[bn].problems.forEach(p => {
-			if (    bn === '15962' && p.jobName === 'Ldap-CI-Trigger-full-master'
-				||  bn === '40034' && p.jobName === 'OMG-UI-Tests-quick-master'
-				||  bn === '15960' && p.jobName === 'Upgrade-Compare-System-Test-full-master') {
-				promises.push(investigateProblem(p));
-			}
+			promises.push(investigateProblem(p));
 		});
 	});
 	await Promise.all(promises);
