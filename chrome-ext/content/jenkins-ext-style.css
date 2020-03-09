@@ -58,6 +58,10 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 	color: #999 !important;
 }
 
+.jenkins-ext-hidden {
+	display: none;
+}
+
 .jenkins-ext-build-status--pending {
 }
 .jenkins-ext-build-status--running {
@@ -203,7 +207,18 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 }
 
 .jenkins-ext-build-problem-console-img {
+	height: 16px;
 	opacity: 0.75;
+}
+
+.jenkins-ext-build-problem-console-err-img {
+	height: 16px;
+	top: 1px;
+	cursor: pointer;
+	opacity: 0.75;
+}
+.jenkins-ext-build-problem-console-err-img:hover {
+	opacity: 0.56;
 }
 
 .jenkins-ext-build-problem-text {

@@ -36,6 +36,12 @@ function addProblems(problems, buildNumber, rec) {
 	}
 }
 
+function addErrViewClickHandler(elm, buildNumber, jobName, problemUrl) {
+	elm.addEventListener('click', function(e) {
+		window.open(`/${problemUrl}consoleFull`);
+	}, false);
+}
+
 function displayBuildProblem(buildNumber, problem) {
 	let buildLinkElm = getBuildLinkElement(buildNumber);
 	if (!buildLinkElm) {
@@ -51,17 +57,26 @@ function displayBuildProblem(buildNumber, problem) {
 	}
 	problemLineElm.className = `jenkins-ext-build-problem-line ${statusStyle}`;
 
-	let problemLinkElm = document.createElement('a');
-	problemLinkElm.setAttribute('href', `/${problem.url}consoleFull`);
-	problemLinkElm.setAttribute('target', '_blank');
-	problemLinkElm.setAttribute('title', 'View console log');
+	// let problemLinkElm = document.createElement('a');
+	// problemLinkElm.setAttribute('href', `/${problem.url}consoleFull`);
+	// problemLinkElm.setAttribute('target', '_blank');
+	// problemLinkElm.setAttribute('title', 'View full console output');
+	// let consoleImgElm = document.createElement('img');
+	// consoleImgElm.setAttribute('id', `jenkins-ext-build-problem-terminal-img-${buildNumber}-${problem.jobName.toLowerCase()}`);
+	// consoleImgElm.setAttribute('src', chrome.extension.getURL('img/terminal.png'));
+	// consoleImgElm.className = 'jenkins-ext-build-problem-console-img';
+	// problemLinkElm.appendChild(consoleImgElm);
+	// problemLineElm.appendChild(problemLinkElm);
 
-	let consoleImgElm = document.createElement('img');
-	consoleImgElm.setAttribute('src', chrome.extension.getURL('img/terminal.png'));
-	consoleImgElm.className = 'jenkins-ext-build-problem-console-img';
-	problemLinkElm.appendChild(consoleImgElm);
-
-	problemLineElm.appendChild(problemLinkElm);
+	let consoleErrImgElm = document.createElement('img');
+	consoleErrImgElm.setAttribute('id', `jenkins-ext-build-problem-terminal-err-img-${buildNumber}-${problem.jobName.toLowerCase()}`);
+	consoleErrImgElm.setAttribute('data-url-console-full', `/${problem.url}consoleFull`);
+	consoleErrImgElm.setAttribute('data-build-number', buildNumber);
+	consoleErrImgElm.setAttribute('data-job-name', problem.jobName);
+	consoleErrImgElm.setAttribute('src', chrome.extension.getURL('img/terminal-err.png'));
+	consoleErrImgElm.className = 'jenkins-ext-build-problem-console-err-img';
+	addErrViewClickHandler(consoleErrImgElm, buildNumber, problem.jobName, problem.url);
+	problemLineElm.appendChild(consoleErrImgElm);
 
 	let problemTextElm = document.createElement('div');
 	problemTextElm.innerText = problem.jobName;
@@ -101,11 +116,18 @@ function getLinesHash(line) {
 		.replace(/\d\s|\d+\S+\d*\S*|\S+\d+\d*\S*/g,'D'));
 }
 
-async function investigateProblem(problem) {
+async function investigateProblem(buildNumber, problem) {
 	if (!problem.url || !problem.jobName) {
 		return;
 	}
 	problem.lastSuccesses = await getProblemLastSuccesses(problem);
+	if (problem.lastSuccesses.length > 0) {
+		const imgElm = document.getElementById(`jenkins-ext-build-problem-terminal-err-img-${buildNumber}-${problem.jobName.toLowerCase()}`);
+		if (imgElm) {
+			imgElm.classList.remove('jenkins-ext-hidden');
+		}
+	}
+	/*
 	if (problem.lastSuccesses.length > 0) {
 		const problemTextUrl = `/${problem.url}consoleText`;
 		const problemLinesText = await getMeaningfulLines(problemTextUrl);
@@ -133,6 +155,7 @@ async function investigateProblem(problem) {
 		//const problemLines = await getMeaningfulLines(problemTextUrl);
 		//console.log(`${problem.jobName} P:${problem.buildNumber} S:NA`);
 	}
+	*/
 }
 
 async function investigateAllProblems() {
@@ -141,8 +164,12 @@ async function investigateAllProblems() {
 	const promises = [];
 	buildNumbers.forEach((bn) => {
 		buildInfos[bn].problems.forEach(p => {
-			promises.push(investigateProblem(p));
+			promises.push(investigateProblem(bn, p));
 		});
 	});
 	await Promise.all(promises);
+}
+
+function goErrorView() {
+	alert('yo');
 }
