@@ -30,6 +30,7 @@
   "web_accessible_resources": [
     "img/chat.png",
     "img/email.png",
-    "img/terminal.png"
+    "img/terminal.png",
+    "img/terminal-err.png"
   ]
 }
