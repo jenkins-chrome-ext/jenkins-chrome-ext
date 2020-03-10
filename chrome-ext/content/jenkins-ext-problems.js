@@ -118,10 +118,15 @@ function getLinesHash(line) {
 		.replace(/\d\s|\d+\S+\d*\S*|\S+\d+\d*\S*/g,'D'));
 }
 
-function showProblemDialog(problem) {
-	let problemDialogElm = document.createElement('div');
-	problemDialogElm.setAttribute('id', `jenkins-ext-build-problem-dialog-${problem.url.toLowerCase()}`);
-	problemDialogElm.className = 'jenkins-ext-build-problem-dialog';
+function showProblemDialog() {
+	let problemDialogElm = document.getElementById('jenkins-ext-build-problem-dialog');
+	if (problemDialogElm) {
+		problemDialogElm.innerHTML = '';
+	} else {
+		problemDialogElm = document.createElement('div');
+		problemDialogElm.setAttribute('id', 'jenkins-ext-build-problem-dialog');
+		problemDialogElm.className = 'jenkins-ext-build-problem-dialog';
+	}
 	let problemLinesElm = document.createElement('div');
 	problemLinesElm.className = 'jenkins-ext-build-problem-dialog-lines';
 	problemDialogElm.appendChild(problemLinesElm);
@@ -145,7 +150,7 @@ async function investigateBuildProblem(params) {
 	if (problem.lastSuccesses.length === 0) {
 		window.open(`/${problem.url}consoleFull`);
 	} else {
-		const problemLinesElm = showProblemDialog(problem);
+		const problemLinesElm = showProblemDialog();
 		const problemTextUrl = `/${problem.url}consoleText`;
 		const problemLinesText = await getMeaningfulLines(problemTextUrl);
 		const problemLinesHash = [];

@@ -273,6 +273,16 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 	z-index: 1000;
 }
 
+.jenkins-ext-build-problem-dialog-close-btn {
+	background-color: #aaa;
+	color: #000;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	height: 20px;
+	padding: 5px 20px;
+}
+
 .jenkins-ext-build-problem-dialog-lines {
 	position: absolute;
 	left: 40px;
