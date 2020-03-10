@@ -259,3 +259,37 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 .jenkins-ext-build-problem-line--unstable > .jenkins-ext-build-problem-text::before {
 	background-color: #fc3;
 }
+
+.jenkins-ext-build-problem-dialog {
+	position: fixed;
+	left: 10%;
+	right: 10%;
+	top: 10%;
+	bottom: 10%;
+	overflow: hidden;
+	border: 1px solid #ccc;
+	background-color: #ddd;
+	color: #000;
+	z-index: 1000;
+}
+
+.jenkins-ext-build-problem-dialog-lines {
+	position: absolute;
+	left: 40px;
+	right: 40px;
+	top: 40px;
+	bottom: 40px;
+	overflow: hidden auto;
+	background-color: #111;
+	color: #f33;
+	cursor: wait;
+}
+.jenkins-ext-build-problem-dialog-line {
+	padding: 0 4px;
+}
+.jenkins-ext-build-problem-dialog-line:nth-child(odd) {
+	background-color: #000;
+}
+.jenkins-ext-build-problem-dialog-line:nth-child(even) {
+	background-color: #222;
+}

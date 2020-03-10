@@ -118,12 +118,34 @@ function getLinesHash(line) {
 		.replace(/\d\s|\d+\S+\d*\S*|\S+\d+\d*\S*/g,'D'));
 }
 
+function showProblemDialog(problem) {
+	let problemDialogElm = document.createElement('div');
+	problemDialogElm.setAttribute('id', `jenkins-ext-build-problem-dialog-${problem.url.toLowerCase()}`);
+	problemDialogElm.className = 'jenkins-ext-build-problem-dialog';
+	let problemLinesElm = document.createElement('div');
+	problemLinesElm.className = 'jenkins-ext-build-problem-dialog-lines';
+	problemDialogElm.appendChild(problemLinesElm);
+	document.body.appendChild(problemDialogElm);
+	return problemLinesElm;
+}
+
+function populateProblemDialog(problemLinesElm, problem, uniqueProblemLines) {
+	uniqueProblemLines.forEach(lineText => {
+		let lineElm = document.createElement('div');
+		lineElm.className = 'jenkins-ext-build-problem-dialog-line';
+		lineElm.innerText = lineText;
+		problemLinesElm.appendChild(lineElm);
+	});
+	problemLinesElm.style['cursor'] = 'text';
+}
+
 async function investigateBuildProblem(params) {
 	const [problem] = params;
 	problem.lastSuccesses = await getProblemLastSuccesses(problem);
 	if (problem.lastSuccesses.length === 0) {
 		window.open(`/${problem.url}consoleFull`);
 	} else {
+		const problemLinesElm = showProblemDialog(problem);
 		const problemTextUrl = `/${problem.url}consoleText`;
 		const problemLinesText = await getMeaningfulLines(problemTextUrl);
 		const problemLinesHash = [];
@@ -138,12 +160,13 @@ async function investigateBuildProblem(params) {
 				successLinesHashSet.add(getLinesHash(l));
 			});
 		}
-		console.log(`########## ${problem.jobName} F:${problem.buildNumber}`);
+		const uniqueProblemLines = [];
 		problemLinesHash.forEach((l, i) => {
 			if (!successLinesHashSet.has(l)) {
-				console.log(`[${i}] ${problemLinesText[i]}`);
+				uniqueProblemLines.push(`[${i}] ${problemLinesText[i]}`);
 			}
 		});
+		populateProblemDialog(problemLinesElm, problem, uniqueProblemLines);
 	}
 }
 
