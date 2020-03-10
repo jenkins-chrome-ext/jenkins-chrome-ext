@@ -164,7 +164,9 @@ async function investigateAllProblems() {
 	const promises = [];
 	buildNumbers.forEach((bn) => {
 		buildInfos[bn].problems.forEach(p => {
-			promises.push(investigateProblem(bn, p));
+			if (bn === '16028') {
+				promises.push(investigateProblem(bn, p));
+			}
 		});
 	});
 	await Promise.all(promises);

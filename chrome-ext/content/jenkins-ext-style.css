@@ -62,6 +62,15 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 	display: none;
 }
 
+@keyframes appear {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
 .jenkins-ext-build-status--pending {
 }
 .jenkins-ext-build-status--running {
@@ -218,7 +227,7 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 	opacity: 0.75;
 }
 .jenkins-ext-build-problem-console-err-img:hover {
-	opacity: 0.56;
+	opacity: 1;
 }
 
 .jenkins-ext-build-problem-text {

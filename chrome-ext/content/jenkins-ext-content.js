@@ -66,7 +66,7 @@ async function onGetRootJobInfoDone(info) {
 		promises.push(handleBuildInfo(build));
 	});
 	await Promise.all(promises);
-	//await investigateAllProblems();
+	await investigateAllProblems();
 }
 
 // function updateRunningBuilds() {
