@@ -36,9 +36,9 @@ function addProblems(problems, buildNumber, rec) {
 	}
 }
 
-function addErrViewClickHandler(elm, buildNumber, jobName, problemUrl) {
-	elm.addEventListener('click', function(e) {
-		window.open(`/${problemUrl}consoleFull`);
+function addClickHandler(elm, cb, ...params) {
+	elm.addEventListener('click', async () => {
+		cb(params).then();
 	}, false);
 }
 
@@ -68,15 +68,17 @@ function displayBuildProblem(buildNumber, problem) {
 	// problemLinkElm.appendChild(consoleImgElm);
 	// problemLineElm.appendChild(problemLinkElm);
 
-	let consoleErrImgElm = document.createElement('img');
-	consoleErrImgElm.setAttribute('id', `jenkins-ext-build-problem-terminal-err-img-${buildNumber}-${problem.jobName.toLowerCase()}`);
-	consoleErrImgElm.setAttribute('data-url-console-full', `/${problem.url}consoleFull`);
-	consoleErrImgElm.setAttribute('data-build-number', buildNumber);
-	consoleErrImgElm.setAttribute('data-job-name', problem.jobName);
-	consoleErrImgElm.setAttribute('src', chrome.extension.getURL('img/terminal-err.png'));
-	consoleErrImgElm.className = 'jenkins-ext-build-problem-console-err-img';
-	addErrViewClickHandler(consoleErrImgElm, buildNumber, problem.jobName, problem.url);
-	problemLineElm.appendChild(consoleErrImgElm);
+	if (problem.url && problem.jobName) {
+		let consoleErrImgElm = document.createElement('img');
+		//consoleErrImgElm.setAttribute('id', `jenkins-ext-build-problem-terminal-err-img-${buildNumber}-${problem.jobName.toLowerCase()}`);
+		consoleErrImgElm.setAttribute('data-url-console-full', `/${problem.url}consoleFull`);
+		consoleErrImgElm.setAttribute('data-build-number', buildNumber);
+		consoleErrImgElm.setAttribute('data-job-name', problem.jobName);
+		consoleErrImgElm.setAttribute('src', chrome.extension.getURL('img/terminal-err.png'));
+		consoleErrImgElm.className = 'jenkins-ext-build-problem-console-err-img';
+		addClickHandler(consoleErrImgElm, investigateBuildProblem, problem);
+		problemLineElm.appendChild(consoleErrImgElm);
+	}
 
 	let problemTextElm = document.createElement('div');
 	problemTextElm.innerText = problem.jobName;
@@ -116,62 +118,43 @@ function getLinesHash(line) {
 		.replace(/\d\s|\d+\S+\d*\S*|\S+\d+\d*\S*/g,'D'));
 }
 
-async function investigateProblem(buildNumber, problem) {
-	if (!problem.url || !problem.jobName) {
-		return;
-	}
+async function investigateBuildProblem(params) {
+	const [problem] = params;
 	problem.lastSuccesses = await getProblemLastSuccesses(problem);
-	if (problem.lastSuccesses.length > 0) {
-		const imgElm = document.getElementById(`jenkins-ext-build-problem-terminal-err-img-${buildNumber}-${problem.jobName.toLowerCase()}`);
-		if (imgElm) {
-			imgElm.classList.remove('jenkins-ext-hidden');
-		}
-	}
-	/*
-	if (problem.lastSuccesses.length > 0) {
+	if (problem.lastSuccesses.length === 0) {
+		window.open(`/${problem.url}consoleFull`);
+	} else {
 		const problemTextUrl = `/${problem.url}consoleText`;
 		const problemLinesText = await getMeaningfulLines(problemTextUrl);
 		const problemLinesHash = [];
 		problemLinesText.forEach(l => {
 			problemLinesHash.push(getLinesHash(l));
 		});
-
 		const successLinesHashSet = new Set();
-		for (let i=0; i<problem.lastSuccesses.length; i++) {
+		for (let i = 0; i < problem.lastSuccesses.length; i++) {
 			const successTextUrl = `/${problem.url.replace(`/${problem.buildNumber}/`, `/${problem.lastSuccesses[i].number}/`)}consoleText`;
 			const successLinesText = await getMeaningfulLines(successTextUrl);
 			successLinesText.forEach(l => {
 				successLinesHashSet.add(getLinesHash(l));
 			});
 		}
-
 		console.log(`########## ${problem.jobName} F:${problem.buildNumber}`);
 		problemLinesHash.forEach((l, i) => {
 			if (!successLinesHashSet.has(l)) {
 				console.log(`[${i}] ${problemLinesText[i]}`);
 			}
 		});
-	} else {
-		//const problemLines = await getMeaningfulLines(problemTextUrl);
-		//console.log(`${problem.jobName} P:${problem.buildNumber} S:NA`);
 	}
-	*/
 }
 
-async function investigateAllProblems() {
-	const buildNumbers = Object.keys(buildInfos)
-	.filter(k => buildInfos[k].problems && buildInfos[k].problems.length > 0);
-	const promises = [];
-	buildNumbers.forEach((bn) => {
-		buildInfos[bn].problems.forEach(p => {
-			if (bn === '16028') {
-				promises.push(investigateProblem(bn, p));
-			}
-		});
-	});
-	await Promise.all(promises);
-}
-
-function goErrorView() {
-	alert('yo');
-}
+// async function investigateAllProblems() {
+// 	const buildNumbers = Object.keys(buildInfos)
+// 	.filter(k => buildInfos[k].problems && buildInfos[k].problems.length > 0);
+// 	const promises = [];
+// 	buildNumbers.forEach((bn) => {
+// 		buildInfos[bn].problems.forEach(p => {
+// 			promises.push(investigateProblem(bn, p));
+// 		});
+// 	});
+// 	await Promise.all(promises);
+// }
