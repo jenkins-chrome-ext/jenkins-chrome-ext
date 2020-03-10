@@ -127,10 +127,20 @@ function showProblemDialog() {
 		problemDialogElm.setAttribute('id', 'jenkins-ext-build-problem-dialog');
 		problemDialogElm.className = 'jenkins-ext-build-problem-dialog';
 	}
+
+	let closeElm = document.createElement('button');
+	closeElm.className = 'jenkins-ext-build-problem-dialog-close-btn';
+	closeElm.innerText = 'x';
+	closeElm.addEventListener('click', () => {
+		problemDialogElm.classList.add('jenkins-ext-hidden');
+	});
+	problemDialogElm.appendChild(closeElm);
+
 	let problemLinesElm = document.createElement('div');
 	problemLinesElm.className = 'jenkins-ext-build-problem-dialog-lines';
 	problemDialogElm.appendChild(problemLinesElm);
 	document.body.appendChild(problemDialogElm);
+	problemDialogElm.classList.remove('jenkins-ext-hidden');
 	return problemLinesElm;
 }
 

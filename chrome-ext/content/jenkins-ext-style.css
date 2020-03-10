@@ -274,24 +274,26 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 }
 
 .jenkins-ext-build-problem-dialog-close-btn {
-	background-color: #aaa;
-	color: #000;
 	position: absolute;
-	top: 20px;
-	right: 20px;
-	height: 20px;
-	padding: 5px 20px;
+	top: 15px;
+	right: 15px;
+	outline: none;
+	border: none;
+	padding: 5px 10px;
+	background-color: #bbb;
+	color: #000;
+	cursor: pointer;
 }
 
 .jenkins-ext-build-problem-dialog-lines {
 	position: absolute;
-	left: 40px;
-	right: 40px;
-	top: 40px;
-	bottom: 40px;
+	top: 50px;
+	bottom: 50px;
+	left: 50px;
+	right: 50px;
 	overflow: hidden auto;
 	background-color: #111;
-	color: #f33;
+	color: #f66;
 	cursor: wait;
 }
 .jenkins-ext-build-problem-dialog-line {
