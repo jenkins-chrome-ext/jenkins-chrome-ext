@@ -291,6 +291,9 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 	color: #000;
 	cursor: pointer;
 }
+.jenkins-ext-build-problem-dialog-close-btn:hover {
+	background-color: #aaa;
+}
 
 .jenkins-ext-build-problem-dialog-lines {
 	position: absolute;
