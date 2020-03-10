@@ -118,7 +118,7 @@ function getLinesHash(line) {
 		.replace(/\d\s|\d+\S+\d*\S*|\S+\d+\d*\S*/g,'D'));
 }
 
-function showProblemDialog() {
+function showProblemDialog(problem) {
 	let problemDialogElm = document.getElementById('jenkins-ext-build-problem-dialog');
 	if (problemDialogElm) {
 		problemDialogElm.innerHTML = '';
@@ -127,6 +127,13 @@ function showProblemDialog() {
 		problemDialogElm.setAttribute('id', 'jenkins-ext-build-problem-dialog');
 		problemDialogElm.className = 'jenkins-ext-build-problem-dialog';
 	}
+
+	let consoleLinkElm = document.createElement('a');
+	consoleLinkElm.setAttribute('href', `/${problem.url}consoleFull`);
+	consoleLinkElm.setAttribute('target', '_blank');
+	consoleLinkElm.innerText = 'Goto console output';
+	consoleLinkElm.className = 'jenkins-ext-build-problem-dialog-console-link';
+	problemDialogElm.appendChild(consoleLinkElm);
 
 	let closeElm = document.createElement('button');
 	closeElm.className = 'jenkins-ext-build-problem-dialog-close-btn';
@@ -147,8 +154,12 @@ function showProblemDialog() {
 function populateProblemDialog(problemLinesElm, problem, uniqueProblemLines) {
 	uniqueProblemLines.forEach(lineText => {
 		let lineElm = document.createElement('div');
-		lineElm.className = 'jenkins-ext-build-problem-dialog-line';
 		lineElm.innerText = lineText;
+		if (/error|failure|failed|exception/ig.test(lineText)) {
+			lineElm.className = 'jenkins-ext-build-problem-dialog-line jenkins-ext-build-problem-dialog-line--err';
+		} else {
+			lineElm.className = 'jenkins-ext-build-problem-dialog-line';
+		}
 		problemLinesElm.appendChild(lineElm);
 	});
 	problemLinesElm.style['cursor'] = 'text';
@@ -160,7 +171,7 @@ async function investigateBuildProblem(params) {
 	if (problem.lastSuccesses.length === 0) {
 		window.open(`/${problem.url}consoleFull`);
 	} else {
-		const problemLinesElm = showProblemDialog();
+		const problemLinesElm = showProblemDialog(problem);
 		const problemTextUrl = `/${problem.url}consoleText`;
 		const problemLinesText = await getMeaningfulLines(problemTextUrl);
 		const problemLinesHash = [];
