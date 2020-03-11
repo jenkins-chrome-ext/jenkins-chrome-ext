@@ -155,7 +155,7 @@ function populateProblemDialog(problemLinesElm, problem, uniqueProblemLines) {
 	uniqueProblemLines.forEach(lineText => {
 		let lineElm = document.createElement('div');
 		lineElm.innerText = lineText;
-		if (/error|failure|failed|exception/ig.test(lineText)) {
+		if (/fata|error|failure|failed|exception|unstable/ig.test(lineText)) {
 			lineElm.className = 'jenkins-ext-build-problem-dialog-line jenkins-ext-build-problem-dialog-line--err';
 		} else {
 			lineElm.className = 'jenkins-ext-build-problem-dialog-line';

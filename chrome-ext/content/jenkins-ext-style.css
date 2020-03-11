@@ -301,20 +301,21 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 	bottom: 50px;
 	left: 50px;
 	right: 50px;
-	overflow: hidden auto;
-	background-color: #111;
+	overflow: auto;
+	background-color: #000;
 	color: #ddd;
 	font-family: Play, sans-serif;
 	cursor: wait;
 }
 .jenkins-ext-build-problem-dialog-line {
 	padding: 0 4px;
+	white-space: nowrap;
 }
 .jenkins-ext-build-problem-dialog-line:nth-child(odd) {
 	background-color: #000;
 }
 .jenkins-ext-build-problem-dialog-line:nth-child(even) {
-	background-color: #222;
+	background-color: #000;
 }
 .jenkins-ext-build-problem-dialog-line--err {
 	color: #f66;
