@@ -277,10 +277,7 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 	position: absolute;
 	top: 18px;
 	left: 50px;
-	color: #39c;
-}
-.jenkins-ext-build-problem-dialog-console-link:hover {
-	color: #ccc;
+	color: #9cf !important;
 }
 
 .jenkins-ext-build-problem-dialog-close-btn {
