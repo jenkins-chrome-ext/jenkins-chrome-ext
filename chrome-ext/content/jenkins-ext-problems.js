@@ -131,7 +131,7 @@ function showProblemDialog(problem) {
 	let consoleLinkElm = document.createElement('a');
 	consoleLinkElm.setAttribute('href', `/${problem.url}consoleFull`);
 	consoleLinkElm.setAttribute('target', '_blank');
-	consoleLinkElm.innerText = 'Goto Full Console Output';
+	consoleLinkElm.innerText = 'Open full console output';
 	consoleLinkElm.className = 'jenkins-ext-build-problem-dialog-console-link';
 	problemDialogElm.appendChild(consoleLinkElm);
 

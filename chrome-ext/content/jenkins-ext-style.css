@@ -262,13 +262,13 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 
 .jenkins-ext-build-problem-dialog {
 	position: fixed;
-	left: 5%;
-	right: 5%;
-	top: 10%;
-	bottom: 10%;
+	left: 50px;
+	right: 50px;
+	top: 50px;
+	bottom: 50px;
 	overflow: hidden;
 	border: 1px solid #ccc;
-	background-color: #ddd;
+	background-color: #333;
 	color: #000;
 	z-index: 10000;
 }
@@ -277,7 +277,10 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 	position: absolute;
 	top: 18px;
 	left: 50px;
-	color: #000;
+	color: #39c;
+}
+.jenkins-ext-build-problem-dialog-console-link:hover {
+	color: #ccc;
 }
 
 .jenkins-ext-build-problem-dialog-close-btn {
