@@ -107,7 +107,10 @@ async function getProblemLastSuccesses(problem) {
 async function getMeaningfulLines(textUrl) {
 	const textResult = await goFetchText(textUrl);
 	if (!linesCache[textUrl]) {
-		linesCache[textUrl] = textResult.split('\n').filter(l => l.length>0 && !/^\[?(INFO|WARN|WARNING)[\] ]/.test(l));
+		linesCache[textUrl] = textResult.split('\n').filter(l =>
+			l.length > 0
+			&& !/^\[?(INFO|WARN|WARNING)[\] ]/.test(l)
+			&& /[a-zA-Z0-9]+/ig.test(l));
 	}
 	return linesCache[textUrl];
 }
@@ -189,7 +192,7 @@ async function investigateBuildProblem(params) {
 		const uniqueProblemLines = [];
 		problemLinesHash.forEach((l, i) => {
 			if (!successLinesHashSet.has(l)) {
-				uniqueProblemLines.push(`[${i}] ${problemLinesText[i]}`);
+				uniqueProblemLines.push(`${problemLinesText[i]}`);
 			}
 		});
 		populateProblemDialog(problemLinesElm, problem, uniqueProblemLines);
