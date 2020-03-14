@@ -109,8 +109,9 @@ async function getMeaningfulLines(textUrl) {
 	if (!linesCache[textUrl]) {
 		linesCache[textUrl] = textResult.split('\n').filter(l =>
 			l.length > 0
+			&& /[a-zA-Z0-9]+/.test(l)
 			&& !/^\[?(INFO|WARN|WARNING)[\] ]/.test(l)
-			&& /[a-zA-Z0-9]+/.test(l));
+			);
 	}
 	return linesCache[textUrl];
 }
