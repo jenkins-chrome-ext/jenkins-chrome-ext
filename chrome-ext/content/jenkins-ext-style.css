@@ -1,76 +1,63 @@
 @font-face {
-	font-family: 'Play';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Play Regular'), local('Play-Regular'), url(https://fonts.gstatic.com/s/play/v11/6aez4K2oVqwIvts2H68T.woff2) format('woff2');
-	unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    font-family: 'Play';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Play Regular'), local('Play-Regular'), url(https://fonts.gstatic.com/s/play/v11/6aez4K2oVqwIvts2H68T.woff2) format('woff2');
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
-	font-family: 'Play';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Play Regular'), local('Play-Regular'), url(https://fonts.gstatic.com/s/play/v11/6aez4K2oVqwIvtU2Hw.woff2) format('woff2');
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    font-family: 'Play';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Play Regular'), local('Play-Regular'), url(https://fonts.gstatic.com/s/play/v11/6aez4K2oVqwIvtU2Hw.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
 table.stripped tr:nth-child(odd),
 table.stripped tr:nth-child(odd) > .build-row-cell {
-	background-color: #fff;
+    background-color: #fff;
 }
-
 table.stripped tr:nth-child(even),
 table.stripped tr:nth-child(even) > .build-row-cell {
-	background-color: #f6f6f6;
+    background-color: #f6f6f6;
 }
-
 .build-row .build-name-controls .pane.build-name {
-	height: auto !important;
+    height: auto !important;
 }
-
 .build-row .build-name-controls .pane.build-controls {
-	padding-right: 0 !important;
+    padding-right: 0 !important;
 }
-
 .build-row .build-name-controls .pane.build-controls > .build-badge > img.icon-lock {
-	position: relative !important;
-	left: 2px !important;
+    position: relative !important;
+    left: 2px !important;
 }
-
 .build-row-cell:first-child {
-	border-top: 1px solid #eee;
+    border-top: 1px solid #eee;
 }
-
 .build-row-cell {
-	border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #eee;
 }
-
 .build-row-cell .pane.build-name .display-name {
-	margin-top: 3px !important;
-	margin-left: 22px !important;
+    margin-top: 3px !important;
+    margin-left: 22px !important;
 }
-
 .build-row-cell .pane.build-details {
-	margin-top: 0 !important;
-	padding-left: 30px !important;
+    margin-top: 0 !important;
+    padding-left: 30px !important;
 }
-
 .build-row-cell .pane.build-details > a {
-	color: #999 !important;
+    color: #999 !important;
 }
-
 .jenkins-ext-hidden {
-	display: none;
+    display: none;
 }
-
 @keyframes appear {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
-
 .jenkins-ext-build-status--pending {
 }
 .jenkins-ext-build-status--running {
@@ -85,238 +72,215 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 }
 .jenkins-ext-build-status--unknown {
 }
-
 .jenkins-ext-build-commiters {
-	font-size: 12px;
-	line-height: 16px;
+    font-size: 12px;
+    line-height: 16px;
 }
-
 .jenkins-ext-build-commiter-line {
-	display: flex;
-	padding-left: 30px;
-	overflow: hidden;
-	max-width: 320px;
+    display: flex;
+    padding-left: 30px;
+    overflow: hidden;
+    max-width: 320px;
     margin-bottom: 1px;
 }
-
 .jenkins-ext-build-chat-all-commiters-line {
-	display: flex;
-	padding-left: 30px;
-	overflow: hidden;
-	max-width: 320px;
-	margin-bottom: 1px;
+    display: flex;
+    padding-left: 30px;
+    overflow: hidden;
+    max-width: 320px;
+    margin-bottom: 1px;
 }
-
 .jenkins-ext-build-chat-all-commiters-text {
-	flex: 1 1 auto;
-	display: inline-block;
-	position: relative;
-	top: 1px;
-	vertical-align: middle;
-	margin-left: 4px;
-	max-width: 232px;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	color: #666 !important;
-	cursor: default;
-}
-
-.jenkins-ext-build-commiter-chat-link {
-	vertical-align: middle;
-	flex: 0 0 16px;
-	text-decoration: none !important;
-}
-
-.jenkins-ext-build-commiter-chat-img {
-}
-
-.jenkins-ext-build-commiter-email-link {
-	vertical-align: middle;
-	flex: 0 0 16px;
-	text-decoration: none !important;
-	padding-left: 4px;
-}
-
-.jenkins-ext-build-commiter-email-img {
-}
-
-.jenkins-ext-build-commiter-name {
-	flex: 1 1 auto;
-	display: inline-block;
-	position: relative;
-	top: 1px;
-	vertical-align: middle;
-	margin-left: 4px;
+    flex: 1 1 auto;
+    display: inline-block;
+    position: relative;
+    top: 1px;
+    vertical-align: middle;
+    margin-left: 4px;
     max-width: 232px;
-	text-overflow: ellipsis;
+    text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-	color: #666 !important;
-	cursor: default;
+    color: #666 !important;
+    cursor: default;
 }
-
+.jenkins-ext-build-commiter-chat-link {
+    vertical-align: middle;
+    flex: 0 0 16px;
+    text-decoration: none !important;
+}
+.jenkins-ext-build-commiter-chat-img {
+}
+.jenkins-ext-build-commiter-email-link {
+    vertical-align: middle;
+    flex: 0 0 16px;
+    text-decoration: none !important;
+    padding-left: 4px;
+}
+.jenkins-ext-build-commiter-email-img {
+}
+.jenkins-ext-build-commiter-name {
+    flex: 1 1 auto;
+    display: inline-block;
+    position: relative;
+    top: 1px;
+    vertical-align: middle;
+    margin-left: 4px;
+    max-width: 232px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #666 !important;
+    cursor: default;
+}
 .jenkins-ext-build-commiter-no-commits {
-	flex: 1 1 auto;
-	display: inline-block;
-	position: relative;
-	top: 1px;
-	vertical-align: middle;
-	max-width: 232px;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	color: #666 !important;
-	cursor: default;
+    flex: 1 1 auto;
+    display: inline-block;
+    position: relative;
+    top: 1px;
+    vertical-align: middle;
+    max-width: 232px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #666 !important;
+    cursor: default;
 }
-
 .jenkins-ext-build-commiter-name--highlight {
-	color: #93c !important;
-	font-weight: bold;
+    color: #93c !important;
+    font-weight: bold;
 }
-
 .jenkins-ext-build-commiter-name--me {
-	color: #36f !important;
-	font-weight: bold;
+    color: #36f !important;
+    font-weight: bold;
 }
-
 .jenkins-ext-build-commiter-commits {
-	flex: 1 1 auto;
-	text-align: right;
-	overflow: hidden;
-	white-space: nowrap;
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	flex-wrap: wrap;
-	max-width: 200px;
+    flex: 1 1 auto;
+    text-align: right;
+    overflow: hidden;
+    white-space: nowrap;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 200px;
 }
-
 .jenkins-ext-build-commiter-commit-link {
-	margin: 1px;
-	display: inline-block;
-	height: 12px;
-	width: 16px;
+    margin: 1px;
+    display: inline-block;
+    height: 12px;
+    width: 16px;
     background-color: #ccc;
     color: #000 !important;
     line-height: 13px;
     text-align: center;
     font-size: 8px;
     border-radius: 3px;
-	text-decoration: none !important;
+    text-decoration: none !important;
 }
-
 .jenkins-ext-build-problem-line {
-	position: relative;
-	display: flex;
-	padding-left: 30px;
-	max-width: 320px;
-	margin-bottom: 1px;
-	overflow: hidden;
+    position: relative;
+    display: flex;
+    padding-left: 30px;
+    max-width: 320px;
+    margin-bottom: 1px;
+    overflow: hidden;
 }
-
 .jenkins-ext-build-problem-console-img {
-	height: 16px;
-	opacity: 0.75;
+    height: 16px;
+    opacity: 0.75;
 }
-
 .jenkins-ext-build-problem-console-err-img {
-	height: 16px;
-	top: 1px;
-	cursor: pointer;
-	opacity: 0.75;
+    height: 16px;
+    top: 1px;
+    cursor: pointer;
+    opacity: 0.75;
 }
 .jenkins-ext-build-problem-console-err-img:hover {
-	opacity: 1;
+    opacity: 1;
 }
-
 .jenkins-ext-build-problem-text {
-	position: relative;
-	top: 2px;
-	left: 0;
-	padding-left: 12px;
-	width: 270px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	font-family: Play, sans-serif;
-	color: #966;
+    position: relative;
+    top: 2px;
+    left: 0;
+    padding-left: 12px;
+    width: 270px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: Play, sans-serif;
+    color: #966;
 }
-
 .jenkins-ext-build-problem-line--failure > .jenkins-ext-build-problem-text::before,
 .jenkins-ext-build-problem-line--unstable > .jenkins-ext-build-problem-text::before {
-	content: "";
-	width: 5px;
-	height: 5px;
-	position: absolute;
-	left: 4px;
-	top: 5px;
-	background-color: #ccc;
+    content: "";
+    width: 5px;
+    height: 5px;
+    position: absolute;
+    left: 4px;
+    top: 5px;
+    background-color: #ccc;
 }
 .jenkins-ext-build-problem-line--failure > .jenkins-ext-build-problem-text::before {
-	background-color: #f66;
+    background-color: #f66;
 }
 .jenkins-ext-build-problem-line--unstable > .jenkins-ext-build-problem-text::before {
-	background-color: #fc3;
+    background-color: #fc3;
 }
-
 .jenkins-ext-build-problem-dialog {
-	position: fixed;
-	left: 50px;
-	right: 50px;
-	top: 50px;
-	bottom: 50px;
-	overflow: hidden;
-	border: 1px solid #aaa;
-	background-color: #333;
-	color: #000;
-	z-index: 10000;
+    position: fixed;
+    left: 50px;
+    right: 50px;
+    top: 50px;
+    bottom: 50px;
+    overflow: hidden;
+    border: 1px solid #aaa;
+    background-color: #333;
+    color: #000;
+    z-index: 10000;
 }
-
 .jenkins-ext-build-problem-dialog-console-link {
-	position: absolute;
-	top: 18px;
-	left: 50px;
-	color: #9cf !important;
+    position: absolute;
+    top: 18px;
+    left: 50px;
+    color: #9cf !important;
 }
-
 .jenkins-ext-build-problem-dialog-close-btn {
-	position: absolute;
-	top: 15px;
-	right: 15px;
-	outline: none;
-	border: none;
-	padding: 5px 10px;
-	background-color: #bbb;
-	color: #000;
-	cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    outline: none;
+    border: none;
+    padding: 5px 10px;
+    background-color: #bbb;
+    color: #000;
+    cursor: pointer;
 }
 .jenkins-ext-build-problem-dialog-close-btn:hover {
-	background-color: #aaa;
+    background-color: #aaa;
 }
-
 .jenkins-ext-build-problem-dialog-lines {
-	position: absolute;
-	top: 50px;
-	bottom: 50px;
-	left: 50px;
-	right: 50px;
-	overflow: auto;
-	background-color: #000;
-	color: #ddd;
-	font-family: Play, sans-serif;
-	cursor: wait;
+    position: absolute;
+    top: 50px;
+    bottom: 50px;
+    left: 50px;
+    right: 50px;
+    overflow: auto;
+    background-color: #000;
+    color: #ddd;
+    font-family: Play, sans-serif;
+    cursor: wait;
 }
 .jenkins-ext-build-problem-dialog-line {
-	padding: 0 4px;
-	white-space: nowrap;
+    padding: 0 4px;
+    white-space: nowrap;
 }
 .jenkins-ext-build-problem-dialog-line:nth-child(odd) {
-	background-color: #000;
+    background-color: #000;
 }
 .jenkins-ext-build-problem-dialog-line:nth-child(even) {
-	background-color: #000;
+    background-color: #000;
 }
 .jenkins-ext-build-problem-dialog-line--err {
-	color: #f66;
+    color: #f66;
 }
