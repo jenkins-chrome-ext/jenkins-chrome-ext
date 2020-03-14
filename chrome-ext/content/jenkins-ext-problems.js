@@ -110,7 +110,7 @@ async function getMeaningfulLines(textUrl) {
 		linesCache[textUrl] = textResult.split('\n').filter(l =>
 			l.length > 0
 			&& !/^\[?(INFO|WARN|WARNING)[\] ]/.test(l)
-			&& /[a-zA-Z0-9]+/ig.test(l));
+			&& /[a-zA-Z0-9]+/.test(l));
 	}
 	return linesCache[textUrl];
 }

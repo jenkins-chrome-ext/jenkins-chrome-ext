@@ -267,7 +267,7 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 	top: 50px;
 	bottom: 50px;
 	overflow: hidden;
-	border: 1px solid #ccc;
+	border: 1px solid #aaa;
 	background-color: #333;
 	color: #000;
 	z-index: 10000;
