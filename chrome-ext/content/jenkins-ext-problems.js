@@ -183,13 +183,17 @@ async function investigateBuildProblem(params) {
 			problemLinesHash.push(getLinesHash(l));
 		});
 		const successLinesHashSet = new Set();
+		const promises = [];
 		for (let i = 0; i < problem.lastSuccesses.length; i++) {
 			const successTextUrl = `/${problem.url.replace(`/${problem.buildNumber}/`, `/${problem.lastSuccesses[i].number}/`)}consoleText`;
-			const successLinesText = await getMeaningfulLines(successTextUrl);
+			promises.push(getMeaningfulLines(successTextUrl));
+		}
+		const successLinesTexts = await Promise.all(promises);
+		successLinesTexts.forEach(successLinesText => {
 			successLinesText.forEach(l => {
 				successLinesHashSet.add(getLinesHash(l));
 			});
-		}
+		});
 		const uniqueProblemLines = [];
 		problemLinesHash.forEach((l, i) => {
 			if (!successLinesHashSet.has(l)) {
