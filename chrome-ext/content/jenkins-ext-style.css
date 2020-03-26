@@ -225,6 +225,17 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 .jenkins-ext-build-problem-line--unstable > .jenkins-ext-build-problem-text::before {
     background-color: #fc3;
 }
+.jenkins-ext-build-problem-dialog-backdrop {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+    background-color: #fff;
+    opacity: 0.75;
+    z-index: 10000;
+}
 .jenkins-ext-build-problem-dialog {
     position: fixed;
     left: 100px;

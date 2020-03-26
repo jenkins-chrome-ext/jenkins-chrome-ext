@@ -57,17 +57,6 @@ function displayBuildProblem(buildNumber, problem) {
 	}
 	problemLineElm.className = `jenkins-ext-build-problem-line ${statusStyle}`;
 
-	// let problemLinkElm = document.createElement('a');
-	// problemLinkElm.setAttribute('href', `/${problem.url}consoleFull`);
-	// problemLinkElm.setAttribute('target', '_blank');
-	// problemLinkElm.setAttribute('title', 'View full console output');
-	// let consoleImgElm = document.createElement('img');
-	// consoleImgElm.setAttribute('id', `jenkins-ext-build-problem-terminal-img-${buildNumber}-${problem.jobName.toLowerCase()}`);
-	// consoleImgElm.setAttribute('src', chrome.extension.getURL('img/terminal.png'));
-	// consoleImgElm.className = 'jenkins-ext-build-problem-console-img';
-	// problemLinkElm.appendChild(consoleImgElm);
-	// problemLineElm.appendChild(problemLinkElm);
-
 	if (problem.url && problem.jobName) {
 		let consoleErrImgElm = document.createElement('img');
 		//consoleErrImgElm.setAttribute('id', `jenkins-ext-build-problem-terminal-err-img-${buildNumber}-${problem.jobName.toLowerCase()}`);
@@ -122,6 +111,25 @@ function getLinesHash(line) {
 		.replace(/\d\s|\d+\S+\d*\S*|\S+\d+\d*\S*/g,'D'));
 }
 
+function showProblemDialogBackdrop() {
+	let problemDialogBackdropElm = document.getElementById('jenkins-ext-build-problem-dialog-backdrop');
+	if (problemDialogBackdropElm) {
+		problemDialogBackdropElm.classList.remove('jenkins-ext-hidden');
+	} else {
+		problemDialogBackdropElm = document.createElement('div');
+		problemDialogBackdropElm.setAttribute('id', 'jenkins-ext-build-problem-dialog-backdrop');
+		problemDialogBackdropElm.className = 'jenkins-ext-build-problem-dialog-backdrop';
+		document.body.appendChild(problemDialogBackdropElm);
+	}
+}
+
+function hideProblemDialogBackdrop() {
+	const problemDialogBackdropElm = document.getElementById('jenkins-ext-build-problem-dialog-backdrop');
+	if (problemDialogBackdropElm) {
+		problemDialogBackdropElm.classList.add('jenkins-ext-hidden');
+	}
+}
+
 function showProblemDialog(problem) {
 	let problemDialogElm = document.getElementById('jenkins-ext-build-problem-dialog');
 	if (problemDialogElm) {
@@ -144,6 +152,7 @@ function showProblemDialog(problem) {
 	closeElm.innerText = 'x';
 	closeElm.addEventListener('click', () => {
 		problemDialogElm.classList.add('jenkins-ext-hidden');
+		hideProblemDialogBackdrop();
 	});
 	problemDialogElm.appendChild(closeElm);
 
@@ -170,37 +179,44 @@ function populateProblemDialog(problemLinesElm, problem, uniqueProblemLines) {
 }
 
 async function investigateBuildProblem(params) {
-	const [problem] = params;
-	problem.lastSuccesses = await getProblemLastSuccesses(problem);
-	if (problem.lastSuccesses.length === 0) {
-		window.open(`/${problem.url}consoleFull`);
-	} else {
-		const problemLinesElm = showProblemDialog(problem);
-		const problemTextUrl = `/${problem.url}consoleText`;
-		const problemLinesText = await getMeaningfulLines(problemTextUrl);
-		const problemLinesHash = [];
-		problemLinesText.forEach(l => {
-			problemLinesHash.push(getLinesHash(l));
-		});
-		const successLinesHashSet = new Set();
-		const promises = [];
-		for (let i = 0; i < problem.lastSuccesses.length; i++) {
-			const successTextUrl = `/${problem.url.replace(`/${problem.buildNumber}/`, `/${problem.lastSuccesses[i].number}/`)}consoleText`;
-			promises.push(getMeaningfulLines(successTextUrl));
-		}
-		const successLinesTexts = await Promise.all(promises);
-		successLinesTexts.forEach(successLinesText => {
-			successLinesText.forEach(l => {
-				successLinesHashSet.add(getLinesHash(l));
+	showProblemDialogBackdrop();
+	document.body.style.cursor = 'wait';
+	try {
+		const [problem] = params;
+		problem.lastSuccesses = await getProblemLastSuccesses(problem);
+		if (problem.lastSuccesses.length === 0) {
+			hideProblemDialogBackdrop();
+			window.open(`/${problem.url}consoleFull`);
+		} else {
+			const problemLinesElm = showProblemDialog(problem);
+			const problemTextUrl = `/${problem.url}consoleText`;
+			const problemLinesText = await getMeaningfulLines(problemTextUrl);
+			const problemLinesHash = [];
+			problemLinesText.forEach(l => {
+				problemLinesHash.push(getLinesHash(l));
 			});
-		});
-		const uniqueProblemLines = [];
-		problemLinesHash.forEach((l, i) => {
-			if (!successLinesHashSet.has(l)) {
-				uniqueProblemLines.push(`${problemLinesText[i]}`);
+			const successLinesHashSet = new Set();
+			const promises = [];
+			for (let i = 0; i < problem.lastSuccesses.length; i++) {
+				const successTextUrl = `/${problem.url.replace(`/${problem.buildNumber}/`, `/${problem.lastSuccesses[i].number}/`)}consoleText`;
+				promises.push(getMeaningfulLines(successTextUrl));
 			}
-		});
-		populateProblemDialog(problemLinesElm, problem, uniqueProblemLines);
+			const successLinesTexts = await Promise.all(promises);
+			successLinesTexts.forEach(successLinesText => {
+				successLinesText.forEach(l => {
+					successLinesHashSet.add(getLinesHash(l));
+				});
+			});
+			const uniqueProblemLines = [];
+			problemLinesHash.forEach((l, i) => {
+				if (!successLinesHashSet.has(l)) {
+					uniqueProblemLines.push(`${problemLinesText[i]}`);
+				}
+			});
+			populateProblemDialog(problemLinesElm, problem, uniqueProblemLines);
+		}
+	} finally {
+		document.body.style.cursor = 'auto';
 	}
 }
 
