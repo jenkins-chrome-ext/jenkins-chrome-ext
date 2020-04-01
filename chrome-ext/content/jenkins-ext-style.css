@@ -238,10 +238,10 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 }
 .jenkins-ext-build-problem-dialog {
     position: fixed;
-    left: 100px;
-    right: 100px;
-    top: 100px;
-    bottom: 100px;
+    left: 50px;
+    right: 50px;
+    top: 50px;
+    bottom: 50px;
     overflow: hidden;
     border: 1px solid #aaa;
     background-color: #333;
