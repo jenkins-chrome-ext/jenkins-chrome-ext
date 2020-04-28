@@ -257,7 +257,7 @@ table.stripped tr:nth-child(even) > .build-row-cell {
 .jenkins-ext-build-problem-dialog-close-btn {
     position: absolute;
     top: 15px;
-    right: 15px;
+    left: 15px;
     outline: none;
     border: none;
     padding: 5px 10px;
