@@ -51,7 +51,7 @@ async function handleBuildInfo(build) {
 }
 
 async function onGetRootJobInfoDone(info) {
-	if (!info.builds) {
+	if (!info || !info.builds) {
 		return;
 	}
 	info.builds.forEach(build => {
