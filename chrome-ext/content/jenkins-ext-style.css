@@ -37,7 +37,7 @@ table.stripped tr:nth-child(even) > .build-row-cell {
     border-bottom: 1px solid #eee;
 }
 .build-row-cell .pane.build-name .display-name {
-    margin-top: 3px !important;
+    margin-top: 2px !important;
     margin-left: 22px !important;
 }
 .build-row-cell .pane.build-details {
