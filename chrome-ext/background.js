@@ -1,11 +1,5 @@
 self.importScripts('../common/common.js');
 
-function loadValues(obj, cb) {
-	chrome.storage.local.get(obj, vals => {
-		cb(vals);
-	});
-}
-
 async function injectCss(tabId, file) {
 	await chrome.scripting.insertCSS({target: {tabId}, files: [file]}, () => {});
 }

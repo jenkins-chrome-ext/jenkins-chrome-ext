@@ -16,3 +16,15 @@ const defaultYellowCommitMessagePattern = `^feature|^story|^user story|^us[ #]`;
 const defaultRedCommitMessagePattern = `^defect|^bug`;
 const defaultBlueCommitMessagePattern = `^quality story|^qs[ #]`;
 const defaultPurpleCommitMessagePattern = ``;
+
+function loadValues(obj, cb) {
+	chrome.storage.local.get(obj, vals => {
+		cb(vals);
+	});
+}
+
+function saveValues(obj) {
+	for (let [k, v] of Object.entries(obj)) {
+		chrome.storage.local.set({[k]: v}, () => {});
+	}
+}

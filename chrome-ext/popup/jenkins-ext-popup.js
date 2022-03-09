@@ -19,18 +19,6 @@
 	const defaultBlueCommitMessagePattern = `^quality story|^qs[ #]`;
 	const defaultPurpleCommitMessagePattern = ``;
 
-	function loadValues(obj, cb) {
-		chrome.storage.local.get(obj, vals => {
-			cb(vals);
-		});
-	}
-
-	function saveValues(obj) {
-		for (let [k, v] of Object.entries(obj)) {
-			chrome.storage.local.set({[k]: v}, () => {});
-		}
-	}
-
 	async function onPopupLoad() {
 		document.getElementById('jenkins-ext-popup-cancel-button').addEventListener('click', onPopupCancel);
 		document.getElementById('jenkins-ext-popup-save-button').addEventListener('click', onPopupSave);
