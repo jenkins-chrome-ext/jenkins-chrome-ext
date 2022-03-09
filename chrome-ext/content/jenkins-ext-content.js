@@ -108,5 +108,7 @@ chrome.runtime.onMessage.addListener(request => {
 		// 		updateRunningBuilds();
 		// 	});
 		// }, 5000);
+
+		return true;
 	}
 });

@@ -1,30 +1,75 @@
 (function() {
 
-	function onPopupLoad() {
+	const storageUrlPatternKey = 'jenkins-ext-url-pattern';
+	const storageMyNameKey = 'jenkins-ext-my-name';
+	const storageHighlightNamesKey = 'jenkins-ext-highlight-names';
+	const storageCommitUrlPrefixKey = 'jenkins-ext-commit-url-prefix';
+	const storageGreenCommitMessagePatternKey = 'jenkins-ext-green-commit-message-pattern';
+	const storageYellowCommitMessagePatternKey = 'jenkins-ext-yellow-commit-message-pattern';
+	const storageRedCommitMessagePatternKey = 'jenkins-ext-red-commit-message-pattern';
+	const storageBlueCommitMessagePatternKey = 'jenkins-ext-blue-commit-message-pattern';
+	const storagePurpleCommitMessagePatternKey = 'jenkins-ext-purple-commit-message-pattern';
+	const defaultUrlPattern = `https?:\\/\\/jenkins\\.almoctane\\.com\\/\\S*job\\/`;
+	const defaultMyName = '';
+	const defaultHighlightNames = '';
+	const defaultCommitUrlPrefix = `https://github.houston.softwaregrp.net/MQM/mqm/commit/`;
+	const defaultGreenCommitMessagePattern = `^revert|oops!`;
+	const defaultYellowCommitMessagePattern = `^feature|^story|^user story|^us[ #]`;
+	const defaultRedCommitMessagePattern = `^defect|^bug`;
+	const defaultBlueCommitMessagePattern = `^quality story|^qs[ #]`;
+	const defaultPurpleCommitMessagePattern = ``;
+
+	function loadValues(obj, cb) {
+		chrome.storage.local.get(obj, function(val) {
+			cb(val);
+		});
+	}
+
+	function saveValues(obj) {
+		for (let [k, v] of Object.entries(obj)) {
+			chrome.storage.local.set({[k]: v}, () => {});
+		}
+	}
+
+	async function onPopupLoad() {
 		document.getElementById('jenkins-ext-popup-cancel-button').addEventListener('click', onPopupCancel);
 		document.getElementById('jenkins-ext-popup-save-button').addEventListener('click', onPopupSave);
 
-		document.getElementById('url-pattern-input').value = loadValue(storageUrlPatternKey, defaultUrlPattern);
-		document.getElementById('my-name-input').value = loadValue(storageMyNameKey, defaultMyName);
-		document.getElementById('highlight-names-input').value = loadValue(storageHighlightNamesKey, defaultHighlightNames);
-		document.getElementById('commit-link-prefix-input').value = loadValue(storageCommitUrlPrefixKey, defaultCommitUrlPrefix);
-		document.getElementById('green-commit-msg-pattern-input').value = loadValue(storageGreenCommitMessagePatternKey, defaultGreenCommitMessagePattern);
-		document.getElementById('yellow-commit-msg-pattern-input').value = loadValue(storageYellowCommitMessagePatternKey, defaultYellowCommitMessagePattern);
-		document.getElementById('red-commit-msg-pattern-input').value = loadValue(storageRedCommitMessagePatternKey, defaultRedCommitMessagePattern);
-		document.getElementById('blue-commit-msg-pattern-input').value = loadValue(storageBlueCommitMessagePatternKey, defaultBlueCommitMessagePattern);
-		document.getElementById('purple-commit-msg-pattern-input').value = loadValue(storagePurpleCommitMessagePatternKey, defaultPurpleCommitMessagePattern);
+		loadValues({
+			[storageUrlPatternKey]: defaultUrlPattern,
+			[storageMyNameKey]: defaultMyName,
+			[storageHighlightNamesKey]: defaultHighlightNames,
+			[storageCommitUrlPrefixKey]: defaultCommitUrlPrefix,
+			[storageGreenCommitMessagePatternKey]: defaultGreenCommitMessagePattern,
+			[storageYellowCommitMessagePatternKey]: defaultYellowCommitMessagePattern,
+			[storageRedCommitMessagePatternKey]: defaultRedCommitMessagePattern,
+			[storageBlueCommitMessagePatternKey]: defaultBlueCommitMessagePattern,
+			[storagePurpleCommitMessagePatternKey]: defaultPurpleCommitMessagePattern
+		}, val => {
+			document.getElementById('url-pattern-input').value = val[storageUrlPatternKey];
+			document.getElementById('my-name-input').value = val[storageMyNameKey];
+			document.getElementById('highlight-names-input').value = val[storageHighlightNamesKey];
+			document.getElementById('commit-link-prefix-input').value = val[storageCommitUrlPrefixKey];
+			document.getElementById('green-commit-msg-pattern-input').value = val[storageGreenCommitMessagePatternKey];
+			document.getElementById('yellow-commit-msg-pattern-input').value = val[storageYellowCommitMessagePatternKey];
+			document.getElementById('red-commit-msg-pattern-input').value = val[storageRedCommitMessagePatternKey];
+			document.getElementById('blue-commit-msg-pattern-input').value = val[storageBlueCommitMessagePatternKey];
+			document.getElementById('purple-commit-msg-pattern-input').value = val[storagePurpleCommitMessagePatternKey];
+		});
 	}
 
 	function onPopupSave() {
-		localStorage.setItem(storageUrlPatternKey, (document.getElementById('url-pattern-input').value || '').trim());
-		localStorage.setItem(storageMyNameKey, (document.getElementById('my-name-input').value || '').trim());
-		localStorage.setItem(storageHighlightNamesKey, (document.getElementById('highlight-names-input').value || '').trim());
-		localStorage.setItem(storageCommitUrlPrefixKey, (document.getElementById('commit-link-prefix-input').value || '').trim());
-		localStorage.setItem(storageGreenCommitMessagePatternKey, (document.getElementById('green-commit-msg-pattern-input').value || '').trim());
-		localStorage.setItem(storageYellowCommitMessagePatternKey, (document.getElementById('yellow-commit-msg-pattern-input').value || '').trim());
-		localStorage.setItem(storageRedCommitMessagePatternKey, (document.getElementById('red-commit-msg-pattern-input').value || '').trim());
-		localStorage.setItem(storageBlueCommitMessagePatternKey, (document.getElementById('blue-commit-msg-pattern-input').value || '').trim());
-		localStorage.setItem(storagePurpleCommitMessagePatternKey, (document.getElementById('purple-commit-msg-pattern-input').value || '').trim());
+		saveValues({
+			[storageUrlPatternKey]: (document.getElementById('url-pattern-input').value || '').trim(),
+			[storageMyNameKey]: (document.getElementById('my-name-input').value || '').trim(),
+			[storageHighlightNamesKey]: (document.getElementById('highlight-names-input').value || '').trim(),
+			[storageCommitUrlPrefixKey]: (document.getElementById('commit-link-prefix-input').value || '').trim(),
+			[storageGreenCommitMessagePatternKey]: (document.getElementById('green-commit-msg-pattern-input').value || '').trim(),
+			[storageYellowCommitMessagePatternKey]: (document.getElementById('yellow-commit-msg-pattern-input').value || '').trim(),
+			[storageRedCommitMessagePatternKey]: (document.getElementById('red-commit-msg-pattern-input').value || '').trim(),
+			[storageBlueCommitMessagePatternKey]: (document.getElementById('blue-commit-msg-pattern-input').value || '').trim(),
+			[storagePurpleCommitMessagePatternKey]: (document.getElementById('purple-commit-msg-pattern-input').value || '').trim()
+		});
 		window.close();
 	}
 

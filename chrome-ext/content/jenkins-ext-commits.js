@@ -46,7 +46,7 @@ function getNewCommiterLineElm(ci) {
 	}
 	chatLinkElm.className = 'jenkins-ext-build-commiter-chat-link';
 	let chatImgElm = document.createElement('img');
-	chatImgElm.setAttribute('src', chrome.extension.getURL('img/chat.png'));
+	chatImgElm.setAttribute('src', chrome.runtime.getURL('img/chat.png'));
 	chatImgElm.className = 'jenkins-ext-build-commiter-chat-img';
 	chatLinkElm.appendChild(chatImgElm);
 	commiterLineElm.appendChild(chatLinkElm);
@@ -60,7 +60,7 @@ function getNewCommiterLineElm(ci) {
 	}
 	mailLinkElm.className = 'jenkins-ext-build-commiter-email-link';
 	let mailImgElm = document.createElement('img');
-	mailImgElm.setAttribute('src', chrome.extension.getURL('img/email.png'));
+	mailImgElm.setAttribute('src', chrome.runtime.getURL('img/email.png'));
 	mailImgElm.className = 'jenkins-ext-build-commiter-email-img';
 	mailLinkElm.appendChild(mailImgElm);
 	commiterLineElm.appendChild(mailLinkElm);
@@ -119,7 +119,7 @@ function getAllCommitersLineElm(commiterInfos) {
 	chatLinkElm.setAttribute('title', 'Group Chat');
 	chatLinkElm.className = 'jenkins-ext-build-commiter-chat-link';
 	let chatImgElm = document.createElement('img');
-	chatImgElm.setAttribute('src', chrome.extension.getURL('img/chat.png'));
+	chatImgElm.setAttribute('src', chrome.runtime.getURL('img/chat.png'));
 	chatImgElm.className = 'jenkins-ext-build-commiter-chat-img';
 	chatLinkElm.appendChild(chatImgElm);
 	commiterLineElm.appendChild(chatLinkElm);
@@ -135,7 +135,7 @@ function getAllCommitersLineElm(commiterInfos) {
 	mailLinkElm.setAttribute('title', 'Group Email');
 	mailLinkElm.className = 'jenkins-ext-build-commiter-email-link';
 	let mailImgElm = document.createElement('img');
-	mailImgElm.setAttribute('src', chrome.extension.getURL('img/email.png'));
+	mailImgElm.setAttribute('src', chrome.runtime.getURL('img/email.png'));
 	mailImgElm.className = 'jenkins-ext-build-commiter-email-img';
 	mailLinkElm.appendChild(mailImgElm);
 	commiterLineElm.appendChild(mailLinkElm);

@@ -63,7 +63,7 @@ function displayBuildProblem(buildNumber, problem) {
 		consoleErrImgElm.setAttribute('data-url-console-full', `/${problem.url}consoleFull`);
 		consoleErrImgElm.setAttribute('data-build-number', buildNumber);
 		consoleErrImgElm.setAttribute('data-job-name', problem.jobName);
-		consoleErrImgElm.setAttribute('src', chrome.extension.getURL('img/terminal-err.png'));
+		consoleErrImgElm.setAttribute('src', chrome.runtime.getURL('img/terminal-err.png'));
 		consoleErrImgElm.className = 'jenkins-ext-build-problem-console-err-img';
 		addClickHandler(consoleErrImgElm, investigateBuildProblem, problem);
 		problemLineElm.appendChild(consoleErrImgElm);

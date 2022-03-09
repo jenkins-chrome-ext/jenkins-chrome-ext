@@ -1,4 +1,3 @@
-//let extId = 'cjmholedpdghokadoionhngnmfpeebnk';
 let buildStatusEnum = {
 	PENDING: 'PENDING',
 	RUNNING: 'RUNNING',
