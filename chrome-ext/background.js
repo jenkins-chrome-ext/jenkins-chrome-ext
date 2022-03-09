@@ -1,8 +1,8 @@
 self.importScripts('../common/common.js');
 
 function loadValues(obj, cb) {
-	chrome.storage.local.get(obj, function(val) {
-		cb(val);
+	chrome.storage.local.get(obj, vals => {
+		cb(vals);
 	});
 }
 
@@ -24,19 +24,19 @@ async function onInjectsDone(tabId) {
 		[storageRedCommitMessagePatternKey]: defaultRedCommitMessagePattern,
 		[storageBlueCommitMessagePatternKey]: defaultBlueCommitMessagePattern,
 		[storagePurpleCommitMessagePatternKey]: defaultPurpleCommitMessagePattern
-	}, val => {
+	}, vals => {
 		chrome.tabs.sendMessage(
 			tabId,
 			{
 				'type': 'jenkins-chrome-ext-go',
-				'myName': val[storageMyNameKey] || '',
-				'highlightNames': val[storageHighlightNamesKey] || '',
-				'commitUrlPrefix': val[storageCommitUrlPrefixKey] || '',
-				'greenCommitMessagePattern': val[storageGreenCommitMessagePatternKey] || '',
-				'yellowCommitMessagePattern': val[storageYellowCommitMessagePatternKey] || '',
-				'redCommitMessagePattern': val[storageRedCommitMessagePatternKey] || '',
-				'blueCommitMessagePattern': val[storageBlueCommitMessagePatternKey] || '',
-				'purpleCommitMessagePattern': val[storagePurpleCommitMessagePatternKey] || '',
+				'myName': vals[storageMyNameKey] || '',
+				'highlightNames': vals[storageHighlightNamesKey] || '',
+				'commitUrlPrefix': vals[storageCommitUrlPrefixKey] || '',
+				'greenCommitMessagePattern': vals[storageGreenCommitMessagePatternKey] || '',
+				'yellowCommitMessagePattern': vals[storageYellowCommitMessagePatternKey] || '',
+				'redCommitMessagePattern': vals[storageRedCommitMessagePatternKey] || '',
+				'blueCommitMessagePattern': vals[storageBlueCommitMessagePatternKey] || '',
+				'purpleCommitMessagePattern': vals[storagePurpleCommitMessagePatternKey] || '',
 			}
 		);
 	});

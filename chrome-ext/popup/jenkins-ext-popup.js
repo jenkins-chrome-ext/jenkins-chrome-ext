@@ -20,8 +20,8 @@
 	const defaultPurpleCommitMessagePattern = ``;
 
 	function loadValues(obj, cb) {
-		chrome.storage.local.get(obj, function(val) {
-			cb(val);
+		chrome.storage.local.get(obj, vals => {
+			cb(vals);
 		});
 	}
 
@@ -45,16 +45,16 @@
 			[storageRedCommitMessagePatternKey]: defaultRedCommitMessagePattern,
 			[storageBlueCommitMessagePatternKey]: defaultBlueCommitMessagePattern,
 			[storagePurpleCommitMessagePatternKey]: defaultPurpleCommitMessagePattern
-		}, val => {
-			document.getElementById('url-pattern-input').value = val[storageUrlPatternKey];
-			document.getElementById('my-name-input').value = val[storageMyNameKey];
-			document.getElementById('highlight-names-input').value = val[storageHighlightNamesKey];
-			document.getElementById('commit-link-prefix-input').value = val[storageCommitUrlPrefixKey];
-			document.getElementById('green-commit-msg-pattern-input').value = val[storageGreenCommitMessagePatternKey];
-			document.getElementById('yellow-commit-msg-pattern-input').value = val[storageYellowCommitMessagePatternKey];
-			document.getElementById('red-commit-msg-pattern-input').value = val[storageRedCommitMessagePatternKey];
-			document.getElementById('blue-commit-msg-pattern-input').value = val[storageBlueCommitMessagePatternKey];
-			document.getElementById('purple-commit-msg-pattern-input').value = val[storagePurpleCommitMessagePatternKey];
+		}, vals => {
+			document.getElementById('url-pattern-input').value = vals[storageUrlPatternKey];
+			document.getElementById('my-name-input').value = vals[storageMyNameKey];
+			document.getElementById('highlight-names-input').value = vals[storageHighlightNamesKey];
+			document.getElementById('commit-link-prefix-input').value = vals[storageCommitUrlPrefixKey];
+			document.getElementById('green-commit-msg-pattern-input').value = vals[storageGreenCommitMessagePatternKey];
+			document.getElementById('yellow-commit-msg-pattern-input').value = vals[storageYellowCommitMessagePatternKey];
+			document.getElementById('red-commit-msg-pattern-input').value = vals[storageRedCommitMessagePatternKey];
+			document.getElementById('blue-commit-msg-pattern-input').value = vals[storageBlueCommitMessagePatternKey];
+			document.getElementById('purple-commit-msg-pattern-input').value = vals[storagePurpleCommitMessagePatternKey];
 		});
 	}
 
