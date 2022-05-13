@@ -97,6 +97,7 @@ chrome.runtime.onMessage.addListener(request => {
 		const baseLocation = document.location.href.replace(/\?\S*/, '');
 		fetchCache = {};
 		linesCache = {};
+		cleanupZwsInsertedElements();
 		(async () => {
 			const json = await goFetchJson(baseLocation + 'api/json');
 			await onGetRootJobInfoDone(json);
