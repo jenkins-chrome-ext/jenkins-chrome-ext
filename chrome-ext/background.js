@@ -5,7 +5,7 @@ async function injectCss(tabId, file) {
 }
 
 async function injectJs(tabId, file, cb) {
-	await chrome.scripting.executeScript({target: {tabId}, files: [file]}, () => {cb();});
+	await chrome.scripting.executeScript({target: {tabId}, files: [file]}, () => { if(cb) { cb(); } });
 }
 
 async function onInjectsDone(tabId) {
@@ -42,6 +42,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 		if (changeInfo.status === 'complete' && urlPattern && (new RegExp(urlPattern)).test(tab.url)) {
 			(async () => {
 				await injectCss(tabId, '/content/jenkins-ext-style.css');
+				await injectJs(tabId, '/content/jenkins-ext-zwsp-fixer.js');
 				await injectJs(tabId, '/common/common.js');
 				await injectJs(tabId, '/content/jenkins-ext-common.js');
 				await injectJs(tabId, '/content/jenkins-ext-commits.js');
