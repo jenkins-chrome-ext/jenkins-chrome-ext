@@ -15,6 +15,7 @@ Email and chat with one or all of the commiters.
 See the number of affected files, and comment for each commit.
 Navigate to the commit content.
 Quickly identify and investigate failed builds.
+Remove zero-width space characters.
 
 ## License
 
