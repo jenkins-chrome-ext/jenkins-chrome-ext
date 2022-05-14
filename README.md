@@ -18,7 +18,7 @@ Quickly identify and investigate failed builds.
 
 ## License
 
-Free (MIT)
+Free (MIT).
 
 ## Installation
 
