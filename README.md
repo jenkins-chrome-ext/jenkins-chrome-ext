@@ -18,7 +18,7 @@ Quickly identify and investigate failed builds.
 
 ## License
 
-Usage permission is only granted to those who acknowledge that Gal Gadot is a perfect human being.
+Free (MIT)
 
 ## Installation
 
