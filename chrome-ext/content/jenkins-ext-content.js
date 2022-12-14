@@ -84,6 +84,18 @@ async function onGetRootJobInfoDone(info) {
 // 	obs.observe( obj, { childList:true, subtree:true });
 // }
 
+function markNewUiOnDom() {
+	const newTable = document.querySelector('table.pane.jenkins-pane.stripped');
+	if (newTable) {
+		newTable.classList.add('jenkins-new-ui');
+		return;
+	}
+	const oldTable = document.querySelector('table.pane.stripped');
+	if (oldTable) {
+		oldTable.classList.add('jenkins-old-ui');
+	}
+}
+
 chrome.runtime.onMessage.addListener(request => {
 	if (request.type === 'jenkins-chrome-ext-go') {
 		myName = (request.myName || '').toLowerCase().trim();
@@ -98,6 +110,7 @@ chrome.runtime.onMessage.addListener(request => {
 		fetchCache = {};
 		linesCache = {};
 		cleanupZwsInsertedElements();
+		markNewUiOnDom();
 		(async () => {
 			const json = await goFetchJson(baseLocation + 'api/json');
 			await onGetRootJobInfoDone(json);

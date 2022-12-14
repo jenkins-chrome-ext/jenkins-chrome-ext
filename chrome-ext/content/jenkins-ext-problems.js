@@ -47,7 +47,10 @@ function displayBuildProblem(buildNumber, problem) {
 	if (!buildLinkElm) {
 		return;
 	}
-	let parentElm = buildLinkElm.parentElement.parentElement.parentElement;
+	let parentElm = buildLinkElm.parentElement.parentElement;
+	if (parentElm.tagName !== 'TD') {
+		parentElm = parentElm.parentElement;
+	}
 	let problemLineElm = document.createElement('div');
 	let statusStyle = '';
 	if (problem.result === buildResult.FAILURE) {

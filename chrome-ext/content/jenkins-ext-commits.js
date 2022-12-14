@@ -167,7 +167,10 @@ function displayBuildCommiters(buildNumber) {
 	if (!buildLinkElm) {
 		return;
 	}
-	let parentElm = buildLinkElm.parentElement.parentElement.parentElement;
+	let parentElm = buildLinkElm.parentElement.parentElement;
+	if (parentElm.tagName !== 'TD') {
+		parentElm = parentElm.parentElement;
+	}
 	let commitersElm = document.createElement('div');
 	commitersElm.className = 'jenkins-ext-build-commiters';
 	if (bi.commiterInfos.length > 0) {
