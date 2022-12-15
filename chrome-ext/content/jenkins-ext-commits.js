@@ -103,20 +103,22 @@ function getNewCommiterLineElm(ci) {
 	return commiterLineElm;
 }
 
-function getAllCommitersLineElm(commiterInfos) {
+function getAllCommitersLineElm(commiterInfos, buildNumber) {
 	let hrefStr;
 	let commiterLineElm = document.createElement('div');
 	commiterLineElm.className = 'jenkins-ext-build-commiter-line';
 
 	let chatLinkElm = document.createElement('a');
-	hrefStr = 'im:';
-	commiterInfos.forEach(ci => {
+	let users = '';
+	commiterInfos.forEach((ci, index) => {
 		if (ci.email && ci.name.toLowerCase().trim() !== myName) {
-			hrefStr += '<sip:' + ci.email + '>';
+			users += `${index === 0 ? '' : ','}${ci.email}`;
 		}
 	});
-	chatLinkElm.setAttribute('href', hrefStr);
+	const topic = `Build %23${buildNumber}`;
+	chatLinkElm.setAttribute('href', `https://teams.microsoft.com/l/chat/0/0?users=${users}&topicName=${topic}`);
 	chatLinkElm.setAttribute('title', 'Group Chat');
+	chatLinkElm.setAttribute('target', '_blank');
 	chatLinkElm.className = 'jenkins-ext-build-commiter-chat-link';
 	let chatImgElm = document.createElement('img');
 	chatImgElm.setAttribute('src', chrome.runtime.getURL('img/chat.png'));
@@ -180,7 +182,7 @@ function displayBuildCommiters(buildNumber) {
 		});
 
 		if (bi.commiterInfos.length > 1) {
-			let allCommitersLineElm = getAllCommitersLineElm(bi.commiterInfos);
+			let allCommitersLineElm = getAllCommitersLineElm(bi.commiterInfos, buildNumber);
 			commitersElm.appendChild(allCommitersLineElm);
 		}
 		parentElm.appendChild(commitersElm);
