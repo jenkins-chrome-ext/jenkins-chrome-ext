@@ -302,3 +302,7 @@ table.stripped.jenkins-old-ui tr:nth-child(even) > .build-row-cell {
 .jenkins-ext-build-problem-dialog-line--err {
     color: #f66;
 }
+.disabled {
+    opacity: 0.25;
+    pointer-events: none;
+}

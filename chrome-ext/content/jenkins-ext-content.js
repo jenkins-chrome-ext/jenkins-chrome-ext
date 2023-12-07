@@ -4,28 +4,41 @@ function onGetBuildInfoDone(json, buildNumber) {
 	addBuildPanelClass(buildNumber);
 	let names = [];
 	json.changeSet.items.forEach(commit => {
-		let commiterName = formatCommiterName(commit.author.fullName);
-		if (names.indexOf(commiterName) === -1) {
-			names.push(commiterName);
-			let email = commit.authorEmail;
-
-			//todo: should be generalized
-			if (email.indexOf('@') === -1) {
-				email += '@hpe.com';
-			}
-			email = email.replace('@hpe.com', '@microfocus.com');
-
+		if (commit.author.fullName === 'noreply') {
 			bi.commiterInfos.push({
-				name: commiterName,
-				email: email,
-				commits: []
+				name: '???',
+				email: '',
+				commits: [{
+					id: commit.id,
+					fileCount: commit.paths.length,
+					comment: commit.comment
+				}],
+			});
+		} else {
+			let commiterName = formatCommiterName(commit.author.fullName);
+			if (names.indexOf(commiterName) === -1) {
+				names.push(commiterName);
+				let email = commit.authorEmail;
+
+				//todo: should be generalized
+				if (email.indexOf('@') === -1) {
+					email += '@hpe.com';
+				}
+				email = email.replace('@hpe.com', '@microfocus.com');
+
+				bi.commiterInfos.push({
+					name: commiterName,
+					email: email,
+					commits: []
+				});
+			}
+			const infos = bi.commiterInfos.find(info => info.name === commiterName);
+			infos.commits.push({
+				id: commit.id,
+				fileCount: commit.paths.length,
+				comment: commit.comment
 			});
 		}
-		bi.commiterInfos[names.indexOf(commiterName)].commits.push({
-			id: commit.id,
-			fileCount: commit.paths.length,
-			comment: commit.comment
-		});
 	});
 	bi.commiterInfos.sort((a, b) => {
 		return a.name.localeCompare(b.name);
