@@ -5,9 +5,8 @@
   "short_name": "JenkinsExt",
   "description": "Jenkins Chrome Extension",
   "icons": {
-    "48": "img/jenkins-icon-48px.png",
-    "96": "img/jenkins-icon-96px.png",
-    "128": "img/jenkins-icon-128px.png"
+    "48": "img/icon48.png",
+    "128": "img/icon128.png"
   },
   "permissions": [
     "storage",
@@ -20,7 +19,7 @@
   ],
   "action": {
     "default_title": "Jenkins Chrome Extension",
-    "default_icon": "img/jenkins-icon-96px.png",
+    "default_icon": "img/icon128.png",
     "default_popup": "popup/jenkins-ext-popup.html"
   },
   "background": {

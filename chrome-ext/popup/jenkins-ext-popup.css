@@ -25,7 +25,7 @@ html {
 .jenkins-ext-popup__header {
 	margin: 10px 10px 0 10px;
 	display: flex;
-	background-color: #444;
+	background-color: #666;
 	height: 50px;
 	line-height: 30px;
     padding: 10px;
@@ -106,7 +106,7 @@ html {
     justify-content: flex-end;
 	margin: 10px;
     padding-top: 15px;
-    border-top: 1px solid #ddd;	
+    border-top: 1px solid #ddd;
 }
 
 .jenkins-ext-popup__footer__button {
@@ -117,7 +117,7 @@ html {
     width: 80px;
     border: 1px solid #999;
     background-color: #fff;
-    outline: none !important;    
+    outline: none !important;
     font-size: 14px;
     cursor: pointer;
 }
