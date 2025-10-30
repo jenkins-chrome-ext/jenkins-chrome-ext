@@ -13,7 +13,7 @@ const defaultHighlightNames = '';
 const defaultCommitUrlPrefix = `https://gitlab.otxlab.net/adm-sdp/MQM/mqm/-/commit/`;
 const defaultGreenCommitMessagePattern = `^revert|oops!`;
 const defaultYellowCommitMessagePattern = `^feature|^story|^user story|^us[ #]`;
-const defaultRedCommitMessagePattern = `^defect|^bug`;
+const defaultRedCommitMessagePattern = `^defect|^bug[ #]`;
 const defaultBlueCommitMessagePattern = `^quality story|^qs[ #]`;
 const defaultPurpleCommitMessagePattern = ``;
 
