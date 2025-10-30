@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "version": "2.0.10",
+  "version": "2.0.11",
   "name": "Jenkins Chrome Extension",
   "short_name": "JenkinsExt",
   "description": "Jenkins Chrome Extension",
