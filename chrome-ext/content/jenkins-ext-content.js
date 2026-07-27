@@ -11,6 +11,9 @@ function getBuildStatusSvgContent(status) {
     if (status === 'aborted') {
         return `<ellipse cx="256" cy="256" fill="none" rx="210" ry="210" stroke="var(--text-color-secondary)" stroke-linecap="round" stroke-miterlimit="10" stroke-width="36"></ellipse>    <path d="M192 320l128-128" fill="none" stroke="var(--text-color-secondary)" stroke-linecap="round" stroke-linejoin="round" stroke-width="36"></path>`;
     }
+    if (status === 'pending') {
+        return `<ellipse cx="256" cy="256" fill="none" rx="210" ry="210" stroke="var(--blue)" stroke-linecap="round" stroke-miterlimit="10" stroke-width="36"></ellipse>  <circle cx="256" cy="256" fill="var(--blue)" r="30"></circle>  <circle cx="352" cy="256" fill="var(--blue)" r="30"></circle>  <circle cx="160" cy="256" fill="var(--blue)" r="30"></circle>`;
+    }
     if (status === 'unknown') {
         return `<ellipse cx="256" cy="256" fill="none" rx="210" ry="210" stroke="var(--blue)" stroke-linecap="round" stroke-miterlimit="10" stroke-width="36"></ellipse>  <circle cx="256" cy="256" fill="var(--blue)" r="30"></circle>  <circle cx="352" cy="256" fill="var(--blue)" r="30"></circle>  <circle cx="160" cy="256" fill="var(--blue)" r="30"></circle>`;
     }
@@ -99,7 +102,7 @@ function timestampToLocalString(timestamp) {
         minute: '2-digit',
         hour12: true
     });
-    return `${weekday}, ${month} ${day}, ${time}`;
+    return `${time}, ${weekday}, ${month} ${day}`;
 }
 
 function addBuildSectionElm(build) {
