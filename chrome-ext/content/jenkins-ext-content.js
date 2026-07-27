@@ -1,9 +1,30 @@
+function getBuildStatusSvgContent(status) {
+    if (status === 'success') {
+        return `<ellipse cx="256" cy="256" fill="none" rx="210" ry="210" stroke="var(--success-color)" stroke-linecap="round" stroke-miterlimit="10" stroke-width="36"></ellipse>    <path d="M336 189L224 323L176 269.4" fill="transparent" stroke="var(--success-color)" stroke-linecap="round" stroke-linejoin="round" stroke-width="36"></path>`;
+    }
+    if (status === 'unstable') {
+        return `<ellipse cx="256" cy="256" fill="none" rx="210" ry="210" stroke="var(--orange)" stroke-linecap="round" stroke-miterlimit="10" stroke-width="36"></ellipse>    <path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="var(--orange)" stroke-linecap="round" stroke-linejoin="round" stroke-width="36"></path>    <ellipse cx="256" cy="350" fill="var(--orange)" rx="26" ry="26"></ellipse>`;
+    }
+    if (status === 'failure') {
+        return `<ellipse cx="256" cy="256" fill="none" rx="210" ry="210" stroke="var(--red)" stroke-linecap="round" stroke-miterlimit="10" stroke-width="36"></ellipse>    <path d="M320 320L192 192M192 320l128-128" fill="none" stroke="var(--red)" stroke-linecap="round" stroke-linejoin="round" stroke-width="36"></path>`;
+    }
+    if (status === 'aborted') {
+        return `<ellipse cx="256" cy="256" fill="none" rx="210" ry="210" stroke="var(--text-color-secondary)" stroke-linecap="round" stroke-miterlimit="10" stroke-width="36"></ellipse>    <path d="M192 320l128-128" fill="none" stroke="var(--text-color-secondary)" stroke-linecap="round" stroke-linejoin="round" stroke-width="36"></path>`;
+    }
+    if (status === 'unknown') {
+        return `<ellipse cx="256" cy="256" fill="none" rx="210" ry="210" stroke="var(--blue)" stroke-linecap="round" stroke-miterlimit="10" stroke-width="36"></ellipse>  <circle cx="256" cy="256" fill="var(--blue)" r="30"></circle>  <circle cx="352" cy="256" fill="var(--blue)" r="30"></circle>  <circle cx="160" cy="256" fill="var(--blue)" r="30"></circle>`;
+    }
+    return '';
+}
+
 function onGetBuildInfoDone(json, buildNumber) {
 	let bi = buildInfos[buildNumber];
     bi.result = json.result;
     console.log(bi.result);
+    const buildStatus = bi.result ? bi.result.toLowerCase() : 'unknown';
     const buildStatusElm = getElm(`.jenkins-ext-build-section[data-build-number="${buildNumber}"] .jenkins-ext-build-status-icon`);
-    buildStatusElm.setAttribute('data-build-status', bi.result ? bi.result.toLowerCase() : 'unknown');
+    buildStatusElm.setAttribute('data-build-status', buildStatus);
+    buildStatusElm.innerHTML = getBuildStatusSvgContent(buildStatus);
     const timestampElm = getElm(`.jenkins-ext-build-section[data-build-number="${buildNumber}"] .jenkins-ext-build-timestamp`);
     timestampElm.innerText = timestampToLocalString(json.timestamp);
 	bi.commiterInfos = [];
@@ -91,13 +112,15 @@ function addBuildSectionElm(build) {
     buildHeaderElm.classList.add('jenkins-ext-build-header');
     buildSectionElm.appendChild(buildHeaderElm);
 
-    const buildStatusElm = document.createElement('span');
+    const buildStatusElm = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    buildStatusElm.setAttribute('viewBox', '0 0 512 512');
+    buildStatusElm.setAttribute('width', '16px');
+    buildStatusElm.setAttribute('height', '16px');
     buildStatusElm.classList.add('jenkins-ext-build-status-icon');
     buildHeaderElm.appendChild(buildStatusElm);
 
     const buildLinkElm = document.createElement('a');
     buildLinkElm.href = build.url;
-    buildLinkElm.target = '_blank';
     buildLinkElm.classList.add('jenkins-ext-build-link');
     buildLinkElm.innerText = build.number;
     buildHeaderElm.appendChild(buildLinkElm);
