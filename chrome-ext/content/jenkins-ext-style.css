@@ -12,42 +12,73 @@
     src: local('Play Regular'), local('Play-Regular'), url(https://fonts.gstatic.com/s/play/v11/6aez4K2oVqwIvtU2Hw.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-table.stripped.jenkins-old-ui tr:nth-child(odd),
-table.stripped.jenkins-old-ui tr:nth-child(odd) > .build-row-cell {
-    background-color: #fff;
+.jenkins-ext-display-panel-toggle-btn {
+    position: absolute;
+    right: 40px;
+    height: 25px;
+    border: 1px solid #666;
+    border-radius: 4px;
+    cursor: pointer;
 }
-table.stripped.jenkins-old-ui tr:nth-child(even),
-table.stripped.jenkins-old-ui tr:nth-child(even) > .build-row-cell {
+.jenkins-ext-panel {
+
+}
+.jenkins-ext-build-section {
+    border: 1px solid #f0f0f0;
+    background-color: #fff;
+    padding: 4px;
+}
+.jenkins-ext-build-section:nth-child(odd) {
     background-color: #f6f6f6;
 }
-.jenkins-old-ui .build-row .build-name-controls .pane.build-name {
-    height: auto !important;
+#jenkins-builds.jenkins-ext-show-panel {
+    .jenkins-ext-display-panel-toggle-btn {
+        background-color: #666;
+        color: #fff;
+    }
+    .jenkins-ext-panel {
+        display: block;
+    }
+    .jenkins-card__content {
+        display: none;
+    }
 }
-.jenkins-old-ui .build-row .build-name-controls .pane.build-controls {
-    padding-right: 0 !important;
+#jenkins-builds:not(.jenkins-ext-show-panel) {
+    .jenkins-ext-panel {
+        display: none;
+    }
+    .jenkins-card__content {
+        display: flex;
+    }
 }
-.jenkins-old-ui .build-row .build-name-controls .pane.build-controls > .build-badge > img.icon-lock {
-    position: relative !important;
-    left: 2px !important;
+.jenkins-ext-build-status-icon {
+    margin-left: 4px;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #999;
+    border-radius: 2px;
+
+    /*&[data-build-status="success"] {*/
+    /*    background-color: green;*/
+    /*}*/
+    /*&[data-build-status="unstable"] {*/
+    /*    background-color: orange;*/
+    /*}*/
+    /*&[data-build-status="failure"] {*/
+    /*    background-color: red;*/
+    /*}*/
 }
-.jenkins-old-ui .build-row-cell:first-child {
-    border-top: 1px solid #eee;
+.jenkins-ext-build-link {
+    padding-left: 4px;
+    font-weight: 600;
+    text-decoration: none !important;
 }
-.jenkins-old-ui .build-row-cell {
-    border-bottom: 1px solid #eee;
+.jenkins-ext-build-timestamp {
+    margin-left: 16px;
+    color: #aaa;
 }
-.jenkins-old-ui .build-row-cell .pane.build-name .display-name {
-    margin-top: 2px !important;
-    margin-left: 22px !important;
-}
-.jenkins-old-ui .build-row-cell .pane.build-details {
-    margin-top: 0 !important;
-    padding-left: 30px !important;
-}
-.jenkins-old-ui .build-row-cell .pane.build-details > a {
-    color: #999 !important;
-}
-.jenkins-new-ui .build-icon {
+.jenkins-old-ui .build-icon {
     top: 2px;
 }
 .jenkins-ext-hidden {
@@ -61,37 +92,20 @@ table.stripped.jenkins-old-ui tr:nth-child(even) > .build-row-cell {
         opacity: 1;
     }
 }
-.jenkins-ext-build-status--pending {
-}
-.jenkins-ext-build-status--running {
-}
-.jenkins-ext-build-status--success {
-}
-.jenkins-ext-build-status--warning {
-}
-.jenkins-ext-build-status--failure {
-}
-.jenkins-ext-build-status--aborted {
-}
-.jenkins-ext-build-status--unknown {
-}
 .jenkins-ext-build-commiters {
     font-size: 12px;
     line-height: 16px;
 }
 .jenkins-ext-build-commiter-line {
     display: flex;
-    padding-left: 30px;
+    padding-left: 16px;
     overflow: hidden;
     max-width: 320px;
     margin-bottom: 1px;
 }
-.jenkins-new-ui .jenkins-ext-build-commiter-line {
-    padding-left: 22px;
-}
 .jenkins-ext-build-chat-all-commiters-line {
     display: flex;
-    padding-left: 30px;
+    padding-left: 24px;
     overflow: hidden;
     max-width: 320px;
     margin-bottom: 1px;
@@ -192,7 +206,7 @@ table.stripped.jenkins-old-ui tr:nth-child(even) > .build-row-cell {
     margin-bottom: 1px;
     overflow: hidden;
 }
-.jenkins-new-ui .jenkins-ext-build-problem-line {
+.jenkins-old-ui .jenkins-ext-build-problem-line {
     padding-left: 22px;
 }
 .jenkins-ext-build-problem-console-img {
@@ -305,4 +319,7 @@ table.stripped.jenkins-old-ui tr:nth-child(even) > .build-row-cell {
 .disabled {
     opacity: 0.25;
     pointer-events: none;
+}
+.hidden {
+    display: none !important;
 }

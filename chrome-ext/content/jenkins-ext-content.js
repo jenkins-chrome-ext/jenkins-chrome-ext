@@ -1,7 +1,12 @@
 function onGetBuildInfoDone(json, buildNumber) {
 	let bi = buildInfos[buildNumber];
+    bi.result = json.result;
+    console.log(bi.result);
+    const buildStatusElm = getElm(`.jenkins-ext-build-section[data-build-number="${buildNumber}"] .jenkins-ext-build-status-icon`);
+    buildStatusElm.setAttribute('data-build-status', bi.result ? bi.result.toLowerCase() : 'unknown');
+    const timestampElm = getElm(`.jenkins-ext-build-section[data-build-number="${buildNumber}"] .jenkins-ext-build-timestamp`);
+    timestampElm.innerText = timestampToLocalString(json.timestamp);
 	bi.commiterInfos = [];
-	addBuildPanelClass(buildNumber);
 	let names = [];
 	json.changeSet.items.forEach(commit => {
 		if (commit.author.fullName === 'noreply') {
@@ -63,50 +68,85 @@ async function handleBuildInfo(build) {
 	onGetBuildInfoDone(json, build.number);
 }
 
-async function onGetRootJobInfoDone(info) {
-	if (!info || !info.builds) {
-		return;
-	}
-	info.builds.forEach(build => {
-		buildInfos[build.number] = {
-			number: build.number,
-			url: build.url,
-			status: getBuildStatus(build.number)
-		};
-	});
-	const promises = [];
-	info.builds.forEach(build => {
-		promises.push(handleBuildInfo(build));
-	});
-	await Promise.all(promises);
+function timestampToLocalString(timestamp) {
+    const date = new Date(timestamp);
+    const weekday = date.toLocaleString(undefined, { weekday: 'long' });
+    const month = date.toLocaleString(undefined, { month: 'long' });
+    const day = date.getDate();
+    const time = date.toLocaleString(undefined, {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    });
+    return `${weekday}, ${month} ${day}, ${time}`;
 }
 
-// function updateRunningBuilds() {
-// 	for (let n in buildInfos) {
-// 		if (buildInfos[n].status === buildStatusEnum.RUNNING) {
-// 			displayBuildCommiters(buildInfos[n].number);
-// 		}
-// 	}
-// }
+function addBuildSectionElm(build) {
+    const extPanelElm = getElm('.jenkins-ext-panel');
+    const buildSectionElm = document.createElement('div');
+    buildSectionElm.classList.add('jenkins-ext-build-section');
+    buildSectionElm.setAttribute('data-build-number', build.number);
 
-// function observeDOM(obj, callback){
-// 	let obs = new MutationObserver((mutations) => {
-// 		if( mutations[0].addedNodes.length || mutations[0].removedNodes.length )
-//  	        callback();
-//  	    });
-// 	obs.observe( obj, { childList:true, subtree:true });
-// }
+    const buildHeaderElm = document.createElement('div');
+    buildHeaderElm.classList.add('jenkins-ext-build-header');
+    buildSectionElm.appendChild(buildHeaderElm);
 
-function markNewUiOnDom() {
-	const newTable = document.querySelector('table.pane.jenkins-pane.stripped');
-	if (newTable) {
-		newTable.classList.add('jenkins-new-ui');
-		return;
-	}
-	const oldTable = document.querySelector('table.pane.stripped');
-	if (oldTable) {
-		oldTable.classList.add('jenkins-old-ui');
-	}
+    const buildStatusElm = document.createElement('span');
+    buildStatusElm.classList.add('jenkins-ext-build-status-icon');
+    buildHeaderElm.appendChild(buildStatusElm);
+
+    const buildLinkElm = document.createElement('a');
+    buildLinkElm.href = build.url;
+    buildLinkElm.target = '_blank';
+    buildLinkElm.classList.add('jenkins-ext-build-link');
+    buildLinkElm.innerText = build.number;
+    buildHeaderElm.appendChild(buildLinkElm);
+
+    const timestampElm = document.createElement('div');
+    timestampElm.classList.add('jenkins-ext-build-timestamp');
+    buildHeaderElm.appendChild(timestampElm);
+
+    const buildContentElm = document.createElement('div');
+    buildContentElm.classList.add('jenkins-ext-build-section-content');
+    buildSectionElm.appendChild(buildContentElm);
+    extPanelElm.appendChild(buildSectionElm);
+}
+
+async function onGetRootJobInfoDone(info) {
+    if (!info || !info.builds) {
+        return;
+    }
+    info.builds.forEach(build => {
+        buildInfos[build.number] = {
+            number: build.number,
+            url: build.url,
+        };
+        addBuildSectionElm(build);
+    });
+    const promises = [];
+    info.builds.forEach(build => {
+        promises.push(handleBuildInfo(build));
+    });
+    await Promise.all(promises);
+}
+
+function addMyUI() {
+    const jenkinsBuildsElm = getElm('#jenkins-builds');
+    const jenkinsCardTitleElm = getElm('.jenkins-card__title');
+    const jenkinsCardContentElm = getElm('.jenkins-card__content');
+    if (!jenkinsBuildsElm || !jenkinsCardTitleElm || !jenkinsCardContentElm) {
+        return
+    }
+    const toggleBun = document.createElement('button');
+    toggleBun.classList.add('jenkins-ext-display-panel-toggle-btn');
+    toggleBun.innerText = 'Commits';
+    jenkinsCardTitleElm.appendChild(toggleBun);
+    toggleBun.addEventListener('click', () => {
+        jenkinsBuildsElm.classList.toggle('jenkins-ext-show-panel');
+    });
+    const extPanelElm = document.createElement('div');
+    extPanelElm.classList.add('jenkins-ext-panel');
+    jenkinsBuildsElm.appendChild(extPanelElm);
 }
 
 chrome.runtime.onMessage.addListener(request => {
@@ -123,18 +163,11 @@ chrome.runtime.onMessage.addListener(request => {
 		fetchCache = {};
 		linesCache = {};
 		cleanupZwsInsertedElements();
-		markNewUiOnDom();
+        addMyUI();
 		(async () => {
 			const json = await goFetchJson(baseLocation + 'api/json');
 			await onGetRootJobInfoDone(json);
 		})();
-
-		// setTimeout(() => {
-		// 	observeDOM(document.getElementById('buildHistory'), () => {
-		// 		// console.log('build history was changed');
-		// 		updateRunningBuilds();
-		// 	});
-		// }, 5000);
 
 		return true;
 	}

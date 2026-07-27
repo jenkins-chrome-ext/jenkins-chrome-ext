@@ -105,54 +105,6 @@ function getNewCommiterLineElm(ci) {
 	return commiterLineElm;
 }
 
-function getAllCommitersLineElm(commiterInfos, buildNumber) {
-	let hrefStr;
-	let commiterLineElm = document.createElement('div');
-	commiterLineElm.classList.add('jenkins-ext-build-commiter-line');
-
-	let chatLinkElm = document.createElement('a');
-	let users = '';
-	commiterInfos.forEach((ci, index) => {
-		if (ci.email && ci.name.toLowerCase().trim() !== myName) {
-			users += `${index === 0 ? '' : ','}${ci.email}`;
-		}
-	});
-	const topic = `Build %23${buildNumber}`;
-	chatLinkElm.setAttribute('href', `https://teams.microsoft.com/l/chat/0/0?users=${users}&topicName=${topic}`);
-	chatLinkElm.setAttribute('title', 'Group Chat');
-	chatLinkElm.setAttribute('target', '_blank');
-	chatLinkElm.classList.add('jenkins-ext-build-commiter-chat-link');
-	let chatImgElm = document.createElement('img');
-	chatImgElm.setAttribute('src', chrome.runtime.getURL('img/chat.png'));
-	chatImgElm.classList.add('jenkins-ext-build-commiter-chat-img');
-	chatLinkElm.appendChild(chatImgElm);
-	commiterLineElm.appendChild(chatLinkElm);
-
-	let mailLinkElm = document.createElement('a');
-	hrefStr = 'mailto:';
-	commiterInfos.forEach(ci => {
-		if (ci.email && ci.name.toLowerCase().trim() !== myName) {
-			hrefStr += ci.email + ';';
-		}
-	});
-	mailLinkElm.setAttribute('href', hrefStr);
-	mailLinkElm.setAttribute('title', 'Group Email');
-	mailLinkElm.classList.add('jenkins-ext-build-commiter-email-link');
-	let mailImgElm = document.createElement('img');
-	mailImgElm.setAttribute('src', chrome.runtime.getURL('img/email.png'));
-	mailImgElm.classList.add('jenkins-ext-build-commiter-email-img');
-	mailLinkElm.appendChild(mailImgElm);
-	commiterLineElm.appendChild(mailLinkElm);
-
-	let nameElm = document.createElement('span');
-	nameElm.classList.add('jenkins-ext-build-commiter-name');
-	nameElm.innerHTML = '*';
-	nameElm.setAttribute('title', 'All commiters');
-	commiterLineElm.appendChild(nameElm);
-
-	return commiterLineElm;
-}
-
 function getNoCommitsLineElm() {
 	let commiterLineElm = document.createElement('div');
 	commiterLineElm.classList.add('jenkins-ext-build-commiter-line');
@@ -167,14 +119,7 @@ function getNoCommitsLineElm() {
 
 function displayBuildCommiters(buildNumber) {
 	let bi = buildInfos[buildNumber];
-	let buildLinkElm = getBuildLinkElement(buildNumber);
-	if (!buildLinkElm) {
-		return;
-	}
-	let parentElm = buildLinkElm.parentElement.parentElement;
-	if (parentElm.tagName !== 'TD') {
-		parentElm = parentElm.parentElement;
-	}
+    const parentElm = getElm(`.jenkins-ext-build-section[data-build-number="${buildNumber}"]`);
 	let commitersElm = document.createElement('div');
 	commitersElm.classList.add('jenkins-ext-build-commiters');
 	if (bi.commiterInfos.length > 0) {
@@ -183,16 +128,16 @@ function displayBuildCommiters(buildNumber) {
 			commitersElm.appendChild(commiterLineElm);
 		});
 
-		let commitersWithEmailcount = 0;
+		let commitersWithEmailCount = 0;
 		bi.commiterInfos.forEach(i => {
 			if (i.email) {
-				commitersWithEmailcount++;
+				commitersWithEmailCount++;
 			}
 		})
-		if (commitersWithEmailcount > 1) {
-			let allCommitersLineElm = getAllCommitersLineElm(bi.commiterInfos, buildNumber);
-			commitersElm.appendChild(allCommitersLineElm);
-		}
+		// if (commitersWithEmailCount > 1) {
+		// 	let allCommitersLineElm = getAllCommitersLineElm(bi.commiterInfos, buildNumber);
+		// 	commitersElm.appendChild(allCommitersLineElm);
+		// }
 		parentElm.appendChild(commitersElm);
 	} else {
 		let commiterLineElm = getNoCommitsLineElm();

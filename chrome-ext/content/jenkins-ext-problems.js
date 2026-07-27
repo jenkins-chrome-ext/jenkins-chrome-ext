@@ -108,6 +108,14 @@ async function getMeaningfulLines(textUrl) {
 	return linesCache[textUrl];
 }
 
+function hash(str) {
+    let hash = 0, i, l;
+    for (i = 0, l = str.length; i < l; i++) {
+        hash = ((hash<<5)-hash) + str.charCodeAt(i) | 0;
+    }
+    return hash;
+}
+
 function getLinesHash(line) {
 	return hash(line
 		.replace(/[-_,;:.'"|~!@#$%^&*()=+?<>/\\[\]]{}/g,' ')
@@ -115,7 +123,7 @@ function getLinesHash(line) {
 }
 
 function showProblemDialogBackdrop() {
-	let problemDialogBackdropElm = document.getElementById('jenkins-ext-build-problem-dialog-backdrop');
+	let problemDialogBackdropElm = getElm('#jenkins-ext-build-problem-dialog-backdrop');
 	if (problemDialogBackdropElm) {
 		problemDialogBackdropElm.classList.remove('jenkins-ext-hidden');
 	} else {
@@ -127,14 +135,14 @@ function showProblemDialogBackdrop() {
 }
 
 function hideProblemDialogBackdrop() {
-	const problemDialogBackdropElm = document.getElementById('jenkins-ext-build-problem-dialog-backdrop');
+	const problemDialogBackdropElm = getElm('#jenkins-ext-build-problem-dialog-backdrop');
 	if (problemDialogBackdropElm) {
 		problemDialogBackdropElm.classList.add('jenkins-ext-hidden');
 	}
 }
 
 function showProblemDialog(problem) {
-	let problemDialogElm = document.getElementById('jenkins-ext-build-problem-dialog');
+	let problemDialogElm = document.getElm('#jenkins-ext-build-problem-dialog');
 	if (problemDialogElm) {
 		problemDialogElm.innerHTML = '';
 	} else {
@@ -222,15 +230,3 @@ async function investigateBuildProblem(params) {
 		document.body.style.cursor = 'auto';
 	}
 }
-
-// async function investigateAllProblems() {
-// 	const buildNumbers = Object.keys(buildInfos)
-// 	.filter(k => buildInfos[k].problems && buildInfos[k].problems.length > 0);
-// 	const promises = [];
-// 	buildNumbers.forEach((bn) => {
-// 		buildInfos[bn].problems.forEach(p => {
-// 			promises.push(investigateProblem(bn, p));
-// 		});
-// 	});
-// 	await Promise.all(promises);
-// }

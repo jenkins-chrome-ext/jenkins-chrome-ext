@@ -1,12 +1,3 @@
-let buildStatusEnum = {
-	PENDING: 'PENDING',
-	RUNNING: 'RUNNING',
-	SUCCESS: 'SUCCESS',
-	WARNING: 'WARNING',
-	FAILURE: 'FAILURE',
-	ABORTED: 'ABORTED',
-	UNKNOWN: 'UNKNOWN'
-};
 let buildResult = {
 	SUCCESS:  'SUCCESS',
 	FAILURE:  'FAILURE',
@@ -15,12 +6,8 @@ let buildResult = {
 let buildInfos = {};
 let fetchCache = {};
 
-function hash(str) {
-	let hash = 0, i, l;
-	for (i = 0, l = str.length; i < l; i++) {
-		hash = ((hash<<5)-hash) + str.charCodeAt(i) | 0;
-	}
-	return hash;
+function getElm(selector) {
+    return document.querySelector(selector);
 }
 
 async function goFetchJson(url) {
@@ -39,11 +26,11 @@ async function goFetchJson(url) {
 
 function getBuildLinkElement(buildNumber) {
 	let result = null;
-	const buildNumberDomElms = document.querySelectorAll('.build-row-cell .pane.build-name .display-name');
+	const buildNumberDomElms = document.querySelectorAll('.app-builds-container__item__inner__link');
 	if (buildNumberDomElms && buildNumberDomElms.length > 0) {
 		let found = false;
 		buildNumberDomElms.forEach(buildLinkElm => {
-			if (!found && buildLinkElm.innerText.replace(/[^\x00-\x7F]/g, '').trim() === '#' + buildNumber) {
+			if (!found && buildLinkElm.innerText.replace(/[^\x00-\x7F]/g, '').split('\n')[0].trim() === '#' + buildNumber) {
 				found = true;
 				result = buildLinkElm;
 			}
@@ -52,36 +39,6 @@ function getBuildLinkElement(buildNumber) {
 	return result;
 }
 
-function getBuildStatus(buildNumber) {
-	let buildStatus = buildStatusEnum.UNKNOWN;
-	let buildLinkElm = getBuildLinkElement(buildNumber);
-	if (buildLinkElm) {
-		let parentElm = buildLinkElm.parentElement.parentElement.parentElement;
-		let statusImg = parentElm.querySelector('.build-status-link > img.icon-sm');
-		if (statusImg) {
-			if (statusImg.classList.contains('icon-blue')) {
-				buildStatus = buildStatusEnum.SUCCESS;
-			} else if (statusImg.classList.contains('icon-yellow')) {
-				buildStatus = buildStatusEnum.WARNING;
-			} else if (statusImg.classList.contains('icon-red')) {
-				buildStatus = buildStatusEnum.FAILURE;
-			} else if (statusImg.classList.contains('icon-aborted')) {
-				buildStatus = buildStatusEnum.ABORTED;
-			} else if (statusImg.classList.contains('icon-grey')) {
-				buildStatus = buildStatusEnum.PENDING;
-			} else if (statusImg.className.indexOf('-anim') !== -1) {
-				buildStatus = buildStatusEnum.RUNNING;
-			}
-		}
-	}
-	return buildStatus;
-}
 
-function addBuildPanelClass(buildNumber) {
-	let buildLinkElm = getBuildLinkElement(buildNumber);
-	if (buildLinkElm) {
-		let parentElm = buildLinkElm.parentElement.parentElement.parentElement;
-		let buildStatus = buildInfos[buildNumber].status;
-		parentElm.classList.add(`jenkins-ext-build-status--${buildStatus.toLowerCase()}`);
-	}
-}
+
+
