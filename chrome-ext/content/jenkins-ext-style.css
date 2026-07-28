@@ -27,6 +27,30 @@
     border: 1px solid #666;
     border-radius: 4px;
     cursor: pointer;
+    transition: all 300ms ease;
+}
+.jenkins-ext-panel {
+    transition: all 300ms ease;
+}
+#jenkins-builds.jenkins-ext-show-panel {
+    .jenkins-ext-display-panel-toggle-btn {
+        background-color: #666;
+        color: #fff;
+    }
+    .jenkins-ext-panel {
+        opacity: 1;
+    }
+    .jenkins-card__content {
+        display: none;
+    }
+}
+#jenkins-builds:not(.jenkins-ext-show-panel) {
+    .jenkins-ext-panel {
+        opacity: 0;
+    }
+    .jenkins-card__content {
+        display: flex;
+    }
 }
 .jenkins-ext-build-section {
     border: 1px solid #f0f0f0;
@@ -35,26 +59,6 @@
 }
 .jenkins-ext-build-section:nth-child(odd) {
     background-color: #f6f6f6;
-}
-#jenkins-builds.jenkins-ext-show-panel {
-    .jenkins-ext-display-panel-toggle-btn {
-        background-color: #666;
-        color: #fff;
-    }
-    .jenkins-ext-panel {
-        display: block;
-    }
-    .jenkins-card__content {
-        display: none;
-    }
-}
-#jenkins-builds:not(.jenkins-ext-show-panel) {
-    .jenkins-ext-panel {
-        display: none;
-    }
-    .jenkins-card__content {
-        display: flex;
-    }
 }
 .jenkins-ext-build-status-icon {
     position: relative;
