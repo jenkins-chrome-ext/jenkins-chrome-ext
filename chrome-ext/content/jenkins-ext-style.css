@@ -70,13 +70,13 @@
 }
 .jenkins-ext-build-link {
     padding-left: 4px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     text-decoration: none !important;
 }
 .jenkins-ext-build-timestamp {
     margin-left: 22px;
-    font-size: 13px;
+    font-size: 12px;
     color: #aaa;
 }
 .jenkins-old-ui .build-icon {

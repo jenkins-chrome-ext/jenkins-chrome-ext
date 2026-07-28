@@ -52,6 +52,7 @@ function getNewCommiterLineElm(ci) {
 	chatLinkElm.appendChild(chatImgElm);
 	commiterLineElm.appendChild(chatLinkElm);
 
+	/*
 	let mailLinkElm = document.createElement('a');
 	if (ci.email) {
 		mailLinkElm.setAttribute('href', 'mailto:' + ci.email);
@@ -66,6 +67,7 @@ function getNewCommiterLineElm(ci) {
 	mailImgElm.classList.add('jenkins-ext-build-commiter-email-img');
 	mailLinkElm.appendChild(mailImgElm);
 	commiterLineElm.appendChild(mailLinkElm);
+	*/
 
 	let nameElm = document.createElement('div');
 	nameElm.classList.add('jenkins-ext-build-commiter-name');
