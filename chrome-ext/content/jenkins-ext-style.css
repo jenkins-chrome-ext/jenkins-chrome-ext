@@ -172,11 +172,11 @@
     cursor: default;
 }
 .jenkins-ext-build-commiter-name--highlight {
-    color: #93c !important;
+    color: #939 !important;
     font-weight: bold;
 }
 .jenkins-ext-build-commiter-name--me {
-    color: #36f !important;
+    color: #c6c !important;
     font-weight: bold;
 }
 .jenkins-ext-build-commiter-commits {
