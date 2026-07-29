@@ -130,12 +130,12 @@ function displayBuildCommiters(buildNumber) {
 			commitersElm.appendChild(commiterLineElm);
 		});
 
-		let commitersWithEmailCount = 0;
-		bi.commiterInfos.forEach(i => {
-			if (i.email) {
-				commitersWithEmailCount++;
-			}
-		})
+		// let commitersWithEmailCount = 0;
+		// bi.commiterInfos.forEach(i => {
+		// 	if (i.email) {
+		// 		commitersWithEmailCount++;
+		// 	}
+		// })
 		// if (commitersWithEmailCount > 1) {
 		// 	let allCommitersLineElm = getAllCommitersLineElm(bi.commiterInfos, buildNumber);
 		// 	commitersElm.appendChild(allCommitersLineElm);
