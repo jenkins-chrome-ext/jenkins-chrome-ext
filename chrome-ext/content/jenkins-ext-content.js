@@ -32,7 +32,18 @@ function onGetBuildInfoDone(json, buildNumber) {
     timestampElm.innerText = timestampToLocalString(json.timestamp);
 	bi.commiterInfos = [];
 	let names = [];
-	json.changeSet.items.forEach(commit => {
+
+    const commits = [];
+    if (json.changeSet?.items) {
+        commits.push(...json.changeSet.items);
+    } else if (json.changeSets) {
+        json.changeSets.forEach(cs => {
+            if (cs.items) {
+                commits.push(...cs.items);
+            }
+        });
+    }
+    commits.forEach(commit => {
 		if (commit.author.fullName === 'noreply') {
 			bi.commiterInfos.push({
 				name: '???',
@@ -44,6 +55,7 @@ function onGetBuildInfoDone(json, buildNumber) {
 				}],
 			});
 		} else {
+            console.log('########## ' + commit.remoteUrls);
 			let commiterName = formatCommiterName(commit.author.fullName);
 			if (names.indexOf(commiterName) === -1) {
 				names.push(commiterName);
