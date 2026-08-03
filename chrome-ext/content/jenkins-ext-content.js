@@ -169,6 +169,7 @@ async function onGetRootJobInfoDone(info) {
 }
 
 function addMyUI() {
+    const SHOW_PANEL_PREF_KEY = 'jenkins-ext-show-panel';
     const jenkinsBuildsElm = getElm('#jenkins-builds');
     const jenkinsCardTitleElm = getElm('.jenkins-card__title');
     const jenkinsCardContentElm = getElm('.jenkins-card__content');
@@ -180,7 +181,13 @@ function addMyUI() {
     toggleBun.innerText = 'Commits';
     jenkinsCardTitleElm.appendChild(toggleBun);
     toggleBun.addEventListener('click', () => {
-        jenkinsBuildsElm.classList.toggle('jenkins-ext-show-panel');
+        const showPanel = jenkinsBuildsElm.classList.toggle('jenkins-ext-show-panel');
+        chrome.storage.local.set({ [SHOW_PANEL_PREF_KEY]: showPanel });
+    });
+    chrome.storage.local.get(SHOW_PANEL_PREF_KEY, (result) => {
+        if (result[SHOW_PANEL_PREF_KEY]) {
+            jenkinsBuildsElm.classList.add('jenkins-ext-show-panel');
+        }
     });
     const extPanelElm = document.createElement('div');
     extPanelElm.classList.add('jenkins-ext-panel');
